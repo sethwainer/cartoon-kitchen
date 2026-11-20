@@ -59,7 +59,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 /* ---------- containers with doors ---------- */
 .box{position:absolute;z-index:1}
 .inside{position:absolute;inset:0;border:5px solid var(--ink);border-radius:14px;display:flex;flex-direction:column;padding:6px 4px 0;overflow:hidden}
-.shelf{flex:1;display:flex;justify-content:space-around;align-items:flex-end;padding-bottom:2px}
+.shelf{flex:1 1 0;min-height:0;display:flex;justify-content:space-around;align-items:flex-end;padding-bottom:2px}
 .cold{background:linear-gradient(#ffffff,#dff2ff)}
 .cold .shelf{border-bottom:7px solid #b9e2f7}
 .cold .shelf:last-child{border-bottom:0}
@@ -114,6 +114,16 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 #bakeCab{left:330px;top:118px;width:200px;height:265px}
 #pantryCab{left:560px;top:118px;width:200px;height:265px}
 #bakeCab .item,#pantryCab .item{--isz:50px}
+.low .door{background:#4db6ac;box-shadow:inset 0 0 0 9px #4db6ac,inset 0 0 0 13px #3a9a90;border-radius:12px}
+.low .door.drw{transform-origin:center bottom;box-shadow:none;border-radius:10px}
+.box.open .door.drw{transform:perspective(500px) rotateX(-96deg)}
+.door.rh{transform-origin:right center}
+.box.open .door.rh{transform:perspective(1100px) rotateY(100deg)}
+.low .door .knob{top:24px;margin-top:0}
+.low .door.l .knob{right:10px}.low .door.r .knob{left:10px}
+.pull{position:absolute;left:50%;top:50%;width:46px;height:12px;margin:-6px 0 0 -23px;background:#ffd36e;border:4px solid var(--ink);border-radius:8px}
+.low .inside{border-radius:10px;padding-top:3px}
+.pkg.can{width:.7em;height:.86em;border-radius:.14em/.07em;box-shadow:inset 0 .12em 0 #00000018,inset 0 -.12em 0 #00000018}
 
 /* counters */
 .counter{position:absolute;top:550px;height:38px;background:#ffcf7a;border:5px solid var(--ink);border-radius:12px;z-index:3}
@@ -233,7 +243,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .steam{position:absolute;width:30px;height:30px;border-radius:50%;background:#ffffffcc;pointer-events:none;z-index:45}
 
 /* cat */
-#cat{position:absolute;left:1478px;top:742px;font-size:84px;cursor:pointer;z-index:8;transition:transform .2s}
+#cat{position:absolute;left:1470px;top:796px;font-size:84px;cursor:pointer;z-index:8;transition:transform .2s}
 #cat.hop{animation:hop .45s ease}
 .say{position:absolute;background:#fff;border:4px solid var(--ink);border-radius:20px;padding:4px 14px;font-size:26px;font-weight:700;white-space:nowrap;z-index:46;pointer-events:none;animation:sayPop 1.4s ease forwards}
 
@@ -495,17 +505,16 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 
   <!-- counters & base cabinets -->
   <div class="base" style="left:318px;width:452px">
-    <div class="drawer" style="left:14px;top:14px;width:206px"></div>
-    <div class="drawer" style="left:232px;top:14px;width:206px"></div>
-    <div class="bdoor" style="left:14px;top:80px;width:206px"><span class="knob" style="right:14px"></span></div>
-    <div class="bdoor" style="left:232px;top:80px;width:206px"><span class="knob" style="left:14px"></span></div>
+    <div class="box low" id="spiceBox" data-loc="spice" style="left:14px;top:14px;width:206px;height:54px;--isz:34px"><div class="inside wood"></div><div class="door drw"><span class="pull"></span></div></div>
+    <div class="box low" id="sweetBox" data-loc="sweets" style="left:232px;top:14px;width:206px;height:54px;--isz:34px"><div class="inside wood"></div><div class="door drw"><span class="pull"></span></div></div>
+    <div class="box low" id="binBox" data-loc="bin" style="left:14px;top:80px;width:206px;height:138px;--isz:44px"><div class="inside wood"></div><div class="door one"><span class="knob" style="right:14px"></span></div></div>
+    <div class="box low" id="snackBox" data-loc="snack" style="left:232px;top:80px;width:206px;height:138px;--isz:40px"><div class="inside wood"></div><div class="door rh"><span class="knob" style="left:14px"></span></div></div>
   </div>
   <div class="counter" style="left:310px;width:466px"></div>
   <div class="base" style="left:1074px;width:530px">
-    <div class="bdoor" style="left:14px;width:150px"><span class="knob" style="right:14px"></span></div>
-    <div class="bdoor" style="left:174px;width:150px"><span class="knob" style="left:14px"></span></div>
-    <div class="drawer" style="left:336px;top:14px;width:176px"></div>
-    <div class="bdoor" style="left:336px;top:80px;width:176px"><span class="knob" style="left:14px"></span></div>
+    <div class="box low" id="canBox" data-loc="cans" style="left:14px;top:16px;width:310px;height:202px;--isz:52px"><div class="inside wood"></div><div class="door l"><span class="knob"></span></div><div class="door r"><span class="knob"></span></div></div>
+    <div class="box low" id="drinkBox" data-loc="drinks" style="left:336px;top:14px;width:176px;height:54px;--isz:34px"><div class="inside wood"></div><div class="door drw"><span class="pull"></span></div></div>
+    <div class="box low" id="kittyBox" data-loc="kitty" style="left:336px;top:80px;width:176px;height:138px;--isz:44px"><div class="inside wood"></div><div class="door rh"><span class="knob" style="left:14px"></span></div></div>
   </div>
   <div class="counter" style="left:1066px;width:540px"></div>
 
@@ -629,6 +638,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
       <h2 id="cpTitle">My Dishes</h2>
       <p id="cpSub"></p>
       <div class="dishGrid" id="dishGrid"></div>
+      <p id="foundRow" style="max-width:1000px;font-size:26px;line-height:1.5"></p>
       <p style="margin-top:8px"><b>Magic save code</b> — use it to bring your dishes to another computer:</p>
       <div class="lrow"><div class="codeBox" id="myCode"></div><button class="lbtn alt" id="copyCode">📋 Copy</button></div>
       <p>Got a code from another computer? Type it here:</p>
@@ -762,7 +772,14 @@ const LOC={
   freezer:{n:'Freezer',i:'❄️',c:'#e3f4ff',box:'freezerBox'},
   bake:{n:'Baking cupboard',i:'🧁',c:'#ffe3a1',box:'bakeCab'},
   pantry:{n:'Pantry cupboard',i:'🥫',c:'#ffc9a8',box:'pantryCab'},
-  fruit:{n:'Fruit basket',i:'🧺',c:'#d8efb8',box:'fruit'}
+  fruit:{n:'Fruit basket',i:'🧺',c:'#d8efb8',box:'fruit'},
+  spice:{n:'Spice drawer',i:'🧄',c:'#ffe0b2',box:'spiceBox'},
+  sweets:{n:'Sweets drawer',i:'🍭',c:'#f8bbd0',box:'sweetBox'},
+  bin:{n:'Veggie cupboard',i:'🥔',c:'#dcedc8',box:'binBox'},
+  snack:{n:'Bread & snack cupboard',i:'🥨',c:'#ffe0b2',box:'snackBox'},
+  cans:{n:'Can cupboard (under the sink)',i:'🥫',c:'#ffccbc',box:'canBox'},
+  drinks:{n:'Drinks drawer',i:'🧃',c:'#b3e5fc',box:'drinkBox'},
+  kitty:{n:'Kitty cupboard',i:'🐱',c:'#e1bee7',box:'kittyBox'}
 };
 const ING={
   icecream:{e:'🍨',n:'Ice cream',loc:'freezer'},
@@ -795,7 +812,38 @@ const ING={
   banana:{e:'🍌',n:'Banana',loc:'fruit'},
   apple:{e:'🍎',n:'Apple',loc:'fruit'},
   lemon:{e:'🍋',n:'Lemon',loc:'fruit'},
-  grapes:{e:'🍇',n:'Grapes',loc:'fruit'}
+  grapes:{e:'🍇',n:'Grapes',loc:'fruit'},
+  garlic:{e:'🧄',n:'Garlic',loc:'spice'},
+  onion:{e:'🧅',n:'Onion',loc:'spice'},
+  pepper:{e:'🌶️',n:'Hot pepper',loc:'spice'},
+  herbs:{e:'🌿',n:'Herbs',loc:'spice'},
+  lollipop:{e:'🍭',n:'Lollipop',loc:'sweets'},
+  donut:{e:'🍩',n:'Donut',loc:'sweets'},
+  marshmallow:{pkg:'bag',c:'#ffffff',label:'MALLOWS',i:'☁️',n:'Marshmallows',loc:'sweets'},
+  graham:{pkg:'box',c:'#d7a86e',label:'GRAHAM',i:'🍪',n:'Graham crackers',loc:'sweets'},
+  potato:{e:'🥔',n:'Potato',loc:'bin'},
+  sweetpotato:{e:'🍠',n:'Sweet potato',loc:'bin'},
+  corn:{e:'🌽',n:'Corn',loc:'bin'},
+  pumpkin:{e:'🎃',n:'Pumpkin',loc:'bin'},
+  avocado:{e:'🥑',n:'Avocado',loc:'bin'},
+  broccoli:{e:'🥦',n:'Broccoli',loc:'bin'},
+  bagel:{e:'🥯',n:'Bagel',loc:'snack'},
+  croissant:{e:'🥐',n:'Croissant',loc:'snack'},
+  tortilla:{pkg:'bag',c:'#ffe9b0',label:'TORTILLAS',i:'🌮',n:'Tortillas',loc:'snack'},
+  pretzel:{e:'🥨',n:'Pretzel',loc:'snack'},
+  crackers:{pkg:'box',c:'#ffcc80',label:'CRACKERS',i:'🍘',n:'Crackers',loc:'snack'},
+  beans:{pkg:'can',c:'#ffab91',label:'BEANS',i:'🥫',n:'Beans',loc:'cans'},
+  tuna:{pkg:'can',c:'#90caf9',label:'TUNA',i:'🐟',n:'Tuna',loc:'cans'},
+  soup:{pkg:'can',c:'#ff8a80',label:'SOUP',i:'🍲',n:'Canned soup',loc:'cans'},
+  rice:{pkg:'bag',c:'#ffffff',label:'RICE',i:'🍚',n:'Rice',loc:'cans'},
+  oats:{pkg:'box',c:'#ffe0b2',label:'OATS',i:'🥣',n:'Oats',loc:'cans'},
+  olives:{pkg:'jar',c:'#c5e1a5',lid:'#5d4037',label:'OLIVES',i:'🫒',n:'Olives',loc:'cans'},
+  juice:{e:'🧃',n:'Juice',loc:'drinks'},
+  tea:{e:'🍵',n:'Tea',loc:'drinks'},
+  coconut:{e:'🥥',n:'Coconut',loc:'drinks'},
+  catfood:{pkg:'can',c:'#e1bee7',label:'KITTY',i:'🐟',n:'Cat food',loc:'kitty'},
+  fish:{e:'🐟',n:'Fish',loc:'kitty'},
+  treats:{pkg:'bag',c:'#f8bbd0',label:'TREATS',i:'🐾',n:'Kitty treats',loc:'kitty'}
 };
 const TOOLS={
   oven:{n:'Oven',i:'🔥',verb:'Bake'},
@@ -819,7 +867,172 @@ const RECIPES=[
   {name:'Chicken Soup',dish:'🍲',ings:['chicken','carrot','peas','salt'],tool:'stove',vessel:'pot',color:'#ffcc80'},
   {name:'Apple Pie',dish:'🥧',ings:['apple','flour','sugar','butter'],tool:'oven',color:'#d9a066'}
 ];
-const SILLY=['#c39bd3','#7fd3ff','#a5d6a7','#ffab91','#f48fb1','#fff176'];
+const MIXCOLORS=['#f6d38a','#ffcc80','#ffb74d','#e8c48a','#ffe066','#f4a261'];
+/* Free play: whatever goes in the bowl + whichever appliance = a real dish.
+   Checked top to bottom; the first rule that fits wins.
+   need = must have all of these, any = must have at least one, tools = where it can be cooked (none = eaten without cooking). */
+const FRUIT=['banana','apple','lemon','grapes','strawberry','coconut'];
+const VEG=['lettuce','tomato','carrot','cucumber','mushroom','peas','broccoli','onion','corn','pepper','olives','garlic','herbs'];
+const HOT=['oven','stove','microwave','toaster'];
+const R=(a,name,dish,need,any,tools)=>({a,name,dish,need,any,tools});
+const INVENT=[
+  // for the cat
+  R('a','Kitty Dinner','🐱',[],['catfood','treats'],null),
+  // baking
+  R('','Pumpkin Pie','🥧',['flour','pumpkin'],null,['oven','microwave']),
+  R('','Oatmeal Cookies','🍪',['oats','sugar'],['flour','butter','eggs'],['oven','microwave','toaster']),
+  R('','Chocolate Chip Cookies','🍪',['flour','sugar'],['chocolate'],['oven','microwave','toaster']),
+  R('','Cupcakes','🧁',['flour','sugar'],['sprinkles','strawberry','banana'],['oven','microwave']),
+  R('an','Apple Pie','🥧',['flour','apple'],null,['oven','microwave','stove']),
+  R('','Banana Bread','🍞',['flour','banana'],null,['oven']),
+  R('a','Cake','🍰',['flour','sugar'],null,['oven']),
+  R('a','Mug Cake','🧁',['flour','sugar'],null,['microwave']),
+  R('','Onion Rings','🧅',['flour','onion'],null,['stove','oven']),
+  R('','Pancakes','🥞',['flour'],['eggs','milk','butter','sugar','banana','strawberry'],['stove']),
+  R('','Waffles','🧇',['flour'],['eggs','milk','butter','sugar'],['toaster']),
+  R('a','Pizza','🍕',['flour'],['sauce','cheese','tomato','mushroom','olives','pepper'],['oven','microwave','toaster','stove']),
+  R('','Fresh Bread','🥖',['flour'],null,['oven','toaster','microwave']),
+  R('','Flatbread','🫓',['flour'],null,['stove']),
+  R('','Granola','🥣',['oats'],['honey','sugar','coconut'],['oven','toaster']),
+  R('','Oatmeal','🥣',['oats'],null,['stove','microwave']),
+  // s'mores & sweets
+  R('','S\'mores','🍫',['marshmallow'],['graham','chocolate'],null),
+  R('','Hot Cocoa with Marshmallows','☕',['chocolate','milk','marshmallow'],null,['stove','microwave']),
+  R('','Crispy Treats','🍘',['marshmallow','cereal'],null,null),
+  R('a','Donut Sundae','🍨',['donut','icecream'],null,null),
+  R('','Glazed Donuts','🍩',['donut'],null,null),
+  // tortillas & Mexican-style
+  R('a','Burrito','🌯',['tortilla','beans'],null,null),
+  R('','Nachos','🧀',['tortilla','cheese'],null,['oven','microwave']),
+  R('a','Quesadilla','🫓',['tortilla','cheese'],null,null),
+  R('','Tacos','🌮',['tortilla'],['chicken','fish','tuna','avocado','lettuce','tomato','corn','pepper'],null),
+  R('','Chili','🌶️',['beans'],['pepper','tomato','sauce','onion','chicken'],['stove','microwave','oven']),
+  R('','Guacamole','🥑',['avocado'],['tomato','onion','lemon','garlic','pepper','herbs'],['none','blender']),
+  R('','Tortilla Chips','🌮',['tortilla'],null,null),
+  // rice, fish & cans
+  R('','Sushi','🍣',['rice'],['fish','tuna','avocado','cucumber'],['none']),
+  R('','Rice and Beans','🍛',['rice','beans'],null,null),
+  R('','Coconut Rice','🍚',['rice','coconut'],null,null),
+  R('','Rice Pudding','🍮',['rice','milk'],['sugar','honey'],null),
+  R('','Chicken and Rice','🍛',['rice','chicken'],null,null),
+  R('','Fried Rice','🍚',['rice'],['eggs','peas','carrot','corn','onion','broccoli','garlic'],null),
+  R('a','Bowl of Rice','🍚',['rice'],null,null),
+  R('','Fish and Chips','🍟',['fish','potato'],null,null),
+  R('','Lemon Fish','🐟',['fish'],['lemon','butter','herbs','garlic'],null),
+  R('','Baked Fish','🐟',['fish'],null,['oven','microwave']),
+  R('','Fish Sticks','🐟',['fish'],null,null),
+  R('a','Tuna Sandwich','🥪',['tuna'],['bread','bagel','croissant','crackers'],null),
+  R('','Tuna Pasta','🍝',['tuna','pasta'],null,null),
+  R('a','Tuna Salad','🥗',['tuna'],null,null),
+  R('','Noodle Soup','🍜',['soup','pasta'],null,null),
+  R('a','Bowl of Soup','🍲',['soup'],null,null),
+  // potatoes, corn, pumpkin
+  R('','Cheesy Potatoes','🥔',['potato','cheese'],null,null),
+  R('','Mashed Potatoes','🥔',['potato'],['butter','milk'],null),
+  R('','French Fries','🍟',['potato'],null,['stove','toaster']),
+  R('a','Baked Potato','🥔',['potato'],null,null),
+  R('','Sweet Potato Fries','🍠',['sweetpotato'],null,['stove','toaster','oven']),
+  R('a','Baked Sweet Potato','🍠',['sweetpotato'],null,null),
+  R('','Corn on the Cob','🌽',['corn'],null,['stove','microwave','oven','toaster']),
+  R('','Pumpkin Soup','🎃',['pumpkin'],null,['stove','microwave','blender']),
+  R('','Roasted Pumpkin','🎃',['pumpkin'],null,null),
+  R('','Broccoli Cheese Soup','🥦',['broccoli','cheese'],null,['stove','microwave']),
+  R('','Onion Soup','🧅',['onion'],null,['stove','microwave']),
+  // bread & bakery
+  R('','Garlic Bread','🥖',['bread','garlic'],null,null),
+  R('','Avocado Toast','🥑',['avocado'],['bread','bagel'],null),
+  R('','French Toast','🍞',['bread','eggs'],['milk','sugar','honey','butter'],HOT),
+  R('','Pizza Toast','🍕',['bread','cheese'],['sauce','tomato','mushroom','olives'],HOT),
+  R('a','Grilled Cheese','🥪',['bread','cheese'],null,HOT),
+  R('','Egg Toast','🍳',['bread','eggs'],null,null),
+  R('a','Peanut Butter Sandwich','🥪',['bread','peanut'],null,null),
+  R('a','Chicken Sandwich','🥪',['bread','chicken'],null,null),
+  R('a','Sandwich','🥪',['bread'],['cheese','lettuce','tomato','cucumber','banana'],null),
+  R('','Toast','🍞',['bread'],null,null),
+  R('a','Bagel Sandwich','🥯',['bagel'],['cheese','eggs','chicken','lettuce','tomato','cucumber'],null),
+  R('a','Toasted Bagel','🥯',['bagel'],null,null),
+  R('a','Chocolate Croissant','🥐',['croissant','chocolate'],null,null),
+  R('a','Croissant Sandwich','🥐',['croissant'],['cheese','eggs','chicken','lettuce','tomato'],null),
+  R('a','Warm Croissant','🥐',['croissant'],null,null),
+  R('','Chocolate Pretzels','🥨',['pretzel','chocolate'],null,null),
+  R('','Pretzels and Cheese','🥨',['pretzel','cheese'],null,null),
+  R('a','Soft Pretzel','🥨',['pretzel'],null,null),
+  R('','Cheese and Crackers','🧀',['crackers','cheese'],null,null),
+  R('','Peanut Butter Crackers','🍘',['crackers','peanut'],null,null),
+  R('','Crackers','🍘',['crackers'],null,null),
+  // eggs
+  R('','Eggnog','🥛',['eggs','milk'],null,['blender']),
+  R('a','Quiche','🥧',['eggs'],['cheese','milk'].concat(VEG),['oven']),
+  R('an','Omelet','🍳',['eggs'],['cheese','chicken','potato'].concat(VEG),null),
+  R('','Scrambled Eggs','🍳',['eggs'],['milk','butter','salt'],null),
+  R('a','Fried Egg','🍳',['eggs'],null,['stove','toaster']),
+  R('','Boiled Eggs','🥚',['eggs'],null,null),
+  // pasta
+  R('','Spaghetti','🍝',['pasta','sauce'],null,null),
+  R('','Mac & Cheese','🧀',['pasta','cheese'],null,null),
+  R('','Chicken Noodle Soup','🍜',['pasta','chicken'],null,null),
+  R('','Veggie Pasta','🍝',['pasta'],VEG,null),
+  R('','Buttered Noodles','🍜',['pasta'],null,null),
+  // chicken
+  R('','Coconut Curry','🍛',['chicken','coconut'],null,null),
+  R('','Honey Lemon Chicken','🍗',['chicken'],['honey','lemon'],null),
+  R('a','Chicken Salad','🥗',['chicken','lettuce'],null,null),
+  R('','Chicken Soup','🍲',['chicken'],['carrot','peas','mushroom','tomato','salt','onion','broccoli'],['stove','microwave']),
+  R('','Roast Chicken','🍗',['chicken'],null,['oven']),
+  R('','Chicken Nuggets','🍗',['chicken'],null,null),
+  // sweets & cold things
+  R('a','Banana Split','🍨',['icecream','banana'],null,null),
+  R('a','Milkshake','🥤',['icecream'],null,['blender']),
+  R('an','Ice Cream Sundae','🍨',['icecream'],null,null),
+  R('','Hot Cocoa','☕',['chocolate','milk'],null,['stove','microwave']),
+  R('','Chocolate Milk','🥛',['chocolate','milk'],null,null),
+  R('','Chocolate-Dipped Fruit','🍓',['chocolate'],FRUIT,null),
+  R('','Peanut Butter Cups','🍫',['chocolate','peanut'],null,null),
+  R('','Fudge','🍫',['chocolate'],null,null),
+  R('a','Caramel Apple','🍎',['apple'],['sugar','honey','peanut'],null),
+  R('','Caramel Corn','🍿',['popcorn'],['sugar','honey'],null),
+  R('','Popcorn','🍿',['popcorn'],null,null),
+  R('','Cereal Bars','🥣',['cereal'],['honey','peanut','sugar'],HOT),
+  R('a','Bowl of Cereal','🥣',['cereal'],null,null),
+  R('','Milk Tea','🧋',['tea','milk'],null,null),
+  R('','Iced Tea','🥤',['tea'],['ice','lemon'],null),
+  R('','Hot Tea','🍵',['tea'],null,null),
+  R('a','Slushie','🍧',['juice'],['ice'],null),
+  R('a','Fruit Smoothie','🥤',['yogurt'],null,['blender']),
+  R('a','Yogurt Parfait','🍨',['yogurt'],null,null),
+  R('','Lemonade','🍋',['lemon','sugar'],null,null),
+  R('a','Snow Cone','🍧',['ice'],['sugar','honey','sprinkles','strawberry','lemon','grapes','juice'],null),
+  R('a','Fruit Smoothie','🥤',[],FRUIT.concat(['juice']),['blender']),
+  R('a','Milkshake','🥤',['milk'],null,['blender']),
+  R('','Gazpacho','🍅',[],VEG,['blender']),
+  R('','Tomato Soup','🥫',[],['tomato','sauce'],['stove','microwave']),
+  R('','Veggie Soup','🍲',[],VEG,['stove','microwave']),
+  R('','Roasted Veggies','🥕',[],VEG,['oven','toaster']),
+  R('a','Salad','🥗',[],['lettuce','cucumber','tomato','carrot','broccoli','olives','avocado'],null),
+  R('','Warm Fruit Compote','🍑',[],FRUIT,HOT),
+  R('a','Fruit Salad','🍇',[],FRUIT,null),
+  R('a','Glass of Juice','🧃',['juice'],null,null),
+  R('','Cheese Dip','🧀',['cheese'],null,HOT.concat(['blender'])),
+  R('a','Cheese Plate','🧀',['cheese'],null,null),
+  R('','Warm Honey Milk','🥛',['milk'],null,['stove','microwave']),
+  R('a','Glass of Milk','🥛',['milk'],null,null),
+  R('','Peanut Butter Bites','🥜',['peanut'],null,null),
+  R('','Shaved Ice','🍧',['ice'],null,null),
+  R('','Candy','🍬',[],['sugar','sprinkles','honey','lollipop','graham'],null),
+  R('','Buttery Peas','🟢',['peas'],null,null)
+];
+const INVENT_FALLBACK={stove:R('a','Stir-Fry','🥘'),oven:R('a','Casserole','🥘'),microwave:R('a','Hotdish','🍲'),
+  toaster:R('','Toasty Snack Mix','🥨'),blender:R('a','Smoothie','🥤'),none:R('a','Snack Plate','🍱')};
+function inventDish(items,tool){
+  const has=new Set(items);
+  // a cookbook recipe made "by heart" counts as that recipe
+  let best=-1;
+  RECIPES.forEach((r,i)=>{if(r.tool===tool&&r.ings.every(x=>has.has(x))&&(best<0||r.ings.length>RECIPES[best].ings.length))best=i;});
+  if(best>=0){const r=RECIPES[best];return {name:r.name,dish:r.dish,idx:best,color:r.color,a:''};}
+  const fit=INVENT.find(r=>r.need.every(x=>has.has(x))&&(!r.any||r.any.some(x=>has.has(x)))&&(!r.tools||r.tools.includes(tool)));
+  const r=fit||INVENT_FALLBACK[tool]||INVENT_FALLBACK.none;
+  return {name:r.name,dish:r.dish,a:r.a,invented:true};
+}
 
 function ingHTML(id){
   const g=ING[id];
@@ -836,7 +1049,14 @@ const LAYOUT={
   freezerBox:[['icecream','ice','peas']],
   fridgeBox:[['milk','eggs','butter'],['cheese','yogurt','strawberry'],['lettuce','tomato','carrot'],['cucumber','chicken','mushroom']],
   bakeCab:[['flour','sugar','salt'],['chocolate','honey','sprinkles']],
-  pantryCab:[['pasta','sauce','popcorn'],['bread','peanut','cereal']]
+  pantryCab:[['pasta','sauce','popcorn'],['bread','peanut','cereal']],
+  spiceBox:[['garlic','onion','pepper','herbs']],
+  sweetBox:[['lollipop','donut','marshmallow','graham']],
+  binBox:[['potato','sweetpotato','corn'],['pumpkin','avocado','broccoli']],
+  snackBox:[['bagel','croissant','tortilla'],['pretzel','crackers']],
+  canBox:[['beans','tuna','soup'],['rice','oats','olives']],
+  drinkBox:[['juice','tea','coconut']],
+  kittyBox:[['catfood','fish','treats']]
 };
 for(const [box,rows] of Object.entries(LAYOUT)){
   $('#'+box+' .inside').innerHTML=rows.map(r=>`<div class="shelf">${r.map(id=>itemHTML(id)).join('')}</div>`).join('');
@@ -848,7 +1068,7 @@ $('#fruit .items').innerHTML=
   itemHTML('lemon','left:74px;top:0px');
 
 /* ---------- game state ---------- */
-let recipe=null, phase='free', bowlItems=[], mixed=false, stirs=0, freeColor=SILLY[0], bites=0, lastResult=null;
+let recipe=null, phase='free', bowlItems=[], mixed=false, stirs=0, freeColor=MIXCOLORS[0], bites=0, lastResult=null;
 const STIRS=6;
 const bowl=$('#bowl'), bstuff=$('#bstuff');
 const busy=()=>phase==='cooking'||phase==='done';
@@ -998,12 +1218,13 @@ bowl.addEventListener('click',()=>{
   if(bowlItems.length)hidePicker();
   if(!bowlItems.length){sfx.click();wiggle(bowl);say(recipe?'Find the ingredients and put them in the bowl!':'The bowl is empty. Find some food!');return;}
   if(recipe&&phase==='gather'){wiggle(bowl);say('Find all the ingredients first!');return;}
-  if(mixed){wiggle(bowl);say(recipe?`Now ${TOOLS[recipe.tool].verb.toLowerCase()} it in the ${TOOLS[recipe.tool].n}!`:'Now cook it! Try the oven, the stove, the toaster, the blender, or the microwave!');return;}
+  if(mixed&&!recipe){serveRaw();return;}
+  if(mixed){wiggle(bowl);say(`Now ${TOOLS[recipe.tool].verb.toLowerCase()} it in the ${TOOLS[recipe.tool].n}!`);return;}
   stirs++; sfx.stir();
   bowl.classList.remove('stir'); void bowl.offsetWidth; bowl.classList.add('stir');
   if(stirs>=STIRS){
     mixed=true; bowl.classList.remove('glow');
-    const col=recipe?recipe.color:(freeColor=SILLY[Math.floor(Math.random()*SILLY.length)]);
+    const col=recipe?recipe.color:(freeColor=MIXCOLORS[Math.floor(Math.random()*MIXCOLORS.length)]);
     setTimeout(()=>{
       $('#bowlIn').setAttribute('fill',col); bowl.classList.add('mixed');
       Array.from(bstuff.querySelectorAll('.bitem')).forEach(x=>x.style.opacity=0);
@@ -1011,12 +1232,12 @@ bowl.addEventListener('click',()=>{
       if(recipe){
         if(recipe.tool==='none'){
           phase='cooking'; updateHUD(); say('All mixed! Ta da!');
-          setTimeout(()=>{const r=sr(bowl);finish({name:recipe.name,dish:recipe.dish},{cx:r.cx,cy:r.y});},900);
+          setTimeout(()=>{const r=sr(bowl);finish({name:recipe.name,dish:recipe.dish,idx:RECIPES.indexOf(recipe),color:recipe.color,a:''},{cx:r.cx,cy:r.y});},900);
         }else{
           phase='cook'; updateHUD();
           say(`It's all mixed! Now ${TOOLS[recipe.tool].verb.toLowerCase()} it in the ${TOOLS[recipe.tool].n}! It's glowing!`);
         }
-      }else{ updateHUD(); say('All mixed! Now cook it in anything you like!'); }
+      }else{ updateHUD(); say('All mixed! Cook it in anything — or tap the bowl to eat it now!'); }
     },300);
   }
   updateHUD();
@@ -1094,11 +1315,17 @@ async function startCook(tool){
   if(tool==='toaster'){const t=$('#toaster');t.classList.remove('down');t.classList.add('pop');setTimeout(()=>t.classList.remove('pop'),1200);}
   if(tool==='microwave')sfx.beep(); else sfx.ding();
   $('#pan').classList.remove('show'); $('#pot').classList.remove('show');
-  const res=recipe?{name:recipe.name,dish:recipe.dish}:{name:'Silly Surprise',items,color:col};
+  const res=recipe?{name:recipe.name,dish:recipe.dish,idx:RECIPES.indexOf(recipe),color:recipe.color,a:''}:inventDish(items,tool);
+  if(!res.color)res.color=col;
   finish(res,to);
 }
+function serveRaw(){
+  phase='cooking'; updateHUD(); hidePicker(); sfx.sparkle();
+  const res=inventDish(bowlItems.slice(),'none'); res.color=freeColor;
+  const r=sr(bowl); setTimeout(()=>finish(res,{cx:r.cx,cy:r.y}),500);
+}
 async function finish(res,from){
-  const html=res.dish?res.dish:'🤪';
+  const html=res.dish;
   await flyHTML(html,from,{cx:800,cy:470},{size:90,endScale:2.2,lift:120,dur:800});
   resetBowl();
   showDone(res);
@@ -1126,7 +1353,7 @@ function hintFor(id){
 }
 $('#hintBtn').onclick=()=>{
   sfx.sparkle();
-  if(!recipe){wiggle($('#cookbook'));say('Tap the cookbook to pick a recipe! Or put anything in the bowl to make something silly!');return;}
+  if(!recipe){wiggle($('#cookbook'));say('Tap the cookbook to pick a recipe! Or put any food in the bowl, stir it and cook it to invent your own dish!');return;}
   if(phase==='gather'){const miss=recipe.ings.find(i=>!bowlItems.includes(i));if(miss)hintFor(miss);}
   else if(phase==='mix'){wiggle(bowl);say('Tap the bowl to stir it!');}
   else if(phase==='cook'){showCookGlow();say(`${TOOLS[recipe.tool].verb} it in the ${TOOLS[recipe.tool].n}! Tap the glowing ${TOOLS[recipe.tool].n}.`);}
@@ -1157,7 +1384,7 @@ function updateHUD(){
   $('#quit').classList.toggle('on',!!recipe);
   if(!recipe){
     dish.textContent='👩‍🍳'; chips.classList.remove('on'); chips.innerHTML='';
-    msg.textContent=phase==='cooking'?'Cooking… ⏳':phase==='done'?'Yum! 😋':!bowlItems.length?'Tap the cookbook 📖 to pick a recipe — or make something silly!':mixed?'Now cook it in anything! 🔥':`Tap the bowl to stir 🥄 ${dots()}`;
+    msg.textContent=phase==='cooking'?'Cooking… ⏳':phase==='done'?'Yum! 😋':!bowlItems.length?'Pick a recipe 📖 — or invent your own dish!':mixed?'Cook it in anything 🔥 — or tap the bowl to eat it!':`Tap the bowl to stir 🥄 ${dots()}`;
     return;
   }
   dish.textContent=recipe.dish;
@@ -1258,22 +1485,18 @@ function startRecipe(r){
 }
 
 /* ---------- done ---------- */
-function dishHTML(res){
-  if(res.dish)return `<span class="dishE">${res.dish}</span>`;
-  const pos=[[0,-10],[-75,-45],[75,-40],[-60,55],[65,55],[0,-85],[0,70]];
-  return `<div class="goo" style="background:${res.color}"></div>`+res.items.slice(0,7).map((id,k)=>`<span class="sil" style="transform:translate(${pos[k][0]}px,${pos[k][1]}px) rotate(${(k*47)%60-30}deg)">${ingHTML(id)}</span>`).join('');
-}
+function dishHTML(res){return `<span class="dishE">${res.dish}</span>`;}
 function showDone(res){
   phase='done'; lastResult=res; bites=0; updateHUD();
   $('#dDish').innerHTML=dishHTML(res); $('#dDish').style.transform='scale(1)';
-  $('#dTitle').textContent=res.dish?`You made ${res.name}! 🎉`:'You made a Silly Surprise! 🤪';
+  $('#dTitle').textContent=`You made ${res.a?res.a+' ':''}${res.name}! 🎉`;
   $('#dHint').textContent='Tap the plate to take a bite! 😋';
   $('#dAgain').textContent=recipe?'🔁 Make again':'🔁 Play again';
   $('#done').classList.add('show');
   confetti(); sfx.tada();
   const first=recordDish(res);
   clearTimeout(toastT); $('#toast').classList.remove('show');
-  if(first)$('#dHint').textContent='⭐ A new dish for your collection! Tap the plate to take a bite! 😋';
+  if(first)$('#dHint').textContent=(res.invented?'⭐ You discovered a new recipe!':'⭐ A new dish for your collection!')+' Tap the plate to take a bite! 😋';
 }
 function hideDone(){$('#done').classList.remove('show');}
 function bite(){
@@ -1313,9 +1536,9 @@ function confetti(){
   }
 }
 /* ---------- chefs: name + password, saved dishes, magic save code ---------- */
-const NSLOT=RECIPES.length+1;            // 12 recipes + silly surprise
-const SLOT_EMOJI=RECIPES.map(r=>r.dish).concat('🤪');
-const SLOT_NAME=RECIPES.map(r=>r.name).concat('Silly Surprise');
+const NSLOT=RECIPES.length+1;            // 12 recipes + your own inventions
+const SLOT_EMOJI=RECIPES.map(r=>r.dish).concat('✨');
+const SLOT_NAME=RECIPES.map(r=>r.name).concat('Your own inventions');
 let chefs={}, chef=null;                 // chef = {name, hash, dishes:[13 counts], recent:[emoji]}
 try{chefs=JSON.parse(localStorage.getItem('kitchenChefs')||'{}')||{};}catch(e){chefs={};}
 function saveChefs(){try{localStorage.setItem('kitchenChefs',JSON.stringify(chefs));}catch(e){}}
@@ -1329,10 +1552,11 @@ function blankDishes(){return Array(NSLOT).fill(0);}
 function renderTrophies(){$('#trophies').innerHTML=(chef?chef.recent:[]).map(t=>`<span>${t}</span>`).join('');}
 function recordDish(res){
   if(!chef)return false;
-  let k=res.dish?RECIPES.findIndex(r=>r.name===res.name):NSLOT-1; if(k<0)k=NSLOT-1;
-  const first=!chef.dishes[k];
+  const k=(res.idx!==undefined&&res.idx>=0)?res.idx:NSLOT-1;
+  let first=!chef.dishes[k];
+  if(res.invented){chef.found=chef.found||[];first=!chef.found.some(f=>f.n===res.name);if(first)chef.found.push({n:res.name,d:res.dish});}
   chef.dishes[k]=Math.min(35,(chef.dishes[k]||0)+1);
-  chef.recent.push(SLOT_EMOJI[k]); if(chef.recent.length>5)chef.recent.shift();
+  chef.recent.push(res.dish); if(chef.recent.length>5)chef.recent.shift();
   if(!chef.guest){chefs[keyOf(chef.name)]=chef;saveChefs();}
   renderTrophies();
   return first;
@@ -1401,6 +1625,8 @@ function openChefPanel(){
   $('#cpTitle').textContent=chef.guest?'Guest dishes':`Chef ${chef.name}'s Dishes`;
   $('#cpSub').textContent=`You've made ${made} of ${NSLOT} dishes! ${made===NSLOT?'🏆 You made them all!':'Can you make them all?'}`;
   $('#dishGrid').innerHTML=chef.dishes.map((n,i)=>`<div class="dslot ${n?'':'no'}" title="${SLOT_NAME[i]}"><span>${SLOT_EMOJI[i]}</span>${n?`<b>${n}</b>`:''}</div>`).join('');
+  const found=chef.found||[];
+  $('#foundRow').innerHTML=found.length?`<b>✨ Recipes you invented (${found.length}):</b> `+found.map(f=>`<span title="${esc(f.n)}">${f.d}</span>`).join(' '):'✨ Invent your own dishes: put any food in the bowl, stir, and cook it!';
   $('#myCode').textContent=chef.guest?'Guests have no code':makeCode(chef);
   $('#codeIn').value=''; $('#cpErr').textContent='';
   $('#codeIn').disabled=$('#useCode').disabled=$('#copyCode').disabled=!!chef.guest;
@@ -1449,7 +1675,7 @@ cat.addEventListener('click',()=>{
 });
 function feedCat(id){
   cat.textContent=id==='ice'?'🙀':'😻'; sfx.chomp();
-  catSay(id==='ice'?'Brrr! 🥶':id==='chicken'||id==='milk'||id==='cheese'?'My favorite! 💕':'Yum! 😋');
+  catSay(id==='ice'?'Brrr! 🥶':['catfood','treats','fish','tuna','chicken','milk','cheese'].includes(id)?'My favorite! 💕':'Yum! 😋');
   cat.classList.remove('hop'); void cat.offsetWidth; cat.classList.add('hop');
   setTimeout(()=>{cat.textContent='🐱';},1400);
 }
