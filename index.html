@@ -197,10 +197,65 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .heart{position:absolute;font-size:34px;pointer-events:none;z-index:46}
 .bear.away{visibility:hidden;pointer-events:none}
 
+/* ---------- bedrooms ---------- */
+#bedRoom{z-index:28;background:var(--wall,#ffe0ec)}
+#stage[data-room^="bed"] #bedRoom{transform:none}
+#bwall{position:absolute;inset:0;background-image:radial-gradient(#ffffff88 6px,transparent 7px);background-size:70px 70px}
+#bfloor{position:absolute;left:0;right:0;top:760px;bottom:0;border-top:6px solid var(--ink);background:repeating-linear-gradient(90deg,#d9a066 0 160px,#c48a4e 160px 166px)}
+#brug{position:absolute;left:520px;top:780px;width:620px;height:90px;border-radius:50%;border:6px solid var(--ink);background:var(--rug,#ffd36e) repeating-radial-gradient(circle,transparent 0 14px,#ffffff55 14px 22px)}
+#bwin{position:absolute;left:880px;top:160px;width:230px;height:240px}
+#bwin .glass{position:absolute;inset:0;border:10px solid #fff;outline:5px solid var(--ink);border-radius:14px;background:linear-gradient(#8fd6ff,#d5f1ff);overflow:hidden;transition:background .6s}
+#bwin .glass::after{content:'☁️';position:absolute;left:30px;top:40px;font-size:70px;transition:opacity .6s}
+#bwin .glass::before{content:'🌙';position:absolute;right:26px;top:24px;font-size:60px;opacity:0;transition:opacity .6s}
+#bwin .curtain{height:262px}
+#bbanner{position:absolute;left:300px;top:196px;width:470px;text-align:center;font-size:46px;font-weight:700;background:#fff;border:6px solid var(--ink);border-radius:26px;padding:6px 0;box-shadow:0 6px 0 var(--ink)}
+#bshelf{position:absolute;left:1180px;top:250px;width:300px;height:16px;background:#c48a4e;border:5px solid var(--ink);border-radius:6px}
+#bshelfItems{position:absolute;left:1180px;top:170px;width:300px;display:flex;justify-content:space-around;font-size:70px}
+.btoy{cursor:pointer;display:inline-block;transition:transform .15s}
+.btoy:active{transform:scale(1.2)}
+#headboard{position:absolute;left:280px;top:330px;width:120px;height:330px;background:var(--wood,#c48a4e);border:6px solid var(--ink);border-radius:50px 50px 10px 10px}
+#footboard{position:absolute;left:730px;top:440px;width:70px;height:220px;background:var(--wood,#c48a4e);border:6px solid var(--ink);border-radius:30px 30px 10px 10px}
+#mattress{position:absolute;left:330px;top:520px;width:440px;height:70px;background:#fff;border:6px solid var(--ink);border-radius:20px}
+#pillow{position:absolute;left:340px;top:478px;width:130px;height:62px;background:#fff;border:6px solid var(--ink);border-radius:40px;box-shadow:inset 0 -8px 0 #e8f6ff}
+#bedfront{position:absolute;left:320px;top:585px;width:470px;height:80px;background:var(--wood,#c48a4e);border:6px solid var(--ink);border-radius:12px}
+.bedleg{position:absolute;top:660px;width:26px;height:110px;background:#8d5a2b;border:5px solid var(--ink)}
+#blanket{position:absolute;left:452px;top:428px;width:338px;height:182px;border:6px solid var(--ink);border-radius:30px 30px 20px 20px;background:var(--blanket,#ff8fab);background-image:var(--pattern);display:none}
+.lying #blanket{display:block}
+#bnight{position:absolute;left:820px;top:560px;width:150px;height:210px;background:var(--wood,#c48a4e);border:6px solid var(--ink);border-radius:10px}
+#bnight::after{content:'';position:absolute;left:50%;top:70px;width:40px;height:12px;margin-left:-20px;background:#ffd36e;border:4px solid var(--ink);border-radius:8px}
+#blamp{position:absolute;left:840px;top:410px;width:110px;height:150px;cursor:pointer}
+#blamp .shade{position:absolute;left:5px;top:0;width:100px;height:70px;background:#fff59d;border:6px solid var(--ink);border-radius:20px 20px 6px 6px;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);transition:background .3s}
+#blamp .pole{position:absolute;left:49px;top:64px;width:12px;height:60px;background:var(--ink)}
+#blamp .base{position:absolute;left:20px;top:118px;width:70px;height:28px;background:#ff8fab;border:5px solid var(--ink);border-radius:20px 20px 6px 6px}
+#dresser{position:absolute;left:1180px;top:460px;width:300px;height:310px;background:var(--wood,#c48a4e);border:6px solid var(--ink);border-radius:14px}
+.bdrawer{position:absolute;left:18px;right:18px;height:76px;background:#fff8;border:5px solid var(--ink);border-radius:10px;cursor:pointer;transition:transform .35s}
+.bdrawer::after{content:'';position:absolute;left:50%;top:28px;width:56px;height:12px;margin-left:-28px;background:#ffd36e;border:4px solid var(--ink);border-radius:8px}
+.bdrawer.open{transform:translateY(34px) scale(1.06)}
+.bdrawer .clothes{position:absolute;left:0;right:0;top:-46px;text-align:center;font-size:44px;opacity:0;transition:opacity .25s;pointer-events:none}
+.bdrawer.open .clothes{opacity:1}
+#dresserTop{position:absolute;left:1180px;top:380px;width:300px;display:flex;justify-content:space-around;font-size:66px}
+#bdark{position:absolute;inset:0;background:#0b1030;opacity:0;pointer-events:none;transition:opacity .6s;z-index:5}
+.lightsoff #bdark{opacity:.55}
+.lightsoff #blamp .shade{background:#9e9ab0}
+.lightsoff #bwin .glass{background:linear-gradient(#1c1f4a,#3c3f8f)}
+.lightsoff #bwin .glass::after{opacity:0}.lightsoff #bwin .glass::before{opacity:1}
+#blamp,#bwin{z-index:6}
+#bedPerson{position:absolute;width:171px;height:315px;margin:-157px 0 0 -85px;cursor:grab;touch-action:none;z-index:3;transition:left .25s,top .25s,transform .3s}
+#bedPerson.dragging{transition:none;cursor:grabbing;filter:drop-shadow(0 18px 10px #0004)}
+#bedPerson svg{width:100%;height:100%;overflow:visible}
+#bedPerson .name{display:none}
+#bedPerson.lie{transform:rotate(-90deg)}
+#bedPerson.lie .eyes,#bedPerson.sleep .eyes{animation:none;transform:scaleY(.12)}
+#blanket{z-index:4}
+#bedInfo{position:absolute;left:460px;top:300px;width:680px;z-index:7;background:#fff;border:6px solid var(--ink);border-radius:30px;padding:24px;text-align:center;font-size:34px;font-weight:700;box-shadow:0 8px 0 var(--ink);display:none}
+#bedInfo button,#bedDinner{font-size:30px;font-weight:700;padding:12px 28px;border-radius:30px;border:6px solid var(--ink);background:#c9f0e0;box-shadow:0 6px 0 var(--ink);margin-top:14px}
+#bedDinner{position:absolute;left:30px;top:118px;margin:0;z-index:7}
+.zzz{position:absolute;font-size:44px;font-weight:700;color:#fff;-webkit-text-stroke:2px var(--ink);pointer-events:none;z-index:46}
+
 /* ---------- room menu ---------- */
-#roomMenu{position:absolute;right:12px;top:112px;z-index:58;display:none;flex-direction:column;gap:10px;background:#fff;border:6px solid var(--ink);border-radius:28px;padding:14px;box-shadow:0 8px 0 var(--ink)}
+#roomMenu{position:absolute;right:12px;top:112px;z-index:58;display:none;flex-direction:column;gap:8px;background:#fff;border:6px solid var(--ink);border-radius:28px;padding:14px;box-shadow:0 8px 0 var(--ink)}
 #roomMenu.show{display:flex;animation:popIn .25s ease-out}
-#roomMenu button{font-size:30px;font-weight:700;text-align:left;padding:10px 22px;border-radius:20px;border:5px solid var(--ink);background:#fffaf0;min-width:340px}
+#roomMenu button{font-size:28px;font-weight:700;text-align:left;padding:7px 22px;border-radius:20px;border:5px solid var(--ink);background:#fffaf0;min-width:340px}
 #roomMenu button.here{background:#c9f0e0}
 #roomMenu button:disabled{opacity:.45}
 
@@ -803,6 +858,30 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     <div class="roomSign" id="rToDining" style="left:30px;top:118px">⬅ 🍽️ Dining room</div>
   </div>
 
+  <!-- bedroom (one room, dressed up for whoever's room it is) -->
+  <div id="bedRoom" class="room2">
+    <div id="bwall"></div><div id="bfloor"></div><div id="brug"></div>
+    <div id="bwin"><div class="glass"></div><div class="curtain l"></div><div class="curtain r"></div></div>
+    <div id="bbanner"></div>
+    <div id="bshelf"></div><div id="bshelfItems"></div>
+    <div class="bedleg" style="left:330px"></div><div class="bedleg" style="left:750px"></div>
+    <div id="headboard"></div><div id="footboard"></div>
+    <div id="mattress"></div><div id="pillow"></div>
+    <div id="bedfront"></div>
+    <div id="bedPerson"></div>
+    <div id="blanket"></div>
+    <div id="bnight"></div><div id="blamp" title="Lamp"><div class="shade"></div><div class="pole"></div><div class="base"></div></div>
+    <div id="dresser">
+      <div class="bdrawer" style="top:20px"><div class="clothes"></div></div>
+      <div class="bdrawer" style="top:115px"><div class="clothes"></div></div>
+      <div class="bdrawer" style="top:210px"><div class="clothes"></div></div>
+    </div>
+    <div id="dresserTop"></div>
+    <div id="bdark"></div>
+    <div id="bedInfo"></div>
+    <button id="bedDinner">🍽️ Go to dinner</button>
+  </div>
+
   <!-- the moon -->
   <div id="moonRoom" class="room2">
     <div id="earth">🌍</div>
@@ -875,6 +954,10 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     <button data-r="dining">🍽️ Dining room</button>
     <button data-r="rocket">🚀 Rocket room</button>
     <button data-r="moon">🌙 The moon</button>
+    <button data-r="bed0">🛏️ Grandma's room</button>
+    <button data-r="bed1">🛏️ Lily's room</button>
+    <button data-r="bed2">🛏️ Sam's room</button>
+    <button data-r="bed3">🛏️ Grandpa's room</button>
   </div>
 
   <!-- my dishes -->
@@ -1715,6 +1798,7 @@ function hintFor(id){
 $('#hintBtn').onclick=()=>{
   sfx.sparkle();
   if(room==='rocket'){say(space().at==='moon'?'The rocket is on the moon! Tap Visit the moon.':'Tap the people cards to put them in the rocket, then press the red BLAST OFF button!');return;}
+  if(room.startsWith('bed')){const n=BEARS[bedIdx].name;say(space().crew[bedIdx]==='bed'?`Drag ${n} onto the bed to sit, or onto the pillow to sleep. Tap ${n} to change! Tap the lamp, the toys and the drawers too.`:`Tap the button to bring ${n} to the room!`);return;}
   if(room==='moon'){say('Tap someone to feed them! Cook more food in the kitchen and tap To the moon table. Tap Fly home to go back.');return;}
   if(room==='dining'){say('Cook food in the kitchen, tap "To the table", then tap someone to feed them! 😋');return;}
   if(!bowlOut&&phase!=='cooking'&&phase!=='done'&&(!recipe||phase==='gather')){flashBox('dishCab');say('Get a mixing bowl from the dish cabinet above the microwave! 🥣');return;}
@@ -1728,7 +1812,7 @@ $('#hintBtn').onclick=()=>{
 $('#cleanBtn').onclick=()=>{
   if(room==='dining'){clearTable('home');return;}
   if(room==='moon'){clearTable('moon');return;}
-  if(room==='rocket'){say('Nothing to clean here!');return;}
+  if(room==='rocket'||room.startsWith('bed')){say('Nothing to clean here!');return;}
   if(busy())return;
   if(!bowlOut){say('Nothing to clean!');return;}
   endKnead();
@@ -1755,6 +1839,7 @@ function updateHUD(){
   $('#cookbook').classList.toggle('call',!recipe&&!bowlItems.length);
   $('#roomBtn').textContent=room==='dining'?'🍳':'🍽️';
   if(room==='rocket'&&phase!=='cooking'){$('#cardDish').textContent='🚀';$('#chips').classList.remove('on');$('#msg').textContent=space().at==='moon'?'The rocket is on the moon! 🌙':'Put people in the rocket, then BLAST OFF!';return;}
+  if(room.startsWith('bed')&&phase!=='cooking'){$('#cardDish').textContent='🛏️';$('#chips').classList.remove('on');$('#msg').textContent=`${BEARS[bedIdx].name}'s room: drag onto the bed, tap to sit or sleep!`;return;}
   if(room==='moon'&&phase!=='cooking'){$('#cardDish').textContent='🌙';$('#chips').classList.remove('on');$('#msg').textContent='On the moon! Tap someone to feed them.';return;}
   if(room==='dining'&&phase!=='cooking'){$('#cardDish').textContent='🍽️';$('#chips').classList.remove('on');$('#msg').textContent='Tap someone to feed them your food! 😋';return;}
   $('#quit').classList.toggle('on',!!recipe);
@@ -1927,6 +2012,7 @@ function goRoom(r,quiet,force){
   if(phase==='cooking'||(spaceBusy&&!force))return;
   if(r==='moon'&&space().at!=='moon'&&!force){say('Put people in the rocket and BLAST OFF to get to the moon! 🚀');return;}
   room=r; hidePicker(); stage.dataset.room=r; stage.classList.toggle('indining',r!=='kitchen');
+  if(r.startsWith('bed')){bedIdx=+r.slice(3);renderBedroom();}
   $('#roomMenu').classList.remove('show');
   if(!quiet)sfx.swish();
   updateHUD();
@@ -1944,19 +2030,20 @@ $('#roomMenu').addEventListener('click',e=>{
   goRoom(bn.dataset.r);
   if(room==='dining')say('Everyone is waiting for dinner! 🍽️');
   if(room==='rocket')say(space().at==='moon'?'The rocket is on the moon! 🌙':'Tap people to put them in the rocket, then BLAST OFF! 🚀');
+  if(room.startsWith('bed'))say(space().crew[bedIdx]==='bed'?`Welcome to ${BEARS[bedIdx].name}'s room! Drag ${BEARS[bedIdx].name} onto the bed. 🛏️`:`Welcome to ${BEARS[bedIdx].name}'s room!`);
 });
 stage.dataset.room='kitchen';
 $('#ddoor').addEventListener('click',()=>goRoom('kitchen'));
 
 /* ---------- bear friends at the table ---------- */
 const BEARS=[
-  {name:'Grandma',x:405,skin:'#f6d3b3',hair:'#c9c4d6',shirt:'#b39ddb',style:'bun',glasses:true,
+  {name:'Grandma',x:405,skin:'#f6d3b3',hair:'#c9c4d6',shirt:'#b39ddb',pants:'#6d5a8a',shoes:'#ff8fab',style:'bun',glasses:true,
    fav:/pie|soup|tea|bread|cookie|cake|quiche|compote|oatmeal/i,hungry:'Oh my, I\'m hungry, dear! Is dinner ready? 🥧'},
-  {name:'Lily',x:665,skin:'#a0663c',hair:'#2b1d1a',shirt:'#ff8fab',style:'pigtails',bow:'#ffd36e',
+  {name:'Lily',x:665,skin:'#a0663c',hair:'#2b1d1a',shirt:'#ff8fab',pants:'#7fc8ff',shoes:'#ffd36e',style:'pigtails',bow:'#ffd36e',
    fav:/pizza|pasta|spaghetti|mac|noodle|cupcake|sundae|ice cream|milkshake/i,hungry:'I\'m hungry! Can we have pizza? 🍕'},
-  {name:'Sam',x:935,skin:'#e8b88a',hair:'#6d3b1f',shirt:'#7ed957',style:'curly',
+  {name:'Sam',x:935,skin:'#e8b88a',hair:'#6d3b1f',shirt:'#7ed957',pants:'#4a6fa5',shoes:'#ff5a5a',style:'curly',
    fav:/pancake|waffle|toast|sandwich|grilled cheese|fries|nugget|taco|burrito|quesadilla|nachos|popcorn/i,hungry:'My tummy is rumbling! Pancakes, please? 🥞'},
-  {name:'Grandpa',x:1195,skin:'#c68642',hair:'#e8e8e8',shirt:'#7fc8ff',style:'bald',mustache:true,
+  {name:'Grandpa',x:1195,skin:'#c68642',hair:'#e8e8e8',shirt:'#7fc8ff',pants:'#8d6e63',shoes:'#5d4037',style:'bald',mustache:true,
    fav:/noodle|dumpling|sushi|rice|curry|soup|chili|fish|omelet|egg/i,hungry:'I\'m hungry! Got any noodles? 🍜'}
 ];
 function hairSVG(b){
@@ -1971,9 +2058,11 @@ function hairSVG(b){
   // bald on top, a little hair on the sides
   return `<path d="M44 108 Q40 84 50 72 Q58 84 56 108 Z M146 108 Q150 84 140 72 Q132 84 134 108 Z" fill="${h}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>`;
 }
-function bearSVG(b,helmet){
+function bearSVG(b,helmet,full){
   const ink='#3b2f4a';
-  return `<svg viewBox="0 0 190 230"><g class="bob">
+  const legs=full?`<rect x="56" y="214" width="34" height="112" rx="14" fill="${b.pants}" stroke="${ink}" stroke-width="6"/><rect x="100" y="214" width="34" height="112" rx="14" fill="${b.pants}" stroke="${ink}" stroke-width="6"/>
+    <ellipse cx="68" cy="330" rx="26" ry="14" fill="${b.shoes}" stroke="${ink}" stroke-width="6"/><ellipse cx="122" cy="330" rx="26" ry="14" fill="${b.shoes}" stroke="${ink}" stroke-width="6"/>`:'';
+  return `<svg viewBox="0 0 190 ${full?350:230}"><g class="bob">${legs}
     <path d="M22 232 Q24 166 95 160 Q166 166 168 232 Z" fill="${b.shirt}" stroke="${ink}" stroke-width="6" stroke-linejoin="round"/>
     <path d="M70 162 Q95 180 120 162" fill="none" stroke="${ink}" stroke-width="4" stroke-linecap="round" opacity=".5"/>
     <ellipse cx="26" cy="200" rx="18" ry="34" fill="${b.shirt}" stroke="${ink}" stroke-width="6" transform="rotate(16 26 200)"/>
@@ -2158,7 +2247,7 @@ function renderPeople(){
   $$('#rocket .win').forEach((wEl,k)=>{const bi=inRocket[k];wEl.innerHTML=bi!==undefined?bearSVG(BEARS[bi]).replace(/<div class="name">.*<\/div>/,''):'';});
   // boarding cards
   $('#boardCards').innerHTML=BEARS.map((b,i)=>{const c=S2.crew[i];
-    return `<button class="pcard ${c}" data-b="${i}">${bearSVG(b).replace(/<div class="name">.*<\/div>/,'')}<span class="badge">${c==='rocket'?'🚀 In!':c==='moon'?'🌙 On the moon':''}</span><span class="pname">${b.name}</span></button>`;}).join('');
+    return `<button class="pcard ${c}" data-b="${i}">${bearSVG(b).replace(/<div class="name">.*<\/div>/,'')}<span class="badge">${c==='rocket'?'🚀 In!':c==='moon'?'🌙 On the moon':c==='bed'?'🛏️ In bedroom':''}</span><span class="pname">${b.name}</span></button>`;}).join('');
   // the moon
   $('#moonPeople').innerHTML=BEARS.map((b,i)=>S2.crew[i]==='moon'?`<div class="bear" data-b="${i}" style="left:${MOON_X[i]}px;top:398px" title="${b.name}">${bearSVG(b,true)}</div>`:'').join('');
   $('#rocketRoom').classList.toggle('atmoon',S2.at==='moon');
@@ -2167,7 +2256,7 @@ $('#boardCards').addEventListener('click',e=>{
   const c=e.target.closest('.pcard'); if(!c||spaceBusy)return;
   const i=+c.dataset.b, S2=space(), b=BEARS[i];
   if(S2.at==='moon'){say('The rocket is on the moon right now! 🌙');return;}
-  if(S2.crew[i]==='table'){
+  if(S2.crew[i]==='table'||S2.crew[i]==='bed'){
     S2.crew[i]='rocket'; saveTable();
     const from=sr(c), to=sr($('#rocket'));
     sfx.pop();
@@ -2249,6 +2338,103 @@ async function flyHome(){
   spaceBusy=false; updateHUD();
 }
 $('#blastBtn').onclick=blastOff;
+
+/* ---------- bedrooms ---------- */
+const ROOMS=[
+  {wall:'#ecdcfb',rug:'#b39ddb',wood:'#a1887f',blanket:'#b39ddb',pattern:'repeating-linear-gradient(45deg,#ffffff44 0 14px,transparent 14px 28px),repeating-linear-gradient(-45deg,#ffffff44 0 14px,transparent 14px 28px)',
+   shelf:['🪴','🧶','🌷'],top:['🫖','🖼️','⏰'],clothes:['🧣','👚','🧦'],toySay:{'🧶':'Grandma is knitting a scarf!','🪴':'Grandma loves plants!'}},
+  {wall:'#ffe0ec',rug:'#fff59d',wood:'#f8bbd0',blanket:'#ff8fab',pattern:'radial-gradient(#ffffffaa 8px,transparent 9px)',
+   shelf:['🧸','🦄','⭐'],top:['🎀','🖍️','📔'],clothes:['👗','👚','🧦'],toySay:{'🦄':'Lily\'s unicorn says neigh! 🌈','🧸':'Teddy wants a hug!'}},
+  {wall:'#d6f5d6',rug:'#7fc8ff',wood:'#90a4ae',blanket:'#7fc8ff',pattern:'repeating-linear-gradient(90deg,#ffffff55 0 16px,transparent 16px 32px)',
+   shelf:['⚽','🦖','🚀'],top:['🏆','🧩','🎮'],clothes:['👕','🩳','🧦'],toySay:{'🦖':'Rawr! 🦖','⚽':'Goal! ⚽','🚀':'Sam wants to go to the moon!'}},
+  {wall:'#fff1c4',rug:'#a5d6a7',wood:'#8d6e63',blanket:'#8bd17c',pattern:'repeating-linear-gradient(0deg,#ffffff44 0 12px,transparent 12px 36px),repeating-linear-gradient(90deg,#00000018 0 12px,transparent 12px 36px)',
+   shelf:['📚','📻','🎣'],top:['☕','👓','🧩'],clothes:['👔','🧥','🧦'],toySay:{'📻':'Grandpa\'s radio plays a song! 🎵','🎣':'Grandpa loves fishing!','📚':'Grandpa reads a story!'}}
+];
+let bedIdx=0;
+function beds(){if(!chef)return [{},{},{},{}];chef.beds=chef.beds||[{pose:'stand',x:1080},{pose:'stand',x:1080},{pose:'stand',x:1080},{pose:'stand',x:1080}];return chef.beds;}
+const BEDSPOT={sit:{x:580,y:475},lie:{x:470,y:512}};
+function placeBedPerson(){
+  const el=$('#bedPerson'), st=beds()[bedIdx], room=$('#bedRoom');
+  el.classList.remove('lie','sleep'); room.classList.remove('lying');
+  if(st.pose==='sit'){el.style.left=BEDSPOT.sit.x+'px';el.style.top=BEDSPOT.sit.y+'px';}
+  else if(st.pose==='lie'){el.style.left=BEDSPOT.lie.x+'px';el.style.top=BEDSPOT.lie.y+'px';el.classList.add('lie');room.classList.add('lying');}
+  else{el.style.left=(st.x||1080)+'px';el.style.top='605px';}
+}
+function renderBedroom(){
+  const i=bedIdx, R=ROOMS[i], b=BEARS[i], room=$('#bedRoom');
+  room.style.setProperty('--wall',R.wall); room.style.setProperty('--rug',R.rug); room.style.setProperty('--wood',R.wood);
+  room.style.setProperty('--blanket',R.blanket); room.style.setProperty('--pattern',R.pattern);
+  $('#bbanner').textContent=`${b.name}'s Room`;
+  $('#bshelfItems').innerHTML=R.shelf.map(t=>`<span class="btoy">${t}</span>`).join('');
+  $('#dresserTop').innerHTML=R.top.map(t=>`<span class="btoy">${t}</span>`).join('');
+  $$('#dresser .bdrawer').forEach((d,k)=>{d.classList.remove('open');d.querySelector('.clothes').textContent=R.clothes[k];});
+  const where=space().crew[i];
+  const info=$('#bedInfo'), el=$('#bedPerson');
+  if(where==='bed'){
+    info.style.display='none'; $('#bedDinner').style.display='';
+    el.style.display=''; el.innerHTML=bearSVG(b,false,true); placeBedPerson();
+  }else{
+    el.style.display='none'; $('#bedDinner').style.display='none'; room.classList.remove('lying');
+    info.style.display='block';
+    info.innerHTML=where==='table'?`${b.name} is at the dining table.<br><button id="callToBed">🛏️ Bring ${b.name} to the room</button>`:
+      where==='rocket'?`${b.name} is in the rocket! 🚀`:`${b.name} is on the moon! 🌙`;
+  }
+}
+function zzz(){
+  if(!($('#bedRoom').classList.contains('lying'))||!room.startsWith('bed'))return;
+  const r=sr($('#bedPerson')); const z=document.createElement('div'); z.className='zzz'; z.textContent='Z';
+  z.style.left=(r.x+40)+'px'; z.style.top=(r.y)+'px'; fx.appendChild(z);
+  z.animate([{transform:'translate(0,0) scale(.6)',opacity:1},{transform:'translate(60px,-110px) scale(1.4)',opacity:0}],{duration:2000,easing:'ease-out'}).finished.then(()=>z.remove());
+}
+setInterval(zzz,700);
+function setPose(pose,x){
+  const st=beds()[bedIdx]; st.pose=pose; if(x!==undefined)st.x=Math.max(140,Math.min(1500,x));
+  saveTable(); placeBedPerson();
+  const n=BEARS[bedIdx].name;
+  if(pose==='sit'){sfx.plop();say(`${n} is sitting on the bed.`);}
+  else if(pose==='lie'){tone(523,.3,'sine',.08);tone(392,.4,'sine',.08,null,.3);tone(330,.6,'sine',.08,null,.65);say(`Shhh… ${n} is sleeping. 💤`);}
+  else{sfx.pop();say(`${n} is standing up!`);}
+}
+$('#bedRoom').addEventListener('click',e=>{
+  if(e.target.closest('#callToBed')){
+    const S2=space(); S2.crew[bedIdx]='bed'; beds()[bedIdx].pose='stand'; beds()[bedIdx].x=1080;
+    saveTable(); renderPeople(); renderBedroom(); sfx.pop(); say(`${BEARS[bedIdx].name} came to the room! Drag them onto the bed. 🛏️`); return;
+  }
+  const toy=e.target.closest('.btoy');
+  if(toy){wiggle(toy);sfx.sparkle();const m=ROOMS[bedIdx].toySay[toy.textContent];if(m)say(m);return;}
+  const dr=e.target.closest('.bdrawer');
+  if(dr){dr.classList.toggle('open');dr.classList.contains('open')?sfx.door():sfx.close();return;}
+  if(e.target.closest('#blamp')){$('#bedRoom').classList.toggle('lightsoff');sfx.click();say($('#bedRoom').classList.contains('lightsoff')?'Lights off. Night night! 🌙':'Lights on! ☀️');}
+});
+$('#bedDinner').onclick=()=>{
+  space().crew[bedIdx]='table'; saveTable(); renderPeople(); renderBedroom(); sfx.pop();
+  say(`${BEARS[bedIdx].name} went to the dining table. 🍽️`);
+};
+// drag the person around; drop on the bed to sit, on the pillow to lie down
+let bdrag=null;
+$('#bedPerson').addEventListener('pointerdown',e=>{
+  e.preventDefault(); const p=sp(e.clientX,e.clientY);
+  bdrag={sx:e.clientX,sy:e.clientY,moved:false,pid:e.pointerId,p};
+});
+addEventListener('pointermove',e=>{
+  if(!bdrag||e.pointerId!==bdrag.pid)return;
+  if(!bdrag.moved&&Math.hypot(e.clientX-bdrag.sx,e.clientY-bdrag.sy)>10){
+    bdrag.moved=true; const el=$('#bedPerson'); el.classList.add('dragging'); el.classList.remove('lie'); $('#bedRoom').classList.remove('lying');
+  }
+  if(!bdrag.moved)return;
+  const p=sp(e.clientX,e.clientY), el=$('#bedPerson');
+  el.style.left=p.x+'px'; el.style.top=(p.y+40)+'px'; bdrag.p=p;
+});
+addEventListener('pointerup',e=>{
+  if(!bdrag||e.pointerId!==bdrag.pid)return;
+  const d=bdrag; bdrag=null; $('#bedPerson').classList.remove('dragging');
+  if(!d.moved){ // tap: stand → sit → sleep → stand
+    const cur=beds()[bedIdx].pose; setPose(cur==='stand'?'sit':cur==='sit'?'lie':'stand'); return;
+  }
+  const p=d.p;
+  if(p.x>320&&p.x<800&&p.y>330&&p.y<660)setPose(p.x<480?'lie':'sit');
+  else setPose('stand',p.x);
+});
 $('#homeBtn').onclick=flyHome;
 $('#visitMoon').onclick=()=>goRoom('moon');
 $('#toRocket').onclick=()=>goRoom('rocket');
