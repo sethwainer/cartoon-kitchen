@@ -180,13 +180,14 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 #ddrape{position:absolute;left:240px;top:640px;width:1120px;height:70px;background:#ff8a80;border:6px solid var(--ink);border-radius:0 0 50px 50px}
 #ddrape::after{content:'';position:absolute;left:20px;right:20px;bottom:10px;height:12px;border-bottom:5px dotted #fff}
 .dleg{position:absolute;top:704px;width:34px;height:116px;background:#8d5a2b;border:6px solid var(--ink);border-radius:0 0 8px 8px}
-#tableItems{position:absolute;inset:0;pointer-events:none}
+#tableItems,#moonItems{position:absolute;inset:0;pointer-events:none}
 /* bears at the table */
 .bear{position:absolute;top:262px;width:190px;height:230px;margin-left:-95px;cursor:pointer;touch-action:manipulation}
 .bear svg{position:absolute;left:0;top:0;width:190px;height:230px;overflow:visible}
 .bear .bob{transform-box:view-box;transform-origin:50% 100%;animation:bearBob 3.2s ease-in-out infinite}
 .bear .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 4.6s infinite}
-.bear .mouthOpen{display:none}
+.mouthOpen{display:none}
+.pcard .badge:empty{display:none}
 .bear.chew .mouthOpen{display:block}
 .bear.chew .mouthShut{display:none}
 .bear.chew .bob{animation:chew .28s ease-in-out 4}
@@ -194,6 +195,65 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .bear .name{position:absolute;left:50%;top:-34px;transform:translateX(-50%);white-space:nowrap;font-size:24px;font-weight:700;background:#fff;border:4px solid var(--ink);border-radius:16px;padding:0 12px;opacity:0;transition:opacity .25s;pointer-events:none}
 .bear:hover .name{opacity:1}
 .heart{position:absolute;font-size:34px;pointer-events:none;z-index:46}
+.bear.away{visibility:hidden;pointer-events:none}
+
+/* ---------- room menu ---------- */
+#roomMenu{position:absolute;right:12px;top:112px;z-index:58;display:none;flex-direction:column;gap:10px;background:#fff;border:6px solid var(--ink);border-radius:28px;padding:14px;box-shadow:0 8px 0 var(--ink)}
+#roomMenu.show{display:flex;animation:popIn .25s ease-out}
+#roomMenu button{font-size:30px;font-weight:700;text-align:left;padding:10px 22px;border-radius:20px;border:5px solid var(--ink);background:#fffaf0;min-width:340px}
+#roomMenu button.here{background:#c9f0e0}
+#roomMenu button:disabled{opacity:.45}
+
+/* ---------- rocket room & moon ---------- */
+.room2{position:absolute;inset:0;overflow:hidden;transform:translateX(102%);transition:transform .7s cubic-bezier(.6,0,.3,1)}
+#rocketRoom{z-index:26;background:linear-gradient(#7fd3ff,#d5f1ff 75%);transition:transform .7s cubic-bezier(.6,0,.3,1),background 2s}
+#rocketRoom.dark{background:linear-gradient(#0b1030,#3c3f8f 75%)}
+#stage[data-room="rocket"] #rocketRoom,#stage[data-room="moon"] #rocketRoom{transform:none}
+#moonRoom{z-index:27;transform:none;opacity:0;visibility:hidden;transition:opacity .9s,visibility .9s;background:#0b1030 radial-gradient(#ffffffcc 1.5px,transparent 2.5px) 0 0/70px 70px}
+#stage[data-room="moon"] #moonRoom{opacity:1;visibility:visible}
+#rground{position:absolute;left:0;right:0;top:760px;bottom:0;background:#8bd17c;border-top:6px solid var(--ink)}
+#rpad{position:absolute;left:820px;top:735px;width:460px;height:40px;background:#9e9ab0;border:6px solid var(--ink);border-radius:10px;background-image:repeating-linear-gradient(90deg,#ffd36e 0 30px,#3b2f4a 30px 60px);background-size:100% 10px;background-repeat:no-repeat}
+#rtower{position:absolute;left:1300px;top:250px;width:70px;height:490px;border:6px solid var(--ink);background:repeating-linear-gradient(45deg,transparent 0 18px,#ff8a65 18px 26px),repeating-linear-gradient(-45deg,transparent 0 18px,#ff8a65 18px 26px)}
+#rcloud1,#rcloud2{position:absolute;font-size:90px;animation:drift 16s ease-in-out infinite alternate}
+#rsun{position:absolute;left:1430px;top:120px;font-size:100px}
+.rocket{position:absolute;width:300px;height:600px}
+.rocket svg{position:absolute;inset:0;overflow:visible}
+.rocket .flame{display:none;animation:flick .08s infinite alternate;transform-origin:150px 530px}
+.rocket.fire .flame{display:block}
+.rocket.shake{animation:shake .06s linear infinite alternate}
+@keyframes flick{from{transform:scaleY(.85)}to{transform:scaleY(1.15)}}
+.win{position:absolute;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;overflow:hidden}
+.win svg{position:absolute;width:95px;height:115px;left:-17px;top:-18px}
+#rocket{left:880px;top:140px}
+#board{position:absolute;left:30px;top:170px;width:560px;background:#fff;border:6px solid var(--ink);border-radius:30px;padding:16px 18px;box-shadow:0 8px 0 var(--ink)}
+#board h2{margin:0 0 10px;font-size:34px;text-align:center}
+#boardCards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pcard{position:relative;height:200px;border:5px solid var(--ink);border-radius:22px;background:#e8f6ff;overflow:hidden;padding:0;cursor:pointer}
+.pcard svg{position:absolute;left:50%;top:6px;width:150px;height:182px;margin-left:-75px}
+.pcard .pname{position:absolute;left:0;right:0;bottom:0;background:#fffc;font-size:24px;font-weight:700;padding:2px 0;border-top:4px solid var(--ink)}
+.pcard.rocket{background:#fff3c4}.pcard.moon{background:#d9d4ff;opacity:.7}
+.pcard .badge{position:absolute;right:8px;top:8px;font-size:20px;font-weight:700;background:#fff;border:3px solid var(--ink);border-radius:12px;padding:1px 8px}
+#blastBtn{position:absolute;left:620px;top:600px;width:230px;height:120px;border-radius:60px;border:7px solid var(--ink);background:#ff5a5a;color:#fff;font-size:38px;font-weight:700;box-shadow:0 10px 0 var(--ink);-webkit-text-stroke:1px var(--ink);animation:pulse 1.2s ease-in-out infinite}
+#blastBtn:active{transform:translateY(8px);box-shadow:0 2px 0 var(--ink)}
+#rocketGone{position:absolute;left:760px;top:330px;width:560px;text-align:center;font-size:36px;font-weight:700;display:none}
+#rocketGone button{margin-top:16px;font-size:32px;font-weight:700;padding:12px 30px;border-radius:30px;border:6px solid var(--ink);background:#d9d4ff;box-shadow:0 6px 0 var(--ink)}
+.atmoon #rocket,.atmoon #blastBtn{display:none}
+.atmoon #rocketGone{display:block}
+.roomSign{position:absolute;font-size:28px;font-weight:700;background:#fff;border:5px solid var(--ink);border-radius:20px;padding:6px 18px;box-shadow:0 5px 0 var(--ink);cursor:pointer;white-space:nowrap}
+.bigCount{position:absolute;left:800px;top:420px;transform:translate(-50%,-50%);font-size:220px;font-weight:700;color:#fff;-webkit-text-stroke:6px var(--ink);z-index:81;pointer-events:none}
+.smoke{position:absolute;width:90px;height:90px;border-radius:50%;background:#f1f1f1;border:4px solid #d0d0d8;pointer-events:none;z-index:45}
+/* moon */
+#earth{position:absolute;left:880px;top:150px;font-size:150px;animation:spinSlow 60s linear infinite}
+#mground{position:absolute;left:-40px;right:-40px;top:560px;bottom:-40px;background:#c9c9d6;border-top:6px solid var(--ink);border-radius:50% 50% 0 0/60px 60px 0 0}
+.crater{position:absolute;border-radius:50%;background:#acacbd;border:5px solid #9696a8}
+#mflag{position:absolute;left:150px;top:420px;font-size:130px}
+#mtable{position:absolute;left:380px;top:600px;width:800px;height:110px;background:#e8eaf6;border:6px solid var(--ink);border-radius:30px;background-image:radial-gradient(#9fa8da 3px,transparent 4px);background-size:40px 40px}
+.mleg{position:absolute;top:700px;width:30px;height:110px;background:#9e9ab0;border:6px solid var(--ink)}
+#moonRocket{left:1290px;top:220px;transform:scale(.62);transform-origin:top left}
+#homeBtn{position:absolute;left:1220px;top:740px;width:330px;height:100px;border-radius:50px;border:7px solid var(--ink);background:#7fc8ff;font-size:34px;font-weight:700;box-shadow:0 8px 0 var(--ink)}
+#moonItems .titem{animation:floaty 2.6s ease-in-out infinite}
+#moonItems .titem.drag{animation:none}
+@keyframes floaty{0%,100%{transform:translate(-50%,-70%)}50%{transform:translate(-50%,-84%)}}
 @keyframes bearBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
 @keyframes chew{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.04,.97)}}
@@ -729,6 +789,35 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     <div id="dtable"></div><div id="ddrape"></div>
     <div id="dlamp"><div class="cord"></div><div class="shade"></div></div>
     <div id="tableItems"></div>
+    <div class="roomSign" id="toRocket" style="left:1330px;top:470px">🚀 Rocket room ➡</div>
+  </div>
+
+  <!-- rocket room -->
+  <div id="rocketRoom" class="room2">
+    <div id="rsun">☀️</div><div id="rcloud1" style="left:640px;top:150px">☁️</div><div id="rcloud2" style="left:1150px;top:90px;font-size:70px">☁️</div>
+    <div id="rground"></div><div id="rtower"></div><div id="rpad"></div>
+    <div class="rocket" id="rocket"></div>
+    <div id="rocketGone">The rocket is on the moon! 🌙<br><button id="visitMoon">🌙 Visit the moon</button></div>
+    <div id="board"><h2>Who's going to space? 🚀</h2><div id="boardCards"></div></div>
+    <button id="blastBtn">🚀 BLAST OFF!</button>
+    <div class="roomSign" id="rToDining" style="left:30px;top:118px">⬅ 🍽️ Dining room</div>
+  </div>
+
+  <!-- the moon -->
+  <div id="moonRoom" class="room2">
+    <div id="earth">🌍</div>
+    <div id="mground">
+      <div class="crater" style="left:180px;top:120px;width:160px;height:50px"></div>
+      <div class="crater" style="left:1250px;top:220px;width:220px;height:60px"></div>
+      <div class="crater" style="left:640px;top:270px;width:120px;height:36px"></div>
+    </div>
+    <div id="mflag">🚩</div>
+    <div class="rocket" id="moonRocket"></div>
+    <div id="moonPeople"></div>
+    <div class="mleg" style="left:430px"></div><div class="mleg" style="left:1100px"></div>
+    <div id="mtable"></div>
+    <div id="moonItems"></div>
+    <button id="homeBtn">🚀 Fly home</button>
   </div>
 
   <!-- HUD -->
@@ -742,7 +831,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     <button class="hbtn" id="hintBtn" title="Help me">💡</button>
     <button class="hbtn" id="cleanBtn" title="Clean the bowl">🧽</button>
     <button class="hbtn" id="soundBtn" title="Sound on/off">🔊</button>
-    <button class="hbtn" id="roomBtn" title="Go to the dining room">🍽️</button>
+    <button class="hbtn" id="roomBtn" title="Rooms">🚪</button>
     <button class="hbtn" id="chefBtn" title="My dishes">🏆<span id="chefName"></span></button>
   </div>
 
@@ -779,6 +868,13 @@ button{font-family:inherit;color:inherit;cursor:pointer}
         <button class="dbtn" id="dHome">🏠 Kitchen</button>
       </div>
     </div>
+  </div>
+
+  <div id="roomMenu">
+    <button data-r="kitchen">🍳 Kitchen</button>
+    <button data-r="dining">🍽️ Dining room</button>
+    <button data-r="rocket">🚀 Rocket room</button>
+    <button data-r="moon">🌙 The moon</button>
   </div>
 
   <!-- my dishes -->
@@ -1618,6 +1714,8 @@ function hintFor(id){
 }
 $('#hintBtn').onclick=()=>{
   sfx.sparkle();
+  if(room==='rocket'){say(space().at==='moon'?'The rocket is on the moon! Tap Visit the moon.':'Tap the people cards to put them in the rocket, then press the red BLAST OFF button!');return;}
+  if(room==='moon'){say('Tap someone to feed them! Cook more food in the kitchen and tap To the moon table. Tap Fly home to go back.');return;}
   if(room==='dining'){say('Cook food in the kitchen, tap "To the table", then tap someone to feed them! 😋');return;}
   if(!bowlOut&&phase!=='cooking'&&phase!=='done'&&(!recipe||phase==='gather')){flashBox('dishCab');say('Get a mixing bowl from the dish cabinet above the microwave! 🥣');return;}
   if(!recipe&&needKnead&&kneads<KNEADS){wiggle(kb);say('Tap or rub the dough to knead it! 👐');return;}
@@ -1628,7 +1726,9 @@ $('#hintBtn').onclick=()=>{
   else if(phase==='cook'){showCookGlow();say(`${TOOLS[recipe.tool].verb} it in the ${TOOLS[recipe.tool].n}! Tap the glowing ${TOOLS[recipe.tool].n}.`);}
 };
 $('#cleanBtn').onclick=()=>{
-  if(room==='dining'){clearTable();return;}
+  if(room==='dining'){clearTable('home');return;}
+  if(room==='moon'){clearTable('moon');return;}
+  if(room==='rocket'){say('Nothing to clean here!');return;}
   if(busy())return;
   if(!bowlOut){say('Nothing to clean!');return;}
   endKnead();
@@ -1654,6 +1754,8 @@ function updateHUD(){
   const msg=$('#msg'), chips=$('#chips'), dish=$('#cardDish');
   $('#cookbook').classList.toggle('call',!recipe&&!bowlItems.length);
   $('#roomBtn').textContent=room==='dining'?'🍳':'🍽️';
+  if(room==='rocket'&&phase!=='cooking'){$('#cardDish').textContent='🚀';$('#chips').classList.remove('on');$('#msg').textContent=space().at==='moon'?'The rocket is on the moon! 🌙':'Put people in the rocket, then BLAST OFF!';return;}
+  if(room==='moon'&&phase!=='cooking'){$('#cardDish').textContent='🌙';$('#chips').classList.remove('on');$('#msg').textContent='On the moon! Tap someone to feed them.';return;}
   if(room==='dining'&&phase!=='cooking'){$('#cardDish').textContent='🍽️';$('#chips').classList.remove('on');$('#msg').textContent='Tap someone to feed them your food! 😋';return;}
   $('#quit').classList.toggle('on',!!recipe);
   if(!recipe){
@@ -1772,6 +1874,7 @@ function showDone(res){
   $('#done').classList.add('show');
   confetti(); sfx.tada();
   const first=recordDish(res);
+  $('#dTable').textContent=(space().at==='moon'&&space().crew.includes('moon'))?'🌙 To the moon table':'🍽️ To the table';
   clearTimeout(toastT); $('#toast').classList.remove('show');
   if(first)$('#dHint').textContent=(res.invented?'⭐ You discovered a new recipe!':'⭐ A new dish for your collection!')+' Tap the plate to take a bite! 😋';
 }
@@ -1803,8 +1906,15 @@ $('#dAgain').onclick=()=>{hideDone();if(recipe)startRecipe(recipe);else{phase='f
 $('#dBook').onclick=()=>{hideDone();recipe=null;phase='free';updateHUD();openBook(-1);};
 $('#dHome').onclick=()=>{hideDone();recipe=null;phase='free';updateHUD();sfx.pop();};
 $('#dTable').onclick=()=>{
+  if(!lastResult)return;
   if(bites>=4){say('It\'s all gone! Make something new!');return;}
   const res=lastResult; hideDone(); recipe=null; phase='free';
+  if(space().at==='moon'&&space().crew.includes('moon')){
+    goRoom('moon');
+    if(tableList('moon').length>=TABLE_MAX){say('The moon table is full!');updateHUD();return;}
+    setTimeout(()=>{addToTable({k:'food',dish:res.dish,name:res.name,bites:Math.min(bites,2)},'moon');sfx.plop();say(`${res.name} flew to the moon! 🚀 Tap someone to feed them.`);},700);
+    return;
+  }
   goRoom('dining');
   if((chef&&chef.table||[]).length>=TABLE_MAX){say('The table is full! Eat some food or clear the table.');updateHUD();return;}
   setTimeout(()=>{addToTable({k:'food',dish:res.dish,name:res.name,bites:Math.min(bites,2)});sfx.plop();say(`${res.name} is on the table! Tap it to eat. 😋`);},500);
@@ -1812,14 +1922,30 @@ $('#dTable').onclick=()=>{
 
 /* ---------- rooms ---------- */
 let room='kitchen';
-function goRoom(r,quiet){
+function goRoom(r,quiet,force){
   if(r===room)return;
-  if(phase==='cooking')return;
-  room=r; hidePicker(); stage.classList.toggle('indining',r==='dining');
+  if(phase==='cooking'||(spaceBusy&&!force))return;
+  if(r==='moon'&&space().at!=='moon'&&!force){say('Put people in the rocket and BLAST OFF to get to the moon! 🚀');return;}
+  room=r; hidePicker(); stage.dataset.room=r; stage.classList.toggle('indining',r!=='kitchen');
+  $('#roomMenu').classList.remove('show');
   if(!quiet)sfx.swish();
   updateHUD();
 }
-$('#roomBtn').onclick=()=>{if(phase==='cooking')return;hideDone();if(phase==='done'){phase='free';recipe=null;}goRoom(room==='kitchen'?'dining':'kitchen');if(room==='dining')say('Everyone is waiting for dinner! 🍽️');};
+$('#roomBtn').onclick=()=>{
+  if(phase==='cooking'||spaceBusy)return;
+  const m=$('#roomMenu');
+  if(m.classList.contains('show')){m.classList.remove('show');return;}
+  $$('#roomMenu button').forEach(bn=>{bn.classList.toggle('here',bn.dataset.r===room);bn.disabled=bn.dataset.r==='moon'&&space().at!=='moon';});
+  m.classList.add('show'); sfx.pop();
+};
+$('#roomMenu').addEventListener('click',e=>{
+  const bn=e.target.closest('button'); if(!bn||bn.disabled)return;
+  hideDone(); if(phase==='done'){phase='free';recipe=null;}
+  goRoom(bn.dataset.r);
+  if(room==='dining')say('Everyone is waiting for dinner! 🍽️');
+  if(room==='rocket')say(space().at==='moon'?'The rocket is on the moon! 🌙':'Tap people to put them in the rocket, then BLAST OFF! 🚀');
+});
+stage.dataset.room='kitchen';
 $('#ddoor').addEventListener('click',()=>goRoom('kitchen'));
 
 /* ---------- bear friends at the table ---------- */
@@ -1845,7 +1971,7 @@ function hairSVG(b){
   // bald on top, a little hair on the sides
   return `<path d="M44 108 Q40 84 50 72 Q58 84 56 108 Z M146 108 Q150 84 140 72 Q132 84 134 108 Z" fill="${h}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>`;
 }
-function bearSVG(b){
+function bearSVG(b,helmet){
   const ink='#3b2f4a';
   return `<svg viewBox="0 0 190 230"><g class="bob">
     <path d="M22 232 Q24 166 95 160 Q166 166 168 232 Z" fill="${b.shirt}" stroke="${ink}" stroke-width="6" stroke-linejoin="round"/>
@@ -1863,6 +1989,7 @@ function bearSVG(b){
     ${b.mustache?`<path d="M70 122 Q82 112 95 120 Q108 112 120 122 Q108 128 95 123 Q82 128 70 122 Z" fill="${b.hair}" stroke="${ink}" stroke-width="3.5" stroke-linejoin="round"/>`:''}
     <path class="mouthShut" d="M80 126 Q95 140 110 126" fill="none" stroke="${ink}" stroke-width="4" stroke-linecap="round"/>
     <g class="mouthOpen"><ellipse cx="95" cy="132" rx="11" ry="10" fill="#c2185b" stroke="${ink}" stroke-width="3.5"/></g>
+    ${helmet?`<circle cx="95" cy="94" r="78" fill="#bfe9ff" fill-opacity=".25" stroke="#fff" stroke-width="6"/><circle cx="95" cy="94" r="78" fill="none" stroke="${ink}" stroke-width="3" opacity=".5"/><path d="M44 62 q16 -30 46 -36" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".85"/>`:''}
   </g></svg><div class="name">${b.name}</div>`;
 }
 $('#bears').innerHTML=BEARS.map((b,i)=>`<div class="bear" data-b="${i}" style="left:${b.x}px" title="${b.name}">${bearSVG(b)}</div>`).join('');
@@ -1879,21 +2006,23 @@ function hearts(cx,cy,n){
   }
 }
 let bearBusy=false;
-$('#bears').addEventListener('click',e=>{
-  const el=e.target.closest('.bear'); if(!el||bearBusy)return;
-  const b=BEARS[+el.dataset.b], list=tableList();
+const MOON_X=[460,650,840,1030];
+function personX(bi,w){return w==='moon'?MOON_X[bi]:BEARS[bi].x;}
+function feedPerson(el,w){
+  if(bearBusy)return;
+  const bi=+el.dataset.b, b=BEARS[bi], list=tableList(w), px=personX(bi,w);
   const foods=list.map((t,i)=>({t,i})).filter(o=>o.t.k==='food');
   if(!foods.length){
     el.classList.remove('hungry'); void el.offsetWidth; el.classList.add('hungry');
-    tone(90,.5,'sawtooth',.05,70); bearSay(el,b.hungry); return;
+    tone(90,.5,'sawtooth',.05,70); bearSay(el,w==='moon'?'I\'m hungry! Bring food to the moon! 🚀':b.hungry); return;
   }
-  foods.sort((a,c)=>Math.abs(a.t.x-b.x)-Math.abs(c.t.x-b.x));
+  foods.sort((a,c)=>Math.abs(a.t.x-px)-Math.abs(c.t.x-px));
   const {t,i}=foods[0];
-  const itemEl=$(`#tableItems [data-i="${i}"]`);
+  const itemEl=$(`${TBLS[w].items} [data-i="${i}"]`);
   const from=itemEl?sr(itemEl):{cx:t.x,cy:t.y-40};
   const mouth=sr(el); const to={cx:mouth.cx,cy:mouth.y+mouth.h*.48};
   bearBusy=true;
-  list[i]={k:'ware',id:'plate',x:t.x,y:t.y}; saveTable(); renderTable();   // an empty plate stays behind
+  list[i]={k:'ware',id:'plate',x:t.x,y:t.y}; saveTable(); renderTable(undefined,w);   // an empty plate stays behind
   sfx.pop();
   flyHTML(t.dish,{cx:from.cx,cy:from.cy},to,{size:70,endScale:.4,lift:80,dur:600}).then(()=>{
     el.classList.remove('chew'); void el.offsetWidth; el.classList.add('chew');
@@ -1902,76 +2031,87 @@ $('#bears').addEventListener('click',e=>{
     const fav=b.fav.test(t.name);
     setTimeout(()=>{
       el.classList.remove('chew');
+      const where=w==='moon'?' Moon food is the best! 🌙':'';
       if(fav){sfx.tada();hearts(mouth.cx,mouth.y+40,7);bearSay(el,`My FAVORITE! ${t.name}! Thank you, ${who}! 💖`);}
-      else{sfx.sparkle();hearts(mouth.cx,mouth.y+40,2);bearSay(el,`Yum! Thank you, ${who}! 😋`);}
+      else{sfx.sparkle();hearts(mouth.cx,mouth.y+40,2);bearSay(el,`Yum! Thank you, ${who}!${where||' 😋'}`);}
       bearBusy=false;
     },1150);
   });
-});
-
-/* ---------- the dining table ---------- */
-const TABLE_MAX=18;
-const TB={x1:310,x2:1290,y1:500,y2:640};   // where things can sit (their bottom edge)
-function tableList(){if(!chef)return [];chef.table=chef.table||[];return chef.table;}
-function saveTable(){if(chef&&!chef.guest){chefs[keyOf(chef.name)]=chef;saveChefs();}}
-function freeSpot(){
-  const list=tableList();
-  for(const y of [560,630,505])for(let x=360;x<=1240;x+=110){
-    if(!list.some(t=>Math.abs(t.x-x)<80&&Math.abs(t.y-y)<45))return {x,y};
-  }
-  return {x:TB.x1+Math.random()*(TB.x2-TB.x1),y:TB.y1+Math.random()*(TB.y2-TB.y1)};
 }
-function addToTable(t){
-  const list=tableList();
+$('#bears').addEventListener('click',e=>{const el=e.target.closest('.bear');if(el)feedPerson(el,'home');});
+$('#moonPeople').addEventListener('click',e=>{const el=e.target.closest('.bear');if(el)feedPerson(el,'moon');});
+
+/* ---------- tables: the dining table at home and the table on the moon ---------- */
+const TABLE_MAX=18;
+const TBLS={
+  home:{items:'#tableItems',key:'table',TB:{x1:310,x2:1290,y1:500,y2:640},rows:[560,630,505],x0:360,x1:1240},
+  moon:{items:'#moonItems',key:'moonTable',TB:{x1:440,x2:1130,y1:650,y2:705},rows:[665,705],x0:470,x1:1100}
+};
+const TB=TBLS.home.TB;
+function tableList(w){w=w||'home';if(!chef)return [];const k=TBLS[w].key;chef[k]=chef[k]||[];return chef[k];}
+function saveTable(){if(chef&&!chef.guest){chefs[keyOf(chef.name)]=chef;saveChefs();}}
+function freeSpot(w){
+  w=w||'home'; const T=TBLS[w], list=tableList(w);
+  for(const y of T.rows)for(let x=T.x0;x<=T.x1;x+=110){
+    if(!list.some(t=>Math.abs(t.x-x)<80&&Math.abs(t.y-y)<40))return {x,y};
+  }
+  return {x:T.TB.x1+Math.random()*(T.TB.x2-T.TB.x1),y:T.TB.y1+Math.random()*(T.TB.y2-T.TB.y1)};
+}
+function addToTable(t,w){
+  w=w||'home'; const list=tableList(w);
   if(t.k==='food'){
     // food lands on an empty plate if there is one
     const pi=list.findIndex(x=>x.k==='ware'&&x.id==='plate');
     if(pi>=0){const pl=list.splice(pi,1)[0];t.x=pl.x;t.y=pl.y;}
-    else{const sp=freeSpot();t.x=sp.x;t.y=sp.y;}
-  }else{const sp=freeSpot();t.x=sp.x;t.y=sp.y;}
-  list.push(t); saveTable(); renderTable(list.length-1);
+    else{const sp=freeSpot(w);t.x=sp.x;t.y=sp.y;}
+  }else{const sp=freeSpot(w);t.x=sp.x;t.y=sp.y;}
+  list.push(t); saveTable(); renderTable(list.length-1,w);
 }
 function titemHTML(t){
   if(t.k==='food')return `<span class="tbase">${ingHTML('plate')}</span><span class="tfood" style="transform:translateX(-50%) scale(${1-(t.bites||0)*.25})">${t.dish}</span>`;
   return ingHTML(t.id);
 }
-function renderTable(popIndex){
-  const wrap=$('#tableItems'); const list=tableList();
-  // draw farther-back things first
-  const order=list.map((t,i)=>i).sort((a,b)=>list[a].y-list[b].y);
-  wrap.innerHTML=order.map(i=>{const t=list[i];return `<div class="titem${t.k==='ware'?' ware-item':''}" data-i="${i}" style="left:${t.x}px;top:${t.y}px">${titemHTML(t)}</div>`;}).join('');
+function renderTable(popIndex,w){
+  w=w||'home';
+  const wrap=$(TBLS[w].items); const list=tableList(w);
+  const order=list.map((t,i)=>i).sort((a,b)=>list[a].y-list[b].y);   // farther-back things first
+  wrap.innerHTML=order.map(i=>{const t=list[i];return `<div class="titem${t.k==='ware'?' ware-item':''}" data-i="${i}" style="left:${t.x}px;top:${t.y}px;animation-delay:${-(i%5)*.5}s">${titemHTML(t)}</div>`;}).join('');
   if(popIndex!==undefined){const el=wrap.querySelector(`[data-i="${popIndex}"]`);if(el)el.animate([{transform:'translate(-50%,-70%) scale(.3)'},{transform:'translate(-50%,-70%) scale(1.15)'},{transform:'translate(-50%,-70%) scale(1)'}],{duration:380,easing:'ease-out'});}
 }
-function clearTable(){
-  if(!tableList().length){say('The table is already clean!');return;}
-  chef.table=[]; saveTable(); renderTable(); sfx.water(.6); say('Table all cleared! ✨');
+function clearTable(w){
+  w=w||'home';
+  if(!tableList(w).length){say('The table is already clean!');return;}
+  chef[TBLS[w].key]=[]; saveTable(); renderTable(undefined,w); sfx.water(.6); say('Table all cleared! ✨');
 }
 let tdrag=null;
-$('#tableItems').addEventListener('pointerdown',e=>{
+function tdown(e,w){
   const el=e.target.closest('.titem'); if(!el)return;
   e.preventDefault();
-  const i=+el.dataset.i, t=tableList()[i], p=sp(e.clientX,e.clientY);
-  tdrag={el,i,t,dx:t.x-p.x,dy:t.y-p.y,sx:e.clientX,sy:e.clientY,moved:false,pid:e.pointerId};
-});
+  const i=+el.dataset.i, t=tableList(w)[i], p=sp(e.clientX,e.clientY);
+  tdrag={el,i,t,w,dx:t.x-p.x,dy:t.y-p.y,sx:e.clientX,sy:e.clientY,moved:false,pid:e.pointerId};
+}
+$('#tableItems').addEventListener('pointerdown',e=>tdown(e,'home'));
+$('#moonItems').addEventListener('pointerdown',e=>tdown(e,'moon'));
 addEventListener('pointermove',e=>{
   if(!tdrag||e.pointerId!==tdrag.pid)return;
   if(!tdrag.moved&&Math.hypot(e.clientX-tdrag.sx,e.clientY-tdrag.sy)>10){tdrag.moved=true;tdrag.el.classList.add('drag');}
   if(!tdrag.moved)return;
-  const p=sp(e.clientX,e.clientY);
-  tdrag.t.x=Math.max(TB.x1,Math.min(TB.x2,p.x+tdrag.dx));
-  tdrag.t.y=Math.max(TB.y1,Math.min(TB.y2,p.y+tdrag.dy));
+  const p=sp(e.clientX,e.clientY), B=TBLS[tdrag.w].TB;
+  tdrag.t.x=Math.max(B.x1,Math.min(B.x2,p.x+tdrag.dx));
+  tdrag.t.y=Math.max(B.y1,Math.min(B.y2,p.y+tdrag.dy));
   tdrag.el.style.left=tdrag.t.x+'px'; tdrag.el.style.top=tdrag.t.y+'px';
 });
 function endTDrag(e){
   if(!tdrag||e.pointerId!==tdrag.pid)return;
   const d=tdrag; tdrag=null; d.el.classList.remove('drag');
-  if(d.moved){sfx.click();saveTable();renderTable();return;}
-  tapTableItem(d.i,d.el);
+  if(d.moved){sfx.click();saveTable();renderTable(undefined,d.w);return;}
+  tapTableItem(d.i,d.el,d.w);
 }
 addEventListener('pointerup',endTDrag);
-addEventListener('pointercancel',e=>{if(tdrag&&e.pointerId===tdrag.pid){tdrag.el.classList.remove('drag');tdrag=null;renderTable();}});
-function tapTableItem(i,el){
-  const list=tableList(), t=list[i]; if(!t)return;
+addEventListener('pointercancel',e=>{if(tdrag&&e.pointerId===tdrag.pid){tdrag.el.classList.remove('drag');const w=tdrag.w;tdrag=null;renderTable(undefined,w);}});
+function tapTableItem(i,el,w){
+  w=w||'home';
+  const list=tableList(w), t=list[i]; if(!t)return;
   if(t.k==='ware'){sfx.click();tone(1800,.15,'sine',.08);wiggle(el);say(ING[t.id].n);return;}
   t.bites=(t.bites||0)+1; sfx.chomp();
   const r=sr(el);
@@ -1985,8 +2125,134 @@ function tapTableItem(i,el){
     list[i]={k:'ware',id:'plate',x:t.x,y:t.y};   // an empty plate is left behind
     sfx.sparkle(); say(`All gone! Yummy ${t.name}! 😋`);
   }else say(['Mmm!','Yummy!','Delicious!'][t.bites-1]);
-  saveTable(); renderTable();
+  saveTable(); renderTable(undefined,w);
 }
+
+/* ---------- space! the rocket room and the moon ---------- */
+const ROCKET_SVG=`<svg viewBox="0 0 300 600">
+  <g class="flame"><path d="M100 528 Q150 700 200 528 Z" fill="#ffb74d" stroke="#ff7043" stroke-width="7"/><path d="M122 528 Q150 630 178 528 Z" fill="#fff59d"/></g>
+  <path d="M68 370 L8 500 L8 548 L82 490 Z" fill="#ff6b6b" stroke="#3b2f4a" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M232 370 L292 500 L292 548 L218 490 Z" fill="#ff6b6b" stroke="#3b2f4a" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M108 486 L192 486 L208 530 L92 530 Z" fill="#8e86a3" stroke="#3b2f4a" stroke-width="7" stroke-linejoin="round"/>
+  <rect x="68" y="180" width="164" height="320" rx="34" fill="#ffffff" stroke="#3b2f4a" stroke-width="7"/>
+  <rect x="71" y="440" width="158" height="22" fill="#7fc8ff"/>
+  <path d="M150 10 C214 66 234 130 234 196 L66 196 C66 130 86 66 150 10 Z" fill="#ff6b6b" stroke="#3b2f4a" stroke-width="7" stroke-linejoin="round"/>
+  <circle cx="115" cy="270" r="36" fill="#cfd8e3" stroke="#3b2f4a" stroke-width="7"/><circle cx="185" cy="270" r="36" fill="#cfd8e3" stroke="#3b2f4a" stroke-width="7"/>
+  <circle cx="115" cy="355" r="36" fill="#cfd8e3" stroke="#3b2f4a" stroke-width="7"/><circle cx="185" cy="355" r="36" fill="#cfd8e3" stroke="#3b2f4a" stroke-width="7"/>
+  <circle cx="115" cy="270" r="29" fill="#9ad7ff"/><circle cx="185" cy="270" r="29" fill="#9ad7ff"/><circle cx="115" cy="355" r="29" fill="#9ad7ff"/><circle cx="185" cy="355" r="29" fill="#9ad7ff"/>
+</svg>`;
+const WINS=[[115,270],[185,270],[115,355],[185,355]];
+$('#rocket').innerHTML=ROCKET_SVG+WINS.map((w,i)=>`<div class="win" data-w="${i}" style="left:${w[0]}px;top:${w[1]}px"></div>`).join('');
+$('#moonRocket').innerHTML=ROCKET_SVG;
+let spaceBusy=false;
+function space(){
+  if(!chef)return {crew:[ 'table','table','table','table'],at:'pad'};
+  chef.space=chef.space||{crew:['table','table','table','table'],at:'pad'};
+  return chef.space;
+}
+function renderPeople(){
+  const S2=space();
+  $$('#bears .bear').forEach(el=>el.classList.toggle('away',S2.crew[+el.dataset.b]!=='table'));
+  // rocket windows
+  const inRocket=S2.crew.map((c,i)=>c==='rocket'?i:-1).filter(i=>i>=0);
+  $$('#rocket .win').forEach((wEl,k)=>{const bi=inRocket[k];wEl.innerHTML=bi!==undefined?bearSVG(BEARS[bi]).replace(/<div class="name">.*<\/div>/,''):'';});
+  // boarding cards
+  $('#boardCards').innerHTML=BEARS.map((b,i)=>{const c=S2.crew[i];
+    return `<button class="pcard ${c}" data-b="${i}">${bearSVG(b).replace(/<div class="name">.*<\/div>/,'')}<span class="badge">${c==='rocket'?'🚀 In!':c==='moon'?'🌙 On the moon':''}</span><span class="pname">${b.name}</span></button>`;}).join('');
+  // the moon
+  $('#moonPeople').innerHTML=BEARS.map((b,i)=>S2.crew[i]==='moon'?`<div class="bear" data-b="${i}" style="left:${MOON_X[i]}px;top:398px" title="${b.name}">${bearSVG(b,true)}</div>`:'').join('');
+  $('#rocketRoom').classList.toggle('atmoon',S2.at==='moon');
+}
+$('#boardCards').addEventListener('click',e=>{
+  const c=e.target.closest('.pcard'); if(!c||spaceBusy)return;
+  const i=+c.dataset.b, S2=space(), b=BEARS[i];
+  if(S2.at==='moon'){say('The rocket is on the moon right now! 🌙');return;}
+  if(S2.crew[i]==='table'){
+    S2.crew[i]='rocket'; saveTable();
+    const from=sr(c), to=sr($('#rocket'));
+    sfx.pop();
+    flyHTML(`<div style="width:120px;height:145px">${bearSVG(b).replace(/<div class="name">.*<\/div>/,'')}</div>`,{cx:from.cx,cy:from.cy},{cx:to.x+150,cy:to.y+310},{size:20,endScale:.5,lift:120,dur:700}).then(()=>{renderPeople();sfx.plop();say(`${b.name} is in the rocket! 🚀`);});
+    renderPeople();
+    $$('#rocket .win').forEach(w=>{});
+  }else if(S2.crew[i]==='rocket'){
+    S2.crew[i]='table'; saveTable(); renderPeople(); sfx.click(); say(`${b.name} went back to the dining room.`);
+  }
+});
+$('#rocket').addEventListener('click',e=>{
+  const w=e.target.closest('.win'); if(!w||spaceBusy)return;
+  const S2=space(); const inRocket=S2.crew.map((c,i)=>c==='rocket'?i:-1).filter(i=>i>=0);
+  const bi=inRocket[+w.dataset.w]; if(bi===undefined)return;
+  S2.crew[bi]='table'; saveTable(); renderPeople(); sfx.click(); say(`${BEARS[bi].name} got out of the rocket.`);
+});
+function bigCount(t){
+  const el=document.createElement('div'); el.className='bigCount'; el.textContent=t; fx2.appendChild(el);
+  el.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:0},{transform:'translate(-50%,-50%) scale(1.1)',opacity:1,offset:.3},{transform:'translate(-50%,-50%) scale(1)',opacity:1,offset:.8},{transform:'translate(-50%,-50%) scale(1.3)',opacity:0}],{duration:950}).finished.then(()=>el.remove());
+}
+function smokeAt(x,y){
+  const s3=document.createElement('div'); s3.className='smoke'; s3.style.left=(x-45)+'px'; s3.style.top=(y-45)+'px'; fx.appendChild(s3);
+  s3.animate([{transform:'scale(.4)',opacity:1},{transform:`translate(${Math.random()*300-150}px,${-Math.random()*60}px) scale(2.2)`,opacity:0}],{duration:1600,easing:'ease-out'}).finished.then(()=>s3.remove());
+}
+async function blastOff(){
+  const S2=space();
+  if(spaceBusy||S2.at==='moon')return;
+  const crew=S2.crew.map((c,i)=>c==='rocket'?i:-1).filter(i=>i>=0);
+  if(!crew.length){sfx.boing();wiggle($('#board'));say('Nobody is in the rocket! Tap people to put them in. 👆');return;}
+  spaceBusy=true; $('#roomMenu').classList.remove('show');
+  const r=$('#rocket');
+  for(const n of ['3','2','1']){bigCount(n);tone(880,.15,'square',.08);await wait(1000);}
+  bigCount('BLAST OFF!'); tone(1320,.4,'square',.08);
+  r.classList.add('fire','shake'); noise(4,'lowpass',160,.5); tone(60,4,'sawtooth',.08,240);
+  const smokeT=setInterval(()=>smokeAt(1030+Math.random()*80,760),90);
+  await wait(900);
+  $('#rocketRoom').classList.add('dark');
+  await r.animate([{transform:'translateY(0)'},{transform:'translateY(-1300px)'}],{duration:2300,easing:'cubic-bezier(.55,0,.9,.6)',fill:'forwards'}).finished;
+  clearInterval(smokeT);
+  // arrive at the moon
+  goRoom('moon',true,true);
+  const mr=$('#moonRocket'); mr.classList.add('fire');
+  await mr.animate([{transform:'scale(.62) translateY(-900px)'},{transform:'scale(.62) translateY(0)'}],{duration:1800,easing:'cubic-bezier(.2,.7,.3,1)'}).finished;
+  mr.classList.remove('fire'); noise(.4,'lowpass',120,.6); tone(70,.4,'sine',.3,40);
+  // everybody hops out
+  S2.at='moon';
+  for(const i of crew){S2.crew[i]='moon';renderPeople();sfx.pop();
+    const el=$(`#moonPeople .bear[data-b="${i}"]`); if(el)el.animate([{transform:'translateY(-80px) scale(.5)',opacity:0},{transform:'translateY(0) scale(1)',opacity:1}],{duration:450,easing:'cubic-bezier(.3,1.5,.5,1)'});
+    await wait(350);}
+  // food on the dining table comes along as a picnic
+  const home=tableList('home'); const foods=home.filter(t=>t.k==='food');
+  chef.table=home.filter(t=>t.k!=='food');
+  foods.slice(0,TABLE_MAX).forEach(f=>addToTable({k:'food',dish:f.dish,name:f.name,bites:f.bites||0},'moon'));
+  renderTable(undefined,'home');
+  saveTable();
+  r.getAnimations().forEach(a=>a.cancel()); r.classList.remove('fire','shake'); $('#rocketRoom').classList.remove('dark');
+  renderPeople(); sfx.tada(); confetti();
+  say(foods.length?`Welcome to the moon! 🌙 Your picnic came too! Tap someone to feed them.`:'Welcome to the moon! 🌙 Cook something and send it up to the moon table!');
+  spaceBusy=false; updateHUD();
+}
+async function flyHome(){
+  const S2=space(); if(spaceBusy||S2.at!=='moon')return;
+  spaceBusy=true;
+  const crew=S2.crew.map((c,i)=>c==='moon'?i:-1).filter(i=>i>=0);
+  crew.forEach(i=>S2.crew[i]='rocket'); renderPeople(); sfx.pop();
+  const mr=$('#moonRocket'); mr.classList.add('fire'); noise(2.5,'lowpass',160,.4); tone(60,2.5,'sawtooth',.07,220);
+  await mr.animate([{transform:'scale(.62) translateY(0)'},{transform:'scale(.62) translateY(-1000px)'}],{duration:1800,easing:'cubic-bezier(.55,0,.9,.6)',fill:'forwards'}).finished;
+  goRoom('rocket',true,true);
+  const r=$('#rocket'); S2.at='pad'; renderPeople(); r.classList.add('fire');
+  await r.animate([{transform:'translateY(-1300px)'},{transform:'translateY(0)'}],{duration:2000,easing:'cubic-bezier(.2,.7,.3,1)'}).finished;
+  r.classList.remove('fire'); noise(.4,'lowpass',120,.6); tone(70,.4,'sine',.3,40);
+  mr.getAnimations().forEach(a=>a.cancel()); mr.classList.remove('fire');
+  // everyone goes back to their seats; leftover moon food comes home
+  crew.forEach(i=>S2.crew[i]='table');
+  const left=tableList('moon').filter(t=>t.k==='food'); chef.moonTable=[];
+  left.forEach(f=>{if(tableList('home').length<TABLE_MAX)addToTable({k:'food',dish:f.dish,name:f.name,bites:f.bites||0},'home');});
+  renderTable(undefined,'moon'); saveTable(); renderPeople(); sfx.sparkle();
+  say('Welcome home! 🏠 Everyone went back to the dining room.');
+  spaceBusy=false; updateHUD();
+}
+$('#blastBtn').onclick=blastOff;
+$('#homeBtn').onclick=flyHome;
+$('#visitMoon').onclick=()=>goRoom('moon');
+$('#toRocket').onclick=()=>goRoom('rocket');
+$('#rToDining').onclick=()=>goRoom('dining');
 function confetti(){
   const cols=['#ff6fa8','#ffd36e','#7ed957','#7fc8ff','#c39bd3','#ff8a65'];
   for(let i=0;i<90;i++){
@@ -2077,7 +2343,7 @@ $('#lfPw').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
 $('#lfName').addEventListener('keydown',e=>{if(e.key==='Enter')$('#lfPw').focus();});
 function enterKitchen(){
   chef.dishes=fixDishes(chef.dishes);
-  setTimeout(()=>renderTable(),0);
+  setTimeout(()=>{renderTable(undefined,'home');renderTable(undefined,'moon');renderPeople();},0);
   $('#login').classList.remove('show'); sfx.tada();
   $('#chefName').textContent=chef.guest?'':chef.name;
   renderTrophies();
@@ -2102,7 +2368,7 @@ function openChefPanel(){
 $('#chefBtn').onclick=()=>{if(phase==='cooking')return;openChefPanel();};
 $('#cpClose').onclick=()=>{$('#chefPanel').classList.remove('show');sfx.pop();};
 $('#cpSwitch').onclick=()=>{
-  goRoom('kitchen',true); $('#tableItems').innerHTML='';
+  goRoom('kitchen',true,true); $('#tableItems').innerHTML=''; $('#moonItems').innerHTML='';
   $('#chefPanel').classList.remove('show'); hideDone();
   recipe=null; phase='free'; resetBowl(); clearGlow(); updateHUD();
   chef=null; renderTrophies(); showPick(); sfx.close();
