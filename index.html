@@ -1618,7 +1618,7 @@ function hintFor(id){
 }
 $('#hintBtn').onclick=()=>{
   sfx.sparkle();
-  if(room==='dining'){say('Cook food in the kitchen, tap "To the table", then tap a bear to feed it! 🐻');return;}
+  if(room==='dining'){say('Cook food in the kitchen, tap "To the table", then tap someone to feed them! 😋');return;}
   if(!bowlOut&&phase!=='cooking'&&phase!=='done'&&(!recipe||phase==='gather')){flashBox('dishCab');say('Get a mixing bowl from the dish cabinet above the microwave! 🥣');return;}
   if(!recipe&&needKnead&&kneads<KNEADS){wiggle(kb);say('Tap or rub the dough to knead it! 👐');return;}
   if(!recipe){wiggle($('#cookbook'));say('Tap the cookbook to pick a recipe! Or put any food in the bowl, stir it and cook it to invent your own dish!');return;}
@@ -1654,7 +1654,7 @@ function updateHUD(){
   const msg=$('#msg'), chips=$('#chips'), dish=$('#cardDish');
   $('#cookbook').classList.toggle('call',!recipe&&!bowlItems.length);
   $('#roomBtn').textContent=room==='dining'?'🍳':'🍽️';
-  if(room==='dining'&&phase!=='cooking'){$('#cardDish').textContent='🍽️';$('#chips').classList.remove('on');$('#msg').textContent='Tap a bear to feed it your food! 🐻';return;}
+  if(room==='dining'&&phase!=='cooking'){$('#cardDish').textContent='🍽️';$('#chips').classList.remove('on');$('#msg').textContent='Tap someone to feed them your food! 😋';return;}
   $('#quit').classList.toggle('on',!!recipe);
   if(!recipe){
     dish.textContent='👩‍🍳'; chips.classList.remove('on'); chips.innerHTML='';
@@ -1819,35 +1819,50 @@ function goRoom(r,quiet){
   if(!quiet)sfx.swish();
   updateHUD();
 }
-$('#roomBtn').onclick=()=>{if(phase==='cooking')return;hideDone();if(phase==='done'){phase='free';recipe=null;}goRoom(room==='kitchen'?'dining':'kitchen');if(room==='dining')say('The bears are waiting for dinner! 🐻');};
+$('#roomBtn').onclick=()=>{if(phase==='cooking')return;hideDone();if(phase==='done'){phase='free';recipe=null;}goRoom(room==='kitchen'?'dining':'kitchen');if(room==='dining')say('Everyone is waiting for dinner! 🍽️');};
 $('#ddoor').addEventListener('click',()=>goRoom('kitchen'));
 
 /* ---------- bear friends at the table ---------- */
 const BEARS=[
-  {name:'Honey',x:405,fur:'#c68642',light:'#f1c27d',dark:'#8d5a2b',fav:/honey|pancake|waffle|toast|granola|oatmeal|peanut|bread|bagel|croissant|cereal|french/i,hungry:'I\'m hungry! Can I have some honey? 🍯'},
-  {name:'Rosie',x:665,fur:'#f4a6c0',light:'#ffd9e6',dark:'#d9789b',bow:'#ff4f8b',fav:/cake|cupcake|cookie|donut|pie|fudge|candy|s'mores|sundae|smoothie|parfait|treats|split|chocolate/i,hungry:'My tummy is rumbly! Something sweet, please? 🍰'},
-  {name:'Snowy',x:935,fur:'#f5f8fc',light:'#ffffff',dark:'#b8c9de',fav:/ice cream|sundae|milkshake|snow cone|shaved ice|fish|sushi|tuna|slushie|lemonade|split/i,hungry:'Brrr, I\'m hungry! Ice cream or fish? 🐟'},
-  {name:'Bamboo',x:1195,fur:'#ffffff',light:'#ffffff',dark:'#3b2f4a',panda:true,fav:/noodle|pasta|dumpling|sushi|rice|spaghetti|soup|mac|curry/i,hungry:'I\'m hungry! Noodles, please? 🍜'}
+  {name:'Grandma',x:405,skin:'#f6d3b3',hair:'#c9c4d6',shirt:'#b39ddb',style:'bun',glasses:true,
+   fav:/pie|soup|tea|bread|cookie|cake|quiche|compote|oatmeal/i,hungry:'Oh my, I\'m hungry, dear! Is dinner ready? 🥧'},
+  {name:'Lily',x:665,skin:'#a0663c',hair:'#2b1d1a',shirt:'#ff8fab',style:'pigtails',bow:'#ffd36e',
+   fav:/pizza|pasta|spaghetti|mac|noodle|cupcake|sundae|ice cream|milkshake/i,hungry:'I\'m hungry! Can we have pizza? 🍕'},
+  {name:'Sam',x:935,skin:'#e8b88a',hair:'#6d3b1f',shirt:'#7ed957',style:'curly',
+   fav:/pancake|waffle|toast|sandwich|grilled cheese|fries|nugget|taco|burrito|quesadilla|nachos|popcorn/i,hungry:'My tummy is rumbling! Pancakes, please? 🥞'},
+  {name:'Grandpa',x:1195,skin:'#c68642',hair:'#e8e8e8',shirt:'#7fc8ff',style:'bald',mustache:true,
+   fav:/noodle|dumpling|sushi|rice|curry|soup|chili|fish|omelet|egg/i,hungry:'I\'m hungry! Got any noodles? 🍜'}
 ];
+function hairSVG(b){
+  const ink='#3b2f4a', h=b.hair;
+  if(b.style==='bun')return `<circle cx="95" cy="38" r="20" fill="${h}" stroke="${ink}" stroke-width="5"/>
+    <path d="M42 98 Q36 44 95 42 Q154 44 148 98 Q140 66 95 64 Q50 66 42 98 Z" fill="${h}" stroke="${ink}" stroke-width="5" stroke-linejoin="round"/>`;
+  if(b.style==='pigtails')return `<circle cx="34" cy="86" r="20" fill="${h}" stroke="${ink}" stroke-width="5"/><circle cx="156" cy="86" r="20" fill="${h}" stroke="${ink}" stroke-width="5"/>
+    <path d="M28 72 l-14 -10 l0 20 Z M162 72 l14 -10 l0 20 Z" fill="${b.bow}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M42 100 Q36 42 95 40 Q154 42 148 100 Q146 70 112 62 Q100 76 74 70 Q48 74 42 100 Z" fill="${h}" stroke="${ink}" stroke-width="5" stroke-linejoin="round"/>`;
+  if(b.style==='curly'){let c='';[[52,72],[64,52],[84,42],[106,42],[126,52],[138,72],[74,60],[116,60],[95,52]].forEach(([x,y])=>{c+=`<circle cx="${x}" cy="${y}" r="17" fill="${h}" stroke="${ink}" stroke-width="5"/>`;});
+    return c+`<path d="M58 72 Q95 52 132 72 Q130 84 95 78 Q60 84 58 72 Z" fill="${h}"/>`;}
+  // bald on top, a little hair on the sides
+  return `<path d="M44 108 Q40 84 50 72 Q58 84 56 108 Z M146 108 Q150 84 140 72 Q132 84 134 108 Z" fill="${h}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>`;
+}
 function bearSVG(b){
-  const ink='#3b2f4a', ear=b.panda?b.dark:b.fur, arm=b.panda?b.dark:b.fur;
+  const ink='#3b2f4a';
   return `<svg viewBox="0 0 190 230"><g class="bob">
-    <ellipse cx="95" cy="200" rx="72" ry="62" fill="${b.fur}" stroke="${ink}" stroke-width="6"/>
-    <ellipse cx="95" cy="205" rx="40" ry="38" fill="${b.light}" ${b.panda?'stroke="#e6e6e6" stroke-width="3"':''}/>
-    <ellipse cx="30" cy="188" rx="22" ry="34" fill="${arm}" stroke="${ink}" stroke-width="6" transform="rotate(20 30 188)"/>
-    <ellipse cx="160" cy="188" rx="22" ry="34" fill="${arm}" stroke="${ink}" stroke-width="6" transform="rotate(-20 160 188)"/>
-    <circle cx="42" cy="40" r="24" fill="${ear}" stroke="${ink}" stroke-width="6"/><circle cx="42" cy="40" r="12" fill="${b.panda?'#5a4d6a':b.dark}" opacity="${b.panda?1:.55}"/>
-    <circle cx="148" cy="40" r="24" fill="${ear}" stroke="${ink}" stroke-width="6"/><circle cx="148" cy="40" r="12" fill="${b.panda?'#5a4d6a':b.dark}" opacity="${b.panda?1:.55}"/>
-    <circle cx="95" cy="88" r="60" fill="${b.fur}" stroke="${ink}" stroke-width="6"/>
-    ${b.panda?`<ellipse cx="70" cy="80" rx="15" ry="19" fill="${b.dark}" transform="rotate(25 70 80)"/><ellipse cx="120" cy="80" rx="15" ry="19" fill="${b.dark}" transform="rotate(-25 120 80)"/>`:''}
-    <g class="eyes"><circle cx="72" cy="80" r="7.5" fill="${b.panda?'#fff':ink}"/><circle cx="118" cy="80" r="7.5" fill="${b.panda?'#fff':ink}"/>
-      ${b.panda?`<circle cx="73" cy="81" r="4" fill="${ink}"/><circle cx="119" cy="81" r="4" fill="${ink}"/>`:`<circle cx="74" cy="77" r="2.4" fill="#fff"/><circle cx="120" cy="77" r="2.4" fill="#fff"/>`}</g>
-    <circle cx="56" cy="104" r="10" fill="#ff8fab" opacity=".55"/><circle cx="134" cy="104" r="10" fill="#ff8fab" opacity=".55"/>
-    <ellipse cx="95" cy="108" rx="28" ry="21" fill="${b.light}" stroke="${ink}" stroke-width="4"/>
-    <ellipse cx="95" cy="98" rx="10" ry="7" fill="${ink}"/>
-    <path class="mouthShut" d="M95 105 v6 M95 111 q-8 8 -14 2 M95 111 q8 8 14 2" fill="none" stroke="${ink}" stroke-width="3.5" stroke-linecap="round"/>
-    <g class="mouthOpen"><path d="M95 105 v4" stroke="${ink}" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="95" cy="117" rx="10" ry="9" fill="#c2185b" stroke="${ink}" stroke-width="3.5"/></g>
-    ${b.bow?`<g transform="translate(150 26)"><path d="M0 0 L-22 -14 L-22 14 Z M0 0 L22 -14 L22 14 Z" fill="${b.bow}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/><circle r="7" fill="${b.bow}" stroke="${ink}" stroke-width="4"/></g>`:''}
+    <path d="M22 232 Q24 166 95 160 Q166 166 168 232 Z" fill="${b.shirt}" stroke="${ink}" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M70 162 Q95 180 120 162" fill="none" stroke="${ink}" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+    <ellipse cx="26" cy="200" rx="18" ry="34" fill="${b.shirt}" stroke="${ink}" stroke-width="6" transform="rotate(16 26 200)"/>
+    <ellipse cx="164" cy="200" rx="18" ry="34" fill="${b.shirt}" stroke="${ink}" stroke-width="6" transform="rotate(-16 164 200)"/>
+    <rect x="80" y="138" width="30" height="28" rx="8" fill="${b.skin}" stroke="${ink}" stroke-width="5"/>
+    <circle cx="42" cy="100" r="12" fill="${b.skin}" stroke="${ink}" stroke-width="5"/><circle cx="148" cy="100" r="12" fill="${b.skin}" stroke="${ink}" stroke-width="5"/>
+    <circle cx="95" cy="98" r="54" fill="${b.skin}" stroke="${ink}" stroke-width="6"/>
+    ${hairSVG(b)}
+    <g class="eyes"><circle cx="74" cy="96" r="7" fill="${ink}"/><circle cx="116" cy="96" r="7" fill="${ink}"/><circle cx="76" cy="93" r="2.4" fill="#fff"/><circle cx="118" cy="93" r="2.4" fill="#fff"/></g>
+    ${b.glasses?`<circle cx="74" cy="96" r="15" fill="none" stroke="${ink}" stroke-width="4"/><circle cx="116" cy="96" r="15" fill="none" stroke="${ink}" stroke-width="4"/><path d="M89 96 h12" stroke="${ink}" stroke-width="4"/>`:''}
+    <circle cx="60" cy="116" r="9" fill="#ff8fab" opacity=".5"/><circle cx="130" cy="116" r="9" fill="#ff8fab" opacity=".5"/>
+    <path d="M95 104 q5 6 -1 10" fill="none" stroke="${ink}" stroke-width="3.5" stroke-linecap="round"/>
+    ${b.mustache?`<path d="M70 122 Q82 112 95 120 Q108 112 120 122 Q108 128 95 123 Q82 128 70 122 Z" fill="${b.hair}" stroke="${ink}" stroke-width="3.5" stroke-linejoin="round"/>`:''}
+    <path class="mouthShut" d="M80 126 Q95 140 110 126" fill="none" stroke="${ink}" stroke-width="4" stroke-linecap="round"/>
+    <g class="mouthOpen"><ellipse cx="95" cy="132" rx="11" ry="10" fill="#c2185b" stroke="${ink}" stroke-width="3.5"/></g>
   </g></svg><div class="name">${b.name}</div>`;
 }
 $('#bears').innerHTML=BEARS.map((b,i)=>`<div class="bear" data-b="${i}" style="left:${b.x}px" title="${b.name}">${bearSVG(b)}</div>`).join('');
