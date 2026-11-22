@@ -166,13 +166,13 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 #dwin .glass{position:absolute;inset:0;border:10px solid #fff;outline:5px solid var(--ink);border-radius:110px 110px 12px 12px;background:linear-gradient(#8fd6ff,#d5f1ff);overflow:hidden}
 #dwin .glass::after{content:'🌳';position:absolute;left:24px;bottom:-8px;font-size:110px}
 #dwin .curtain{top:-10px;height:300px}
-#dart{position:absolute;left:400px;top:140px;width:280px;height:190px;background:#ffd36e;border:5px solid var(--ink);border-radius:10px;padding:14px;box-shadow:0 6px 0 #0002}
+#dart{position:absolute;left:1000px;top:130px;width:280px;height:190px;background:#ffd36e;border:5px solid var(--ink);border-radius:10px;padding:14px;box-shadow:0 6px 0 #0002}
 #dart .pic{width:100%;height:100%;border:4px solid var(--ink);border-radius:4px;background:linear-gradient(#9be7ff 0 55%,#8bd17c 55%);position:relative;overflow:hidden}
 #dart .pic::before{content:'🌻';position:absolute;left:18px;bottom:2px;font-size:56px}
 #dart .pic::after{content:'☀️';position:absolute;right:16px;top:6px;font-size:40px}
 #dlamp{position:absolute;left:785px;top:0;width:30px;height:380px;pointer-events:none}
-#dlamp .cord{position:absolute;left:13px;top:0;width:4px;height:330px;background:var(--ink)}
-#dlamp .shade{position:absolute;left:-60px;top:330px;width:150px;height:60px;background:#ff8fab;border:5px solid var(--ink);border-radius:80px 80px 10px 10px}
+#dlamp .cord{position:absolute;left:13px;top:0;width:4px;height:200px;background:var(--ink)}
+#dlamp .shade{position:absolute;left:-60px;top:200px;width:150px;height:60px;background:#ff8fab;border:5px solid var(--ink);border-radius:80px 80px 10px 10px}
 #dlamp .shade::after{content:'';position:absolute;left:30px;bottom:-26px;width:80px;height:30px;border-radius:0 0 40px 40px;background:#fff59d;border:4px solid var(--ink);border-top:0}
 .chair{position:absolute;top:340px;width:150px;height:240px;background:#c48a4e;border:6px solid var(--ink);border-radius:60px 60px 10px 10px}
 .chair::before{content:'';position:absolute;left:24px;right:24px;top:26px;height:90px;border-radius:40px 40px 8px 8px;background:#ffb3c6;border:5px solid var(--ink)}
@@ -181,6 +181,22 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 #ddrape::after{content:'';position:absolute;left:20px;right:20px;bottom:10px;height:12px;border-bottom:5px dotted #fff}
 .dleg{position:absolute;top:704px;width:34px;height:116px;background:#8d5a2b;border:6px solid var(--ink);border-radius:0 0 8px 8px}
 #tableItems{position:absolute;inset:0;pointer-events:none}
+/* bears at the table */
+.bear{position:absolute;top:262px;width:190px;height:230px;margin-left:-95px;cursor:pointer;touch-action:manipulation}
+.bear svg{position:absolute;left:0;top:0;width:190px;height:230px;overflow:visible}
+.bear .bob{transform-box:view-box;transform-origin:50% 100%;animation:bearBob 3.2s ease-in-out infinite}
+.bear .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 4.6s infinite}
+.bear .mouthOpen{display:none}
+.bear.chew .mouthOpen{display:block}
+.bear.chew .mouthShut{display:none}
+.bear.chew .bob{animation:chew .28s ease-in-out 4}
+.bear.hungry .bob{animation:wig .45s ease}
+.bear .name{position:absolute;left:50%;top:-34px;transform:translateX(-50%);white-space:nowrap;font-size:24px;font-weight:700;background:#fff;border:4px solid var(--ink);border-radius:16px;padding:0 12px;opacity:0;transition:opacity .25s;pointer-events:none}
+.bear:hover .name{opacity:1}
+.heart{position:absolute;font-size:34px;pointer-events:none;z-index:46}
+@keyframes bearBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes chew{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.04,.97)}}
 .titem{position:absolute;font-size:84px;line-height:1;transform:translate(-50%,-70%);cursor:grab;pointer-events:auto;touch-action:none;transition:filter .2s}
 .titem.drag{cursor:grabbing;filter:drop-shadow(0 14px 8px #0004);z-index:5}
 .titem .tfood{position:absolute;left:50%;bottom:.12em;transform:translateX(-50%);font-size:.85em;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
@@ -708,6 +724,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     <div id="ddoor" title="Back to the kitchen"><div class="arch"><div class="peek"></div></div><div class="sign">⬅ 🍳 Kitchen</div></div>
     <div class="chair" style="left:330px"></div><div class="chair" style="left:590px"></div>
     <div class="chair" style="left:860px"></div><div class="chair" style="left:1120px"></div>
+    <div id="bears"></div>
     <div class="dleg" style="left:300px"></div><div class="dleg" style="left:1266px"></div>
     <div id="dtable"></div><div id="ddrape"></div>
     <div id="dlamp"><div class="cord"></div><div class="shade"></div></div>
@@ -1601,7 +1618,7 @@ function hintFor(id){
 }
 $('#hintBtn').onclick=()=>{
   sfx.sparkle();
-  if(room==='dining'){say('Cook food in the kitchen, then tap "To the table"! Dishes from the dish cabinet go on the table too.');return;}
+  if(room==='dining'){say('Cook food in the kitchen, tap "To the table", then tap a bear to feed it! 🐻');return;}
   if(!bowlOut&&phase!=='cooking'&&phase!=='done'&&(!recipe||phase==='gather')){flashBox('dishCab');say('Get a mixing bowl from the dish cabinet above the microwave! 🥣');return;}
   if(!recipe&&needKnead&&kneads<KNEADS){wiggle(kb);say('Tap or rub the dough to knead it! 👐');return;}
   if(!recipe){wiggle($('#cookbook'));say('Tap the cookbook to pick a recipe! Or put any food in the bowl, stir it and cook it to invent your own dish!');return;}
@@ -1637,7 +1654,7 @@ function updateHUD(){
   const msg=$('#msg'), chips=$('#chips'), dish=$('#cardDish');
   $('#cookbook').classList.toggle('call',!recipe&&!bowlItems.length);
   $('#roomBtn').textContent=room==='dining'?'🍳':'🍽️';
-  if(room==='dining'&&phase!=='cooking'){$('#cardDish').textContent='🍽️';$('#chips').classList.remove('on');$('#msg').textContent='Dining room: drag things around, tap food to eat it!';return;}
+  if(room==='dining'&&phase!=='cooking'){$('#cardDish').textContent='🍽️';$('#chips').classList.remove('on');$('#msg').textContent='Tap a bear to feed it your food! 🐻';return;}
   $('#quit').classList.toggle('on',!!recipe);
   if(!recipe){
     dish.textContent='👩‍🍳'; chips.classList.remove('on'); chips.innerHTML='';
@@ -1802,8 +1819,80 @@ function goRoom(r,quiet){
   if(!quiet)sfx.swish();
   updateHUD();
 }
-$('#roomBtn').onclick=()=>{if(phase==='cooking')return;hideDone();if(phase==='done'){phase='free';recipe=null;}goRoom(room==='kitchen'?'dining':'kitchen');if(room==='dining')say('Welcome to the dining room! 🍽️');};
+$('#roomBtn').onclick=()=>{if(phase==='cooking')return;hideDone();if(phase==='done'){phase='free';recipe=null;}goRoom(room==='kitchen'?'dining':'kitchen');if(room==='dining')say('The bears are waiting for dinner! 🐻');};
 $('#ddoor').addEventListener('click',()=>goRoom('kitchen'));
+
+/* ---------- bear friends at the table ---------- */
+const BEARS=[
+  {name:'Honey',x:405,fur:'#c68642',light:'#f1c27d',dark:'#8d5a2b',fav:/honey|pancake|waffle|toast|granola|oatmeal|peanut|bread|bagel|croissant|cereal|french/i,hungry:'I\'m hungry! Can I have some honey? 🍯'},
+  {name:'Rosie',x:665,fur:'#f4a6c0',light:'#ffd9e6',dark:'#d9789b',bow:'#ff4f8b',fav:/cake|cupcake|cookie|donut|pie|fudge|candy|s'mores|sundae|smoothie|parfait|treats|split|chocolate/i,hungry:'My tummy is rumbly! Something sweet, please? 🍰'},
+  {name:'Snowy',x:935,fur:'#f5f8fc',light:'#ffffff',dark:'#b8c9de',fav:/ice cream|sundae|milkshake|snow cone|shaved ice|fish|sushi|tuna|slushie|lemonade|split/i,hungry:'Brrr, I\'m hungry! Ice cream or fish? 🐟'},
+  {name:'Bamboo',x:1195,fur:'#ffffff',light:'#ffffff',dark:'#3b2f4a',panda:true,fav:/noodle|pasta|dumpling|sushi|rice|spaghetti|soup|mac|curry/i,hungry:'I\'m hungry! Noodles, please? 🍜'}
+];
+function bearSVG(b){
+  const ink='#3b2f4a', ear=b.panda?b.dark:b.fur, arm=b.panda?b.dark:b.fur;
+  return `<svg viewBox="0 0 190 230"><g class="bob">
+    <ellipse cx="95" cy="200" rx="72" ry="62" fill="${b.fur}" stroke="${ink}" stroke-width="6"/>
+    <ellipse cx="95" cy="205" rx="40" ry="38" fill="${b.light}" ${b.panda?'stroke="#e6e6e6" stroke-width="3"':''}/>
+    <ellipse cx="30" cy="188" rx="22" ry="34" fill="${arm}" stroke="${ink}" stroke-width="6" transform="rotate(20 30 188)"/>
+    <ellipse cx="160" cy="188" rx="22" ry="34" fill="${arm}" stroke="${ink}" stroke-width="6" transform="rotate(-20 160 188)"/>
+    <circle cx="42" cy="40" r="24" fill="${ear}" stroke="${ink}" stroke-width="6"/><circle cx="42" cy="40" r="12" fill="${b.panda?'#5a4d6a':b.dark}" opacity="${b.panda?1:.55}"/>
+    <circle cx="148" cy="40" r="24" fill="${ear}" stroke="${ink}" stroke-width="6"/><circle cx="148" cy="40" r="12" fill="${b.panda?'#5a4d6a':b.dark}" opacity="${b.panda?1:.55}"/>
+    <circle cx="95" cy="88" r="60" fill="${b.fur}" stroke="${ink}" stroke-width="6"/>
+    ${b.panda?`<ellipse cx="70" cy="80" rx="15" ry="19" fill="${b.dark}" transform="rotate(25 70 80)"/><ellipse cx="120" cy="80" rx="15" ry="19" fill="${b.dark}" transform="rotate(-25 120 80)"/>`:''}
+    <g class="eyes"><circle cx="72" cy="80" r="7.5" fill="${b.panda?'#fff':ink}"/><circle cx="118" cy="80" r="7.5" fill="${b.panda?'#fff':ink}"/>
+      ${b.panda?`<circle cx="73" cy="81" r="4" fill="${ink}"/><circle cx="119" cy="81" r="4" fill="${ink}"/>`:`<circle cx="74" cy="77" r="2.4" fill="#fff"/><circle cx="120" cy="77" r="2.4" fill="#fff"/>`}</g>
+    <circle cx="56" cy="104" r="10" fill="#ff8fab" opacity=".55"/><circle cx="134" cy="104" r="10" fill="#ff8fab" opacity=".55"/>
+    <ellipse cx="95" cy="108" rx="28" ry="21" fill="${b.light}" stroke="${ink}" stroke-width="4"/>
+    <ellipse cx="95" cy="98" rx="10" ry="7" fill="${ink}"/>
+    <path class="mouthShut" d="M95 105 v6 M95 111 q-8 8 -14 2 M95 111 q8 8 14 2" fill="none" stroke="${ink}" stroke-width="3.5" stroke-linecap="round"/>
+    <g class="mouthOpen"><path d="M95 105 v4" stroke="${ink}" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="95" cy="117" rx="10" ry="9" fill="#c2185b" stroke="${ink}" stroke-width="3.5"/></g>
+    ${b.bow?`<g transform="translate(150 26)"><path d="M0 0 L-22 -14 L-22 14 Z M0 0 L22 -14 L22 14 Z" fill="${b.bow}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/><circle r="7" fill="${b.bow}" stroke="${ink}" stroke-width="4"/></g>`:''}
+  </g></svg><div class="name">${b.name}</div>`;
+}
+$('#bears').innerHTML=BEARS.map((b,i)=>`<div class="bear" data-b="${i}" style="left:${b.x}px" title="${b.name}">${bearSVG(b)}</div>`).join('');
+function bearSay(el,t){
+  const r=sr(el); const s2=document.createElement('div'); s2.className='say'; s2.textContent=t;
+  s2.style.left=r.cx+'px'; s2.style.top=(r.y-20)+'px'; fx.appendChild(s2);
+  setTimeout(()=>s2.remove(),1900);
+}
+function hearts(cx,cy,n){
+  for(let i=0;i<n;i++){
+    const h=document.createElement('div'); h.className='heart'; h.textContent=['❤️','💖','💕'][i%3];
+    h.style.left=(cx+Math.random()*80-40)+'px'; h.style.top=cy+'px'; fx.appendChild(h);
+    h.animate([{transform:'translate(-50%,0) scale(.5)',opacity:1},{transform:`translate(-50%,${-90-Math.random()*60}px) scale(1.2)`,opacity:0}],{duration:1300,delay:i*90,easing:'ease-out'}).finished.then(()=>h.remove());
+  }
+}
+let bearBusy=false;
+$('#bears').addEventListener('click',e=>{
+  const el=e.target.closest('.bear'); if(!el||bearBusy)return;
+  const b=BEARS[+el.dataset.b], list=tableList();
+  const foods=list.map((t,i)=>({t,i})).filter(o=>o.t.k==='food');
+  if(!foods.length){
+    el.classList.remove('hungry'); void el.offsetWidth; el.classList.add('hungry');
+    tone(90,.5,'sawtooth',.05,70); bearSay(el,b.hungry); return;
+  }
+  foods.sort((a,c)=>Math.abs(a.t.x-b.x)-Math.abs(c.t.x-b.x));
+  const {t,i}=foods[0];
+  const itemEl=$(`#tableItems [data-i="${i}"]`);
+  const from=itemEl?sr(itemEl):{cx:t.x,cy:t.y-40};
+  const mouth=sr(el); const to={cx:mouth.cx,cy:mouth.y+mouth.h*.48};
+  bearBusy=true;
+  list[i]={k:'ware',id:'plate',x:t.x,y:t.y}; saveTable(); renderTable();   // an empty plate stays behind
+  sfx.pop();
+  flyHTML(t.dish,{cx:from.cx,cy:from.cy},to,{size:70,endScale:.4,lift:80,dur:600}).then(()=>{
+    el.classList.remove('chew'); void el.offsetWidth; el.classList.add('chew');
+    sfx.chomp(); setTimeout(()=>sfx.chomp(),300); setTimeout(()=>sfx.chomp(),600);
+    const who=chef&&!chef.guest?chef.name:'chef';
+    const fav=b.fav.test(t.name);
+    setTimeout(()=>{
+      el.classList.remove('chew');
+      if(fav){sfx.tada();hearts(mouth.cx,mouth.y+40,7);bearSay(el,`My FAVORITE! ${t.name}! Thank you, ${who}! 💖`);}
+      else{sfx.sparkle();hearts(mouth.cx,mouth.y+40,2);bearSay(el,`Yum! Thank you, ${who}! 😋`);}
+      bearBusy=false;
+    },1150);
+  });
+});
 
 /* ---------- the dining table ---------- */
 const TABLE_MAX=18;
