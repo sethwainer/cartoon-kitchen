@@ -125,6 +125,28 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .wbowl{width:.8em;height:.42em;margin-top:.1em;background:#7fc8ff;border:.06em solid var(--ink);border-radius:.05em .05em .42em .42em/.05em .05em .42em .42em}
 .wbowl::before{content:'';position:absolute;left:-.06em;right:-.06em;top:-.12em;height:.17em;border-radius:50%;background:#d9f0ff;border:.06em solid var(--ink)}
 #bowl.away{display:none}
+/* kneading board */
+#kneadBoard{position:absolute;left:430px;top:470px;width:250px;height:90px;z-index:5;display:none;cursor:pointer;touch-action:none}
+.kneading #kneadBoard{display:block}
+.kneading #bowl{display:none}
+#kneadBoard .board{position:absolute;left:0;right:0;bottom:0;height:34px;background:#d9a066;border:5px solid var(--ink);border-radius:14px;background-image:repeating-linear-gradient(90deg,transparent 0 40px,#c48a4e 40px 44px)}
+#kneadBoard .board::after{content:'';position:absolute;left:30px;right:30px;top:4px;height:8px;border-radius:50%;background:#fffaf0aa}
+#dough{position:absolute;left:50%;bottom:22px;width:120px;height:66px;margin-left:-60px;border-radius:50% 50% 40% 40%;background:#f3dfb5;border:5px solid var(--ink);transform-origin:bottom center;transition:border-radius .3s}
+#dough::before,#dough::after{content:'';position:absolute;border-radius:50%;background:#e6c98f;opacity:.8}
+#dough::before{left:22px;top:16px;width:22px;height:10px}
+#dough::after{right:26px;top:26px;width:16px;height:8px}
+#dough.smooth{border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3d6,#f3dfb5 60%)}
+#dough.smooth::before,#dough.smooth::after{display:none}
+#dough.push{animation:kneadPush .32s ease}
+#dough.fold{animation:kneadFold .32s ease}
+@keyframes kneadPush{0%{transform:scale(1,1)}40%{transform:scale(1.35,.6) translateX(14px)}100%{transform:scale(1,1)}}
+@keyframes kneadFold{0%{transform:scale(1,1)}40%{transform:scale(.8,1.2) translateX(-10px) rotate(-8deg)}100%{transform:scale(1,1)}}
+.flour{position:absolute;width:12px;height:12px;border-radius:50%;background:#fff;opacity:.9;pointer-events:none;z-index:45}
+.steps5{gap:6px!important;font-size:20px!important}
+.steps5 span{padding:5px 8px!important}
+.tiles.t3{margin-top:4px;gap:4px 18px}
+.tiles.t3 .tplate{width:128px;height:128px;font-size:72px}
+.tiles.t3 .tname{min-height:44px;font-size:21px}
 
 /* ---------- dining room ---------- */
 #roomBtn{background:#ffe0ec}
@@ -296,8 +318,20 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .steam{position:absolute;width:30px;height:30px;border-radius:50%;background:#ffffffcc;pointer-events:none;z-index:45}
 
 /* cat */
-#cat{position:absolute;left:1470px;top:796px;font-size:84px;cursor:pointer;z-index:8;transition:transform .2s}
-#cat.hop{animation:hop .45s ease}
+#cat{position:absolute;left:1400px;top:784px;width:140px;height:108px;margin-left:-70px;cursor:pointer;z-index:8}
+#cat .cflip{position:absolute;inset:0;transition:transform .25s}
+#cat.left .cflip{transform:scaleX(-1)}
+#cat .cbody{position:absolute;left:-10px;bottom:0;line-height:0}
+#cat .leg{transform-box:fill-box;transform-origin:50% 8%}
+#cat.walking .leg.a{animation:legSwing .3s ease-in-out infinite alternate}
+#cat.walking .leg.b{animation:legSwing .3s ease-in-out infinite alternate-reverse}
+#cat .tail{transform-box:fill-box;transform-origin:100% 100%;animation:tailSwish 1.6s ease-in-out infinite alternate}
+@keyframes legSwing{from{transform:rotate(-22deg)}to{transform:rotate(22deg)}}
+@keyframes tailSwish{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+#cat.walking .cbody{animation:catStep .3s ease-in-out infinite alternate}
+#cat.hop .cbody{animation:hop .45s ease}
+#cat .shadow{position:absolute;left:14px;right:14px;bottom:-4px;height:12px;border-radius:50%;background:#0002}
+@keyframes catStep{from{transform:translateY(0)}to{transform:translateY(-3px)}}
 .say{position:absolute;background:#fff;border:4px solid var(--ink);border-radius:20px;padding:4px 14px;font-size:26px;font-weight:700;white-space:nowrap;z-index:46;pointer-events:none;animation:sayPop 1.4s ease forwards}
 
 /* trophies */
@@ -620,6 +654,8 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     <svg width="212" height="126" viewBox="0 0 212 126"><path d="M4 30 A102 20 0 0 0 208 30 C204 118 8 118 4 30 Z" fill="#ff7eb6" stroke="#3b2f4a" stroke-width="5" stroke-linejoin="round"/><path d="M30 70 Q106 92 182 70" fill="none" stroke="#ffffff88" stroke-width="6" stroke-linecap="round"/></svg>
   </div>
 
+  <div id="kneadBoard" title="Dough"><div class="board"></div><div id="dough"></div></div>
+
   <div id="fruit">
     <svg width="104" height="80" viewBox="0 0 104 80"><ellipse cx="52" cy="34" rx="50" ry="12" fill="#8d5a2b" stroke="#3b2f4a" stroke-width="5"/></svg>
     <div class="items"></div>
@@ -639,7 +675,26 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     <span class="spark" style="right:-12px;top:-14px;animation-delay:.7s">✨</span>
   </div>
 
-  <div id="cat" title="Kitty">🐱</div>
+  <div id="cat" title="Kitty"><div class="cflip"><div class="shadow"></div><span class="cbody"><svg viewBox="0 0 150 104" width="158" height="110" style="overflow:visible">
+      <g class="tail"><path d="M34 52 C12 46 6 22 20 10" fill="none" stroke="#3b2f4a" stroke-width="17" stroke-linecap="round"/><path d="M34 52 C12 46 6 22 20 10" fill="none" stroke="#ffb347" stroke-width="8" stroke-linecap="round"/></g>
+      <g class="leg b"><rect x="40" y="58" width="13" height="34" rx="6" fill="#f0a030" stroke="#3b2f4a" stroke-width="4.5"/></g>
+      <g class="leg a"><rect x="90" y="58" width="13" height="34" rx="6" fill="#f0a030" stroke="#3b2f4a" stroke-width="4.5"/></g>
+      <ellipse cx="72" cy="54" rx="44" ry="23" fill="#ffb347" stroke="#3b2f4a" stroke-width="5"/>
+      <ellipse cx="74" cy="64" rx="28" ry="9" fill="#ffe0b2"/>
+      <path d="M58 33 q4 10 0 18 M72 31 q4 10 0 19 M86 33 q4 9 0 17" fill="none" stroke="#e08a1e" stroke-width="5" stroke-linecap="round"/>
+      <g class="leg a"><rect x="50" y="62" width="13" height="32" rx="6" fill="#ffb347" stroke="#3b2f4a" stroke-width="4.5"/></g>
+      <g class="leg b"><rect x="100" y="62" width="13" height="32" rx="6" fill="#ffb347" stroke="#3b2f4a" stroke-width="4.5"/></g>
+      <g class="head">
+        <path d="M100 30 L104 6 L118 22 Z M122 22 L136 6 L138 32 Z" fill="#ffb347" stroke="#3b2f4a" stroke-width="4.5" stroke-linejoin="round"/>
+        <path d="M106 16 L108 24 M131 15 L131 25" stroke="#ff8fab" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="120" cy="38" r="22" fill="#ffb347" stroke="#3b2f4a" stroke-width="5"/>
+        <ellipse cx="114" cy="35" rx="3.5" ry="5" fill="#3b2f4a"/><ellipse cx="128" cy="35" rx="3.5" ry="5" fill="#3b2f4a"/>
+        <circle cx="115" cy="33" r="1.4" fill="#fff"/><circle cx="129" cy="33" r="1.4" fill="#fff"/>
+        <path d="M118 43 L124 43 L121 47 Z" fill="#ff6fa8"/>
+        <path d="M121 47 q-3 5 -7 3 M121 47 q3 5 7 3" fill="none" stroke="#3b2f4a" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M108 44 L94 42 M108 48 L95 50 M134 44 L148 42 M134 48 L147 50" stroke="#3b2f4a" stroke-width="2" stroke-linecap="round"/>
+      </g>
+    </svg></span></div></div>
 
   <div id="nightTint"></div>
 
@@ -944,14 +999,17 @@ const RECIPES=[
   {name:'Chocolate Chip Cookies',dish:'🍪',ings:['flour','sugar','butter','eggs','chocolate'],tool:'oven',color:'#e8c48a'},
   {name:'Berry Smoothie',dish:'🥤',ings:['strawberry','banana','yogurt','ice','honey'],tool:'blender',color:'#ff8fb1'},
   {name:'Spaghetti',dish:'🍝',ings:['pasta','sauce','cheese','salt'],tool:'stove',vessel:'pot',color:'#ff7043'},
-  {name:'Pizza',dish:'🍕',ings:['flour','sauce','cheese','mushroom'],tool:'oven',color:'#ffb74d'},
+  {name:'Pizza',dish:'🍕',ings:['flour','sauce','cheese','mushroom'],tool:'oven',color:'#ffb74d',knead:true},
   {name:'Garden Salad',dish:'🥗',ings:['lettuce','tomato','carrot','cucumber'],tool:'none',color:'#8bc34a'},
   {name:'Peanut Butter Toast',dish:'🍞',ings:['bread','peanut','honey'],tool:'toaster',color:'#e0a65a'},
   {name:'Birthday Cake',dish:'🎂',ings:['flour','sugar','eggs','butter','milk','sprinkles'],tool:'oven',color:'#fff0b3'},
   {name:'Popcorn',dish:'🍿',ings:['popcorn','butter','salt'],tool:'microwave',color:'#fff59d'},
   {name:'Ice Cream Sundae',dish:'🍨',ings:['icecream','chocolate','strawberry','sprinkles'],tool:'none',color:'#ffe0ec'},
   {name:'Chicken Soup',dish:'🍲',ings:['chicken','carrot','peas','salt'],tool:'stove',vessel:'pot',color:'#ffcc80'},
-  {name:'Apple Pie',dish:'🥧',ings:['apple','flour','sugar','butter'],tool:'oven',color:'#d9a066'}
+  {name:'Apple Pie',dish:'🥧',ings:['apple','flour','sugar','butter'],tool:'oven',color:'#d9a066'},
+  {name:'Homemade Pasta',dish:'🍝',ings:['flour','eggs','salt','sauce'],tool:'stove',vessel:'pot',color:'#f3dfb5',knead:true},
+  {name:'Fresh Bread',dish:'🥖',ings:['flour','butter','salt','honey'],tool:'oven',color:'#f3dfb5',knead:true},
+  {name:'Dumplings',dish:'🥟',ings:['flour','eggs','chicken','carrot'],tool:'stove',vessel:'pot',color:'#f3dfb5',knead:true}
 ];
 const MIXCOLORS=['#f6d38a','#ffcc80','#ffb74d','#e8c48a','#ffe066','#f4a261'];
 /* Free play: whatever goes in the bowl + whichever appliance = a real dish.
@@ -960,7 +1018,7 @@ const MIXCOLORS=['#f6d38a','#ffcc80','#ffb74d','#e8c48a','#ffe066','#f4a261'];
 const FRUIT=['banana','apple','lemon','grapes','strawberry','coconut'];
 const VEG=['lettuce','tomato','carrot','cucumber','mushroom','peas','broccoli','onion','corn','pepper','olives','garlic','herbs'];
 const HOT=['oven','stove','microwave','toaster'];
-const R=(a,name,dish,need,any,tools)=>({a,name,dish,need,any,tools});
+const R=(a,name,dish,need,any,tools,not)=>({a,name,dish,need,any,tools,not});
 const INVENT=[
   // for the cat
   R('a','Kitty Dinner','🐱',[],['catfood','treats'],null),
@@ -974,6 +1032,8 @@ const INVENT=[
   R('a','Cake','🍰',['flour','sugar'],null,['oven']),
   R('a','Mug Cake','🧁',['flour','sugar'],null,['microwave']),
   R('','Onion Rings','🧅',['flour','onion'],null,['stove','oven']),
+  R('','Dumplings','🥟',['flour'],['chicken','carrot','peas','mushroom','onion','broccoli','corn','beans','fish'],['stove','microwave'],['sugar','milk','chocolate']),
+  R('','Homemade Noodles','🍝',['flour','eggs'],null,['stove'],['milk','sugar','butter','banana','strawberry','chocolate','honey']),
   R('','Pancakes','🥞',['flour'],['eggs','milk','butter','sugar','banana','strawberry'],['stove']),
   R('','Waffles','🧇',['flour'],['eggs','milk','butter','sugar'],['toaster']),
   R('a','Pizza','🍕',['flour'],['sauce','cheese','tomato','mushroom','olives','pepper'],['oven','microwave','toaster','stove']),
@@ -1115,7 +1175,7 @@ function inventDish(items,tool){
   let best=-1;
   RECIPES.forEach((r,i)=>{if(r.tool===tool&&r.ings.every(x=>has.has(x))&&(best<0||r.ings.length>RECIPES[best].ings.length))best=i;});
   if(best>=0){const r=RECIPES[best];return {name:r.name,dish:r.dish,idx:best,color:r.color,a:''};}
-  const fit=INVENT.find(r=>r.need.every(x=>has.has(x))&&(!r.any||r.any.some(x=>has.has(x)))&&(!r.tools||r.tools.includes(tool)));
+  const fit=INVENT.find(r=>r.need.every(x=>has.has(x))&&(!r.any||r.any.some(x=>has.has(x)))&&(!r.tools||r.tools.includes(tool))&&(!r.not||!r.not.some(x=>has.has(x))));
   const r=fit||INVENT_FALLBACK[tool]||INVENT_FALLBACK.none;
   return {name:r.name,dish:r.dish,a:r.a,invented:true};
 }
@@ -1264,7 +1324,7 @@ function getBowl(from){
     say(recipe&&phase==='gather'?`Now find the food for the ${recipe.name}!`:'Bowl ready! Now put some food in it!');
   });
 }
-function putBowlAway(){bowlOut=false;bowl.classList.add('away');resetBowl();}
+function putBowlAway(){bowlOut=false;bowl.classList.add('away');resetBowl();endKnead();}
 function needBowl(id,from){
   sfx.boing(); flyHTML(ingHTML(id),from,BOWL_SPOT,{back:true});
   say('First get a mixing bowl from the dish cabinet! 🥣'); flashBox('dishCab');
@@ -1310,6 +1370,13 @@ function addIngredient(id,from){
       }else say(g.n);
     });
   }else{
+    if(needKnead){
+      if(bowlItems.length>=10){sfx.boing();say('That\'s plenty on your dough!');return;}
+      bowlItems.push(id); sfx.pop();
+      const r=sr(doughEl);
+      flyHTML(ingHTML(id),from,{cx:r.cx,cy:r.cy}).then(()=>{sfx.plop();flourPuff(3);say(`${g.n} on the dough!`);});
+      return;
+    }
     if(bowlItems.length>=10){sfx.boing();say('The bowl is full! Stir it up!');wiggle(bowl);return;}
     if(mixed){mixed=false;stirs=0;bowl.classList.remove('mixed');$('#bowlIn').setAttribute('fill','#ffe3ef');Array.from(bstuff.querySelectorAll('.bitem')).forEach(x=>x.style.opacity=1);}
     bowlItems.push(id); sfx.pop();
@@ -1333,6 +1400,60 @@ function resetBowl(){
   $('#bowlIn').setAttribute('fill','#ffe3ef');
 }
 
+/* ---------- kneading (doughs: pizza, bread, pasta, dumplings…) ---------- */
+const KNEADS=8, DOUGH='#f3dfb5';
+const NOT_DOUGH=['sugar','chocolate','sprinkles','honey','banana','strawberry','apple','pumpkin','milk','oats','yogurt','icecream','marshmallow','graham','juice','tea','ice','lemon','grapes','coconut','popcorn','cereal','lollipop','donut'];
+let needKnead=false, kneads=0, kneadMove=0;
+const doughEl=$('#dough');
+function isDough(items){return items.includes('flour')&&!items.some(i=>NOT_DOUGH.includes(i));}
+function startKnead(){
+  needKnead=true; kneads=0; phase=recipe?'knead':phase;
+  const from=bowlTarget();
+  doughEl.classList.remove('smooth');
+  flyHTML(`<div class="blob" style="background:${DOUGH}"></div>`,from,{cx:555,cy:520},{size:20,endScale:1.2,lift:90}).then(()=>{
+    stage.classList.add('kneading'); sfx.plop(); flourPuff(10);
+    updateHUD();
+  });
+  setTimeout(()=>{bstuff.innerHTML='';bowl.classList.remove('has','mixed');$('#bowlIn').setAttribute('fill','#ffe3ef');},120);
+  say("It's dough! 👐 Tap or rub the dough to knead it!");
+}
+function endKnead(){stage.classList.remove('kneading');needKnead=false;kneads=0;doughEl.classList.remove('smooth');}
+function flourPuff(n){
+  const r=sr(doughEl);
+  for(let i=0;i<n;i++){
+    const f=document.createElement('div'); f.className='flour'; f.style.left=(r.cx+Math.random()*80-40)+'px'; f.style.top=(r.y+r.h*.6)+'px';
+    fx.appendChild(f);
+    const a=Math.random()*Math.PI-Math.PI, d=40+Math.random()*60;
+    f.animate([{transform:'scale(.6)',opacity:.9},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) scale(1.6)`,opacity:0}],{duration:700,easing:'ease-out'}).finished.then(()=>f.remove());
+  }
+}
+function knead(){
+  if(!needKnead||kneads>=KNEADS||phase==='cooking')return;
+  kneads++;
+  const cls=kneads%2?'push':'fold';
+  doughEl.classList.remove('push','fold'); void doughEl.offsetWidth; doughEl.classList.add(cls);
+  noise(.18,'lowpass',260,.35); tone(kneads%2?150:120,.12,'sine',.12,90);
+  flourPuff(4);
+  if(kneads>=KNEADS){
+    setTimeout(()=>{
+      doughEl.classList.add('smooth'); sfx.sparkle();
+      if(recipe){phase='cook';updateHUD();say(`Smooth dough! Now ${TOOLS[recipe.tool].verb.toLowerCase()} it in the ${TOOLS[recipe.tool].n}!`);}
+      else{updateHUD();say('Smooth dough! Now cook it in anything you like!');}
+    },320);
+  }
+  updateHUD();
+}
+const kb=$('#kneadBoard');
+let kDown=null;
+kb.addEventListener('pointerdown',e=>{e.preventDefault();kDown={x:e.clientX,y:e.clientY,pid:e.pointerId};kneadMove=0;knead();});
+addEventListener('pointermove',e=>{
+  if(!kDown||e.pointerId!==kDown.pid)return;
+  kneadMove+=Math.hypot(e.clientX-kDown.x,e.clientY-kDown.y)/S; kDown.x=e.clientX; kDown.y=e.clientY;
+  if(kneadMove>70){kneadMove=0;knead();}   // rubbing back and forth kneads too
+});
+addEventListener('pointerup',e=>{if(kDown&&e.pointerId===kDown.pid)kDown=null;});
+function kneadDots(){return '●'.repeat(kneads)+'○'.repeat(Math.max(0,KNEADS-kneads));}
+
 /* ---------- stirring ---------- */
 bowl.addEventListener('click',()=>{
   if(busy())return;
@@ -1354,11 +1475,14 @@ bowl.addEventListener('click',()=>{
         if(recipe.tool==='none'){
           phase='cooking'; updateHUD(); say('All mixed! Ta da!');
           setTimeout(()=>{const r=sr(bowl);finish({name:recipe.name,dish:recipe.dish,idx:RECIPES.indexOf(recipe),color:recipe.color,a:''},{cx:r.cx,cy:r.y});},900);
+        }else if(recipe.knead){
+          startKnead();
         }else{
           phase='cook'; updateHUD();
           say(`It's all mixed! Now ${TOOLS[recipe.tool].verb.toLowerCase()} it in the ${TOOLS[recipe.tool].n}! It's glowing!`);
         }
-      }else{ updateHUD(); say('All mixed! Cook it in anything — or tap the bowl to eat it now!'); }
+      }else if(isDough(bowlItems)){ startKnead(); }
+      else{ updateHUD(); say('All mixed! Cook it in anything — or tap the bowl to eat it now!'); }
     },300);
   }
   updateHUD();
@@ -1374,7 +1498,8 @@ function onAppliance(tool){
     else{wiggle($(PART[tool]));sfx.boing();say(`Not the ${TOOLS[tool].n}! Try the ${TOOLS[recipe.tool].n}. It's glowing!`);}
     return;
   }
-  if(!recipe&&mixed&&bowlItems.length){startCook(tool);return;}
+  if(!recipe&&mixed&&bowlItems.length){if(needKnead&&kneads<KNEADS){wiggle(kb);say('Knead the dough first! 👐 Tap the dough.');return;}startCook(tool);return;}
+  if(recipe&&phase==='knead'){wiggle(kb);say('Knead the dough first! 👐 Tap the dough.');return;}
   if(!recipe&&bowlItems.length&&!mixed){say('Stir the bowl first!');wiggle(bowl);}
   idle(tool);
 }
@@ -1399,9 +1524,11 @@ function cookTarget(tool){
 async function startCook(tool){
   hidePicker();
   phase='cooking'; updateHUD(); clearGlow();
-  const col=recipe?recipe.color:freeColor;
+  const kneaded=stage.classList.contains('kneading');
+  const col=kneaded?DOUGH:(recipe?recipe.color:freeColor);
   const items=bowlItems.slice();
-  const from=bowlTarget(), to=cookTarget(tool);
+  const from=kneaded?(()=>{const r=sr(doughEl);return {cx:r.cx,cy:r.cy};})():bowlTarget(), to=cookTarget(tool);
+  if(kneaded)setTimeout(()=>stage.classList.remove('kneading'),60);
   sfx.swish();
   const blob=`<div class="blob" style="background:${col}"></div>`;
   const fly=flyHTML(blob,from,to,{size:20,endScale:.5});
@@ -1476,15 +1603,18 @@ $('#hintBtn').onclick=()=>{
   sfx.sparkle();
   if(room==='dining'){say('Cook food in the kitchen, then tap "To the table"! Dishes from the dish cabinet go on the table too.');return;}
   if(!bowlOut&&phase!=='cooking'&&phase!=='done'&&(!recipe||phase==='gather')){flashBox('dishCab');say('Get a mixing bowl from the dish cabinet above the microwave! 🥣');return;}
+  if(!recipe&&needKnead&&kneads<KNEADS){wiggle(kb);say('Tap or rub the dough to knead it! 👐');return;}
   if(!recipe){wiggle($('#cookbook'));say('Tap the cookbook to pick a recipe! Or put any food in the bowl, stir it and cook it to invent your own dish!');return;}
   if(phase==='gather'){const miss=recipe.ings.find(i=>!bowlItems.includes(i));if(miss)hintFor(miss);}
   else if(phase==='mix'){wiggle(bowl);say('Tap the bowl to stir it!');}
+  else if(phase==='knead'){wiggle(kb);say('Tap or rub the dough to knead it! 👐');}
   else if(phase==='cook'){showCookGlow();say(`${TOOLS[recipe.tool].verb} it in the ${TOOLS[recipe.tool].n}! Tap the glowing ${TOOLS[recipe.tool].n}.`);}
 };
 $('#cleanBtn').onclick=()=>{
   if(room==='dining'){clearTable();return;}
   if(busy())return;
   if(!bowlOut){say('Nothing to clean!');return;}
+  endKnead();
   if(bowlItems.length){
     const r=bowlTarget();
     for(let i=0;i<10;i++)setTimeout(()=>bubble(r.cx+Math.random()*160-80,r.cy+Math.random()*30),i*50);
@@ -1498,7 +1628,7 @@ function bubble(x,y){
   stage.appendChild(b);
   b.animate([{transform:'scale(.3)',opacity:1},{transform:`translate(${Math.random()*40-20}px,-90px) scale(1.3)`,opacity:0}],{duration:900,easing:'ease-out'}).finished.then(()=>b.remove());
 }
-$('#quit').onclick=()=>{if(busy())return;recipe=null;phase='free';resetBowl();clearGlow();updateHUD();sfx.close();say('Okay! Free play!');};
+$('#quit').onclick=()=>{if(busy())return;recipe=null;phase='free';resetBowl();endKnead();clearGlow();updateHUD();sfx.close();say('Okay! Free play!');};
 $('#soundBtn').onclick=()=>{soundOn=!soundOn;$('#soundBtn').textContent=soundOn?'🔊':'🔇';if(soundOn)sfx.pop();};
 
 /* ---------- HUD ---------- */
@@ -1511,7 +1641,7 @@ function updateHUD(){
   $('#quit').classList.toggle('on',!!recipe);
   if(!recipe){
     dish.textContent='👩‍🍳'; chips.classList.remove('on'); chips.innerHTML='';
-    msg.textContent=phase==='cooking'?'Cooking… ⏳':phase==='done'?'Yum! 😋':!bowlOut?'Get a mixing bowl 🥣 from the dish cabinet!':!bowlItems.length?'Pick a recipe 📖 — or put food in the bowl!':mixed?'Cook it in anything 🔥 — or tap the bowl to eat it!':`Tap the bowl to stir 🥄 ${dots()}`;
+    msg.textContent=phase==='cooking'?'Cooking… ⏳':phase==='done'?'Yum! 😋':!bowlOut?'Get a mixing bowl 🥣 from the dish cabinet!':!bowlItems.length?'Pick a recipe 📖 — or put food in the bowl!':needKnead&&kneads<KNEADS?`Knead the dough! 👐 ${kneadDots()}`:needKnead?'Smooth dough! Cook it in anything 🔥':mixed?'Cook it in anything 🔥 — or tap the bowl to eat it!':`Tap the bowl to stir 🥄 ${dots()}`;
     return;
   }
   dish.textContent=recipe.dish;
@@ -1520,6 +1650,7 @@ function updateHUD(){
   const T=TOOLS[recipe.tool];
   msg.textContent=phase==='gather'&&!bowlOut?'First get a mixing bowl 🥣 from the dish cabinet!':phase==='gather'?`${recipe.name}: find the food! 🔍`:
     phase==='mix'?`Tap the bowl to stir! 🥄 ${dots()}`:
+    phase==='knead'?`Knead the dough! 👐 ${kneadDots()}`:
     phase==='cook'?`${T.verb} it in the ${T.n}! ${T.i}`:
     phase==='cooking'?'Cooking… ⏳':'Yum! 😋';
   if(phase==='cook')showCookGlow();
@@ -1587,7 +1718,7 @@ function renderBook(){
   $('#bPrev').hidden=bookPage<0; $('#bNext').hidden=bookPage>=RECIPES.length-1; $('#bHome').hidden=bookPage<0;
   if(bookPage<0){
     L.innerHTML=`<h1 class="btitle">My Cookbook</h1><p class="bsub">👩‍🍳 Tap a yummy picture!</p><div class="tiles">${[0,1,2,3,4,5].map(tile).join('')}</div>`;
-    R.innerHTML=`<div class="tiles t2">${[6,7,8,9,10,11].map(tile).join('')}</div>`;
+    R.innerHTML=`<div class="tiles t3">${RECIPES.map((r,i)=>i).slice(6).map(tile).join('')}</div>`;
     return;
   }
   const r=RECIPES[bookPage], T=TOOLS[r.tool];
@@ -1596,7 +1727,7 @@ function renderBook(){
     <h2 class="rname">${r.name}</h2>`;
   R.innerHTML=`<h3 class="need">You need:</h3>
     <div class="ilist">${r.ings.map(id=>{const L2=LOC[ING[id].loc];return `<button class="irow" data-id="${id}">${ingHTML(id)}<span class="iname">${ING[id].n}</span><span class="loc" style="background:${L2.c}">${L2.i} ${L2.n}</span></button>`;}).join('')}</div>
-    <div class="steps"><span>1 🥣 Bowl</span>➜<span>2 🧺 Find</span>➜<span>3 🥄 Stir</span>➜<span>4 ${T.i} ${T.verb}</span></div>
+    ${r.knead?`<div class="steps steps5"><span>1 🥣 Bowl</span>➜<span>2 🧺 Find</span>➜<span>3 🥄 Stir</span>➜<span>4 👐 Knead</span>➜<span>5 ${T.i} ${T.verb}</span></div>`:`<div class="steps"><span>1 🥣 Bowl</span>➜<span>2 🧺 Find</span>➜<span>3 🥄 Stir</span>➜<span>4 ${T.i} ${T.verb}</span></div>`}
     <button class="cookbtn" data-r="${bookPage}">Let's Cook! 👩‍🍳</button>`;
 }
 book.addEventListener('click',e=>{
@@ -1608,7 +1739,7 @@ book.addEventListener('click',e=>{
 
 function startRecipe(r){
   goRoom('kitchen',true);
-  recipe=r; phase='gather'; resetBowl(); clearGlow(); hideDone(); updateHUD();
+  recipe=r; phase='gather'; resetBowl(); endKnead(); clearGlow(); hideDone(); updateHUD();
   if(!bowlOut){flashBox('dishCab');say(`Let's make ${r.name}! First get a mixing bowl from the dish cabinet! 🥣`);}
   else say(`Let's make ${r.name}! Find the ${r.ings.map(i=>ING[i].n).join(', ')}. Tap the light bulb if you need help!`);
 }
@@ -1775,6 +1906,8 @@ function cyrb(str){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<str.length;i++)
 const keyOf=n=>n.trim().toLowerCase();
 const hashOf=(n,pw)=>cyrb('kitchen|'+keyOf(n)+'|'+pw);
 function blankDishes(){return Array(NSLOT).fill(0);}
+// older saves had fewer recipes; the last slot is always "your own inventions"
+function fixDishes(d){if(!d||d.length>=NSLOT)return d;const inv=d[d.length-1];const base=d.slice(0,-1);while(base.length<NSLOT-1)base.push(0);return base.concat(inv);}
 
 function renderTrophies(){$('#trophies').innerHTML=(chef?chef.recent:[]).map(t=>`<span>${t}</span>`).join('');}
 function recordDish(res){
@@ -1797,10 +1930,10 @@ function makeCode(c){
 function readCode(txt,c){
   let s=txt.toUpperCase().replace(/[^0-9A-Z]/g,'');
   if(s.startsWith('COOK'))s=s.slice(4);
-  if(s.length!==NSLOT+4)return null;
-  const body=s.slice(0,NSLOT), chk=s.slice(NSLOT);
+  const n=s.length-4; if(n<13||n>NSLOT)return null;   // older codes had fewer recipes
+  const body=s.slice(0,n), chk=s.slice(n);
   if(cyrb(c.hash+'|'+body).slice(-4).toUpperCase().padStart(4,'0')!==chk)return null;
-  return body.split('').map(ch=>parseInt(ch,36));
+  return fixDishes(body.split('').map(ch=>parseInt(ch,36)));
 }
 
 /* login screens */
@@ -1839,6 +1972,7 @@ $('#lfGo').onclick=submitLogin;
 $('#lfPw').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
 $('#lfName').addEventListener('keydown',e=>{if(e.key==='Enter')$('#lfPw').focus();});
 function enterKitchen(){
+  chef.dishes=fixDishes(chef.dishes);
   setTimeout(()=>renderTable(),0);
   $('#login').classList.remove('show'); sfx.tada();
   $('#chefName').textContent=chef.guest?'':chef.name;
@@ -1898,16 +2032,35 @@ function catSay(t){
   b.style.left=r.cx+'px'; b.style.top=(r.y-40)+'px'; fx.appendChild(b);
   setTimeout(()=>b.remove(),1400);
 }
+/* the cat strolls around the kitchen floor */
+const CAT={x:1400,target:1400,wait:2,speed:70};
+let catLast=performance.now(), catHold=0;
+function catTick(now){
+  const dt=Math.min(.1,(now-catLast)/1000); catLast=now;
+  if(catHold>0){catHold-=dt;cat.classList.remove('walking');}
+  else if(Math.abs(CAT.target-CAT.x)<2){
+    cat.classList.remove('walking');
+    CAT.wait-=dt;
+    if(CAT.wait<=0){CAT.target=330+Math.random()*1200;CAT.wait=1.5+Math.random()*4;CAT.speed=55+Math.random()*45;}
+  }else{
+    const dir=Math.sign(CAT.target-CAT.x);
+    CAT.x+=dir*Math.min(CAT.speed*dt,Math.abs(CAT.target-CAT.x));
+    cat.classList.add('walking'); cat.classList.toggle('left',dir<0);   // the drawn cat faces right
+    cat.style.left=CAT.x+'px';
+  }
+  requestAnimationFrame(catTick);
+}
+requestAnimationFrame(catTick);
 cat.addEventListener('click',()=>{
+  catHold=1.6;
   cat.classList.remove('hop'); void cat.offsetWidth; cat.classList.add('hop');
   if(Math.random()<.3){sfx.purr();catSay('Purrr… 💕');}else{sfx.meow();catSay('Meow!');}
 });
 function feedCat(id){
   if(ING[id].ware){catSay('That\'s not food! 😹');sfx.meow();return;}
-  cat.textContent=id==='ice'?'🙀':'😻'; sfx.chomp();
+  catHold=2; sfx.chomp();
   catSay(id==='ice'?'Brrr! 🥶':['catfood','treats','fish','tuna','chicken','milk','cheese'].includes(id)?'My favorite! 💕':'Yum! 😋');
   cat.classList.remove('hop'); void cat.offsetWidth; cat.classList.add('hop');
-  setTimeout(()=>{cat.textContent='🐱';},1400);
 }
 function setClock(){const d=new Date();const m=d.getMinutes(),h=d.getHours()%12+m/60;
   $('#mHand').setAttribute('transform',`rotate(${m*6} 40 40)`);$('#hHand').setAttribute('transform',`rotate(${h*30} 40 40)`);}
