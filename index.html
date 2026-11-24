@@ -253,6 +253,28 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 #bedDinner{position:absolute;left:30px;top:118px;margin:0;z-index:7}
 .zzz{position:absolute;font-size:44px;font-weight:700;color:#fff;-webkit-text-stroke:2px var(--ink);pointer-events:none;z-index:46}
 
+/* ---------- food that runs out + grocery store ---------- */
+.item.empty{visibility:hidden;pointer-events:none}
+.item[data-count]::after{content:attr(data-count);position:absolute;right:-.12em;top:-.08em;min-width:.36em;height:.36em;border-radius:.2em;background:#fff;border:.05em solid var(--ink);font-size:.4em;font-weight:700;line-height:.36em;text-align:center;color:var(--ink);font-family:Fredoka,sans-serif}
+#shopBtn{background:#c8f7c5}
+#store{z-index:62;background:#3b2f4a99}
+#store .scard{width:1380px;height:820px;background:#fffaf0;border:7px solid var(--ink);border-radius:40px;box-shadow:0 10px 0 var(--ink);padding:22px 30px;display:flex;flex-direction:column;position:relative;animation:popIn .35s ease-out}
+#store h1{margin:0;font-size:56px;color:#2e7d32;-webkit-text-stroke:2px var(--ink);text-align:center}
+#store .ssub{margin:2px 0 12px;font-size:26px;text-align:center;font-weight:500}
+#storeList{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 14px;padding:4px 14px 20px 6px;touch-action:pan-y;-webkit-overflow-scrolling:touch;align-content:start}
+#storeList .letter{grid-column:1/-1;font-size:38px;font-weight:700;color:#e2553f;border-bottom:4px dashed #e3b97a;margin-top:6px}
+.srow{display:flex;align-items:center;gap:10px;min-width:0;background:#fff;border:4px solid var(--ink);border-radius:20px;padding:6px 12px;font-size:52px;text-align:left;cursor:pointer;transition:transform .12s}
+.srow:active{transform:scale(.97)}
+.srow .sname{flex:1;min-width:0;font-size:26px;font-weight:700;line-height:1.1}
+.srow .sname small{display:block;font-size:18px;font-weight:500;opacity:.75}
+.srow .shave{font-size:19px;font-weight:700;background:#e8f6ff;border:3px solid var(--ink);border-radius:14px;padding:2px 8px;white-space:nowrap;flex:none}
+.srow .shave.zero{background:#ffcdd2}
+.srow .splus{font-size:30px;font-weight:700;width:54px;height:54px;border-radius:50%;border:4px solid var(--ink);background:#7ed957;display:flex;align-items:center;justify-content:center;flex:none}
+.srow.full .splus{background:#ddd}
+#storeClose{position:absolute;right:-26px;top:-26px;width:80px;height:80px;border-radius:50%;border:6px solid var(--ink);background:#fff;font-size:40px;box-shadow:0 6px 0 var(--ink);padding:0}
+.chip.out::before{content:'🛒';position:absolute;left:-10px;top:-12px;font-size:20px}
+.irow .outTag{font-size:20px;font-weight:700;border:3px solid var(--ink);border-radius:14px;padding:2px 10px;background:#ffcdd2;white-space:nowrap}
+
 /* ---------- room menu ---------- */
 #roomMenu{position:absolute;right:12px;top:112px;z-index:58;display:none;flex-direction:column;gap:8px;background:#fff;border:6px solid var(--ink);border-radius:28px;padding:14px;box-shadow:0 8px 0 var(--ink)}
 #roomMenu.show{display:flex;animation:popIn .25s ease-out}
@@ -910,6 +932,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     </div>
     <button class="hbtn" id="hintBtn" title="Help me">💡</button>
     <button class="hbtn" id="cleanBtn" title="Clean the bowl">🧽</button>
+    <button class="hbtn" id="shopBtn" title="Grocery store">🛒</button>
     <button class="hbtn" id="soundBtn" title="Sound on/off">🔊</button>
     <button class="hbtn" id="roomBtn" title="Rooms">🚪</button>
     <button class="hbtn" id="chefBtn" title="My dishes">🏆<span id="chefName"></span></button>
@@ -959,6 +982,15 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     <button data-r="bed1">🛏️ Lily's room</button>
     <button data-r="bed2">🛏️ Sam's room</button>
     <button data-r="bed3">🛏️ Grandpa's room</button>
+  </div>
+
+  <div id="store" class="ov">
+    <div class="scard">
+      <h1>🛒 Grocery Store</h1>
+      <div class="ssub">Tap a food to buy it. It goes right into its cupboard! 🧺</div>
+      <div id="storeList"></div>
+      <button id="storeClose">✖</button>
+    </div>
   </div>
 
   <!-- my dishes -->
@@ -1525,7 +1557,7 @@ function showPicker(loc){
   const ids=loc==='fruit'?['banana','grapes','apple','lemon','coconut']:LAYOUT[LOC[loc].box].flat();
   $('#ptitle').textContent=`${LOC[loc].i} ${LOC[loc].n}`;
   $('#pitems').innerHTML=ids.map(id=>itemHTML(id)).join('');
-  $('#picker').classList.add('show'); pickerLoc=loc;
+  $('#picker').classList.add('show'); pickerLoc=loc; refreshShelves();
 }
 function hidePicker(){$('#picker').classList.remove('show');pickerLoc=null;}
 $('#pclose').onclick=()=>{
@@ -1625,11 +1657,61 @@ function handleWare(id,from){
 }
 
 /* ---------- adding ingredients ---------- */
+/* ---------- food runs out; buy more at the grocery store ---------- */
+const START_STOCK=3, MAX_STOCK=9;
+const FOODS=Object.keys(ING).filter(id=>!ING[id].ware);
+function stockOf(id){
+  if(ING[id].ware)return Infinity;
+  if(!chef)return START_STOCK;
+  chef.stock=chef.stock||{};
+  if(chef.stock[id]===undefined)chef.stock[id]=START_STOCK;
+  return chef.stock[id];
+}
+function saveStock(){if(chef&&!chef.guest){chefs[keyOf(chef.name)]=chef;saveChefs();}}
+function useItem(id){if(ING[id].ware)return;chef.stock[id]=Math.max(0,stockOf(id)-1);saveStock();refreshShelves();}
+function refreshShelves(){
+  $$('.item[data-id]').forEach(el=>{
+    const id=el.dataset.id; if(ING[id].ware)return;
+    const n=stockOf(id);
+    el.classList.toggle('empty',n<=0);
+    if(n>1)el.dataset.count=n; else delete el.dataset.count;
+  });
+}
+function outOf(id,from){
+  sfx.boing(); say(`You're out of ${ING[id].n}! Tap the 🛒 cart to buy more.`); wiggle($('#shopBtn'));
+}
+function renderStore(){
+  const list=FOODS.slice().sort((a,b)=>ING[a].n.localeCompare(ING[b].n));
+  let html='', last='';
+  for(const id of list){
+    const g=ING[id], L=LOC[g.loc], n=stockOf(id), letter=g.n[0].toUpperCase();
+    if(letter!==last){html+=`<div class="letter">${letter}</div>`;last=letter;}
+    html+=`<button class="srow${n>=MAX_STOCK?' full':''}" data-id="${id}">${ingHTML(id)}<span class="sname">${g.n}<small>${L.i} ${L.n}</small></span><span class="shave${n?'':' zero'}">${n?`Have ${n}`:'None!'}</span><span class="splus">+</span></button>`;
+  }
+  $('#storeList').innerHTML=html;
+}
+function openStore(){if(phase==='cooking'||spaceBusy)return;renderStore();$('#store').classList.add('show');$('#roomMenu').classList.remove('show');sfx.pop();say('Welcome to the grocery store! 🛒');}
+$('#shopBtn').onclick=openStore;
+$('#storeClose').onclick=()=>{$('#store').classList.remove('show');sfx.close();};
+$('#store').addEventListener('click',e=>{if(e.target.id==='store'){$('#store').classList.remove('show');sfx.close();}});
+$('#storeList').addEventListener('click',e=>{
+  const row=e.target.closest('.srow'); if(!row)return;
+  const id=row.dataset.id, g=ING[id], L=LOC[g.loc];
+  if(stockOf(id)>=MAX_STOCK){sfx.boing();say(`The ${L.n} is full of ${g.n}!`);wiggle(row);return;}
+  chef.stock[id]=stockOf(id)+1; saveStock(); refreshShelves();
+  tone(1047,.12,'square',.06); tone(1568,.25,'square',.06,null,.1);   // cha-ching!
+  row.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:250});
+  const have=row.querySelector('.shave'); have.textContent=`Have ${chef.stock[id]}`; have.classList.remove('zero');
+  if(chef.stock[id]>=MAX_STOCK)row.classList.add('full');
+  say(`${g.n} went into the ${L.n}! ${L.i}`);
+});
+
 function addIngredient(id,from){
   const g=ING[id];
   if(busy())return;
   if(g.ware){handleWare(id,from);return;}
   if(!bowlOut){needBowl(id,from);return;}
+  if(stockOf(id)<=0){outOf(id,from);return;}
   if(recipe){
     if(phase!=='gather'){
       sfx.boing(); flyHTML(ingHTML(id),from,bowlTarget(),{back:true});
@@ -1644,7 +1726,7 @@ function addIngredient(id,from){
       sfx.boing(); flyHTML(ingHTML(id),from,bowlTarget(),{back:true});
       say(`You already have the ${g.n}!`); return;
     }
-    bowlItems.push(id); sfx.pop();
+    bowlItems.push(id); useItem(id); sfx.pop();
     flyHTML(ingHTML(id),from,bowlTarget()).then(()=>{
       putInBowl(id); sfx.plop(); updateHUD();
       if(bowlItems.length===recipe.ings.length){
@@ -1655,14 +1737,14 @@ function addIngredient(id,from){
   }else{
     if(needKnead){
       if(bowlItems.length>=10){sfx.boing();say('That\'s plenty on your dough!');return;}
-      bowlItems.push(id); sfx.pop();
+      bowlItems.push(id); useItem(id); sfx.pop();
       const r=sr(doughEl);
       flyHTML(ingHTML(id),from,{cx:r.cx,cy:r.cy}).then(()=>{sfx.plop();flourPuff(3);say(`${g.n} on the dough!`);});
       return;
     }
     if(bowlItems.length>=10){sfx.boing();say('The bowl is full! Stir it up!');wiggle(bowl);return;}
     if(mixed){mixed=false;stirs=0;bowl.classList.remove('mixed');$('#bowlIn').setAttribute('fill','#ffe3ef');Array.from(bstuff.querySelectorAll('.bitem')).forEach(x=>x.style.opacity=1);}
-    bowlItems.push(id); sfx.pop();
+    bowlItems.push(id); useItem(id); sfx.pop();
     flyHTML(ingHTML(id),from,bowlTarget()).then(()=>{putInBowl(id);sfx.plop();updateHUD();say(g.n);});
   }
 }
@@ -1877,6 +1959,7 @@ function showCookGlow(){
 }
 function wiggle(el){el.classList.remove('wig');void el.offsetWidth;el.classList.add('wig');setTimeout(()=>el.classList.remove('wig'),500);}
 function hintFor(id){
+  if(stockOf(id)<=0){outOf(id);return;}
   const g=ING[id], L=LOC[g.loc], box=$('#'+L.box);
   box.classList.remove('hint'); void box.offsetWidth; box.classList.add('hint');
   setTimeout(()=>box.classList.remove('hint'),2800);
@@ -1937,7 +2020,7 @@ function updateHUD(){
   }
   dish.innerHTML=art(recipe.dish);
   chips.classList.add('on');
-  chips.innerHTML=recipe.ings.map(id=>`<span class="chip ${bowlItems.includes(id)?'got':''}" data-id="${id}">${ingHTML(id)}</span>`).join('');
+  chips.innerHTML=recipe.ings.map(id=>`<span class="chip ${bowlItems.includes(id)?'got':stockOf(id)<=0?'out':''}" data-id="${id}">${ingHTML(id)}</span>`).join('');
   const T=TOOLS[recipe.tool];
   msg.textContent=phase==='gather'&&!bowlOut?'First get a mixing bowl 🥣 from the dish cabinet!':phase==='gather'?`${recipe.name}: find the food! 🔍`:
     phase==='mix'?`Tap the bowl to stir! 🥄 ${dots()}`:
@@ -2017,7 +2100,7 @@ function renderBook(){
     <div class="bigplate" id="bigPlate">${art(r.dish)}</div>
     <h2 class="rname">${r.name}</h2>`;
   R.innerHTML=`<h3 class="need">You need:</h3>
-    <div class="ilist">${r.ings.map(id=>{const L2=LOC[ING[id].loc];return `<button class="irow" data-id="${id}">${ingHTML(id)}<span class="iname">${ING[id].n}</span><span class="loc" style="background:${L2.c}">${L2.i} ${L2.n}</span></button>`;}).join('')}</div>
+    <div class="ilist">${r.ings.map(id=>{const L2=LOC[ING[id].loc];return `<button class="irow" data-id="${id}">${ingHTML(id)}<span class="iname">${ING[id].n}</span>${stockOf(id)<=0?'<span class="outTag">🛒 Out!</span>':`<span class="loc" style="background:${L2.c}">${L2.i} ${L2.n}</span>`}</button>`;}).join('')}</div>
     ${r.knead?`<div class="steps steps5"><span>1 🥣 Bowl</span>➜<span>2 🧺 Find</span>➜<span>3 🥄 Stir</span>➜<span>4 👐 Knead</span>➜<span>5 ${T.i} ${T.verb}</span></div>`:`<div class="steps"><span>1 🥣 Bowl</span>➜<span>2 🧺 Find</span>➜<span>3 🥄 Stir</span>➜<span>4 ${T.i} ${T.verb}</span></div>`}
     <button class="cookbtn" data-r="${bookPage}">Let's Cook! 👩‍🍳</button>`;
 }
@@ -2616,6 +2699,7 @@ $('#lfPw').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
 $('#lfName').addEventListener('keydown',e=>{if(e.key==='Enter')$('#lfPw').focus();});
 function enterKitchen(){
   chef.dishes=fixDishes(chef.dishes);
+  FOODS.forEach(stockOf); refreshShelves();
   setTimeout(()=>{renderTable(undefined,'home');renderTable(undefined,'moon');renderPeople();},0);
   $('#login').classList.remove('show'); sfx.tada();
   $('#chefName').textContent=chef.guest?'':chef.name;
@@ -2701,7 +2785,8 @@ cat.addEventListener('click',()=>{
 });
 function feedCat(id){
   if(ING[id].ware){catSay('That\'s not food! 😹');sfx.meow();return;}
-  catHold=2; sfx.chomp();
+  if(stockOf(id)<=0)return;
+  useItem(id); catHold=2; sfx.chomp();
   catSay(id==='ice'?'Brrr! 🥶':['catfood','treats','fish','tuna','chicken','milk','cheese'].includes(id)?'My favorite! 💕':'Yum! 😋');
   cat.classList.remove('hop'); void cat.offsetWidth; cat.classList.add('hop');
 }
