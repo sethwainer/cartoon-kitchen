@@ -659,6 +659,28 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 #picker .pclose{position:absolute;right:-24px;top:-24px;width:80px;height:80px;border-radius:50%;border:6px solid var(--ink);background:#fff;font-size:40px;box-shadow:0 6px 0 var(--ink);padding:0}
 .small #msg{font-size:32px}
 .small #chips .chip{font-size:34px}
+
+/* ---------- pouring ---------- */
+#pourBox{position:absolute;left:760px;top:182px;width:420px;z-index:47;display:none;background:#fffaf0;border:6px solid var(--ink);border-radius:30px;box-shadow:0 8px 0 var(--ink);padding:14px 20px 18px;text-align:center;touch-action:none;user-select:none;-webkit-user-select:none}
+#pourBox.show{display:block}
+#pourTitle{font-size:30px;font-weight:700;line-height:1.1;margin:2px 34px 10px}
+#pourMeter{position:relative;height:40px;border:5px solid var(--ink);border-radius:22px;background:#fff;overflow:hidden}
+#pourZone{position:absolute;top:0;bottom:0;background:#a5e8a0}
+#pourFill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#7ec8ff,#4aa3f0);opacity:.85}
+#pourFill.over{background:linear-gradient(90deg,#ffb3b3,#ff6b6b)}
+#pourSecs{font-size:28px;font-weight:700;margin:8px 0 10px}
+#pourBtn{font:inherit;font-size:34px;font-weight:700;background:#ffcf4a;border:5px solid var(--ink);border-radius:26px;box-shadow:0 6px 0 var(--ink);padding:10px 34px;cursor:pointer;touch-action:none}
+#pourBtn.on{transform:translateY(5px);box-shadow:0 1px 0 var(--ink);background:#ffe58a}
+#pourX{position:absolute;right:10px;top:8px;font:inherit;font-size:26px;width:46px;height:46px;border-radius:50%;border:4px solid var(--ink);background:#fff;cursor:pointer}
+#pourCup{position:absolute;z-index:46;display:none;width:120px;height:120px;margin:-60px 0 0 -60px;pointer-events:none;transition:transform .35s;transform-origin:50% 60%}
+#pourCup .ing{font-size:96px}
+#pourCup.tilt{transform:rotate(-115deg)}
+#pourStream{position:absolute;z-index:45;display:none;width:16px;border-radius:8px;pointer-events:none;opacity:0;transition:opacity .15s}
+#pourStream.on{opacity:.95}
+#pourStream.grain{background-image:radial-gradient(circle,currentColor 3px,transparent 4px)!important;background-size:12px 12px!important;animation:grains .3s linear infinite}
+@keyframes grains{to{background-position:0 12px}}
+.small #pourBox{zoom:1.3;left:560px;top:110px}
+.pouringNow #picker{visibility:hidden}
 .small #toast{font-size:46px;top:600px;padding:10px 34px}
 .small #login .lcard{zoom:1.35}
 .small #done .dcard{zoom:1.15}
@@ -1021,6 +1043,8 @@ button{font-family:inherit;color:inherit;cursor:pointer}
     </div>
   </div>
 
+  <div id="pourBox"><button id="pourX" title="Put it back">✖</button><div id="pourTitle"></div><div id="pourMeter"><div id="pourZone"></div><div id="pourFill"></div></div><div id="pourSecs">0.0 seconds</div><button id="pourBtn">Hold to pour 👇</button></div>
+  <div id="pourCup"></div><div id="pourStream"></div>
   <div id="chalTimer"><span>⏱️</span><span id="chalClock">2:00</span><span class="cname" id="chalName"></span><button id="chalQuit" title="Stop challenge">✖</button></div>
   <div id="chalPick" class="ov"><div class="ccard" id="chalPickCard"></div></div>
   <div id="chalResult" class="ov"><div class="ccard" id="chalResultCard"></div></div>
@@ -1741,9 +1765,10 @@ $('#storeList').addEventListener('click',e=>{
   say(`${g.n} went into the ${L.n}! ${L.i}`);
 });
 
-function addIngredient(id,from){
+function addIngredient(id,from,poured){
   const g=ING[id];
   if(busy())return;
+  if(pouring){if(!poured)return;}
   if(g.ware){handleWare(id,from);return;}
   if(!bowlOut){needBowl(id,from);return;}
   if(stockOf(id)<=0){outOf(id,from);return;}
@@ -1761,13 +1786,14 @@ function addIngredient(id,from){
       sfx.boing(); flyHTML(ingHTML(id),from,bowlTarget(),{back:true});
       say(`You already have the ${g.n}!`); return;
     }
-    bowlItems.push(id); useItem(id); sfx.pop();
-    flyHTML(ingHTML(id),from,bowlTarget()).then(()=>{
+    if(POUR[id]&&!poured){startPour(id,from,()=>addIngredient(id,'pour',true));return;}
+    bowlItems.push(id); useItem(id); if(poured!=='pour'&&from!=='pour')sfx.pop();
+    (from==='pour'?Promise.resolve():flyHTML(ingHTML(id),from,bowlTarget())).then(()=>{
       putInBowl(id); sfx.plop(); updateHUD();
       if(bowlItems.length===recipe.ings.length){
         phase='mix'; stirs=0; hidePicker(); updateHUD();
         setTimeout(()=>{sfx.sparkle();say('Yay! You found everything! Now tap the bowl to stir it!');bowl.classList.add('glow');},350);
-      }else say(g.n);
+      }else if(from!=='pour')say(g.n);
     });
   }else{
     if(needKnead){
@@ -1778,11 +1804,112 @@ function addIngredient(id,from){
       return;
     }
     if(bowlItems.length>=10){sfx.boing();say('The bowl is full! Stir it up!');wiggle(bowl);return;}
+    if(POUR[id]&&!poured){startPour(id,from,()=>addIngredient(id,'pour',true));return;}
     if(mixed){mixed=false;stirs=0;bowl.classList.remove('mixed');$('#bowlIn').setAttribute('fill','#ffe3ef');Array.from(bstuff.querySelectorAll('.bitem')).forEach(x=>x.style.opacity=1);}
-    bowlItems.push(id); useItem(id); sfx.pop();
-    flyHTML(ingHTML(id),from,bowlTarget()).then(()=>{putInBowl(id);sfx.plop();updateHUD();say(g.n);});
+    bowlItems.push(id); useItem(id);
+    (from==='pour'?Promise.resolve():(sfx.pop(),flyHTML(ingHTML(id),from,bowlTarget()))).then(()=>{putInBowl(id);sfx.plop();updateHUD();if(from!=='pour')say(g.n);});
   }
 }
+
+/* ---------- pouring ---------- */
+const POUR={milk:'#ffffff',juice:'#ffb74d',honey:'#ffb300',sauce:'#e53935',sugar:'#ffe4f0',flour:'#ffffff',salt:'#ffffff',sprinkles:'rainbow',oats:'#e0c08c',rice:'#ffffff',cereal:'#c98a3e',yogurt:'#ffffff',popcorn:'#ffe082'};
+const GRAINY={sugar:1,flour:1,salt:1,sprinkles:1,oats:1,rice:1,cereal:1,popcorn:1};
+let pouring=null;
+function pourLoop(id){
+  const a=ac(); if(!a||!soundOn)return ()=>{};
+  try{
+    if(!noiseBuf){noiseBuf=a.createBuffer(1,a.sampleRate*2,a.sampleRate);const c=noiseBuf.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1;}
+    const s=a.createBufferSource(); s.buffer=noiseBuf; s.loop=true;
+    const f=a.createBiquadFilter(); f.type=GRAINY[id]?'highpass':'lowpass'; f.frequency.value=GRAINY[id]?2600:900;
+    const g=a.createGain(); g.gain.setValueAtTime(.0001,a.currentTime); g.gain.exponentialRampToValueAtTime(GRAINY[id]?.08:.18,a.currentTime+.08);
+    s.connect(f).connect(g).connect(a.destination); s.start();
+    return ()=>{try{g.gain.cancelScheduledValues(a.currentTime);g.gain.setValueAtTime(g.gain.value||.1,a.currentTime);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.08);s.stop(a.currentTime+.12);}catch(e){}};
+  }catch(e){return ()=>{};}
+}
+function startPour(id,from,done){
+  const g=ING[id];
+  const target=(id==='salt'||id==='sprinkles')?1:[2,3,4][Math.floor(Math.random()*3)];
+  const tol=target===1?.35:.5, max=Math.max(2,target*2);
+  pouring={id,from,done,target,lo:target-tol,hi:target+tol,max,t:0,holding:false,last:0,raf:0,stop:null};
+  const word=GRAINY[id]?(id==='salt'||id==='sprinkles'?'Sprinkle':'Pour'):'Pour';
+  $('#pourTitle').textContent=`${word} the ${g.n} for ${target} second${target>1?'s':''}!`;
+  $('#pourZone').style.left=(pouring.lo/max*100)+'%'; $('#pourZone').style.width=((pouring.hi-pouring.lo)/max*100)+'%';
+  $('#pourFill').style.width='0'; $('#pourFill').classList.remove('over');
+  $('#pourSecs').textContent='0.0 seconds';
+  const bt=bowlTarget(), cup=$('#pourCup');
+  cup.innerHTML=ingHTML(id); cup.classList.remove('tilt');
+  cup.style.left=(bt.cx+95)+'px'; cup.style.top=(bt.cy-170)+'px'; cup.style.display='block';
+  const st=$('#pourStream'), col=POUR[id];
+  st.className=GRAINY[id]?'grain':'';
+  st.style.color=col==='rainbow'?'#ff6fa8':col;
+  st.style.background=col==='rainbow'?'linear-gradient(#ff6fa8,#ffd54f,#66bb6a,#42a5f5,#ab47bc)':col;
+  st.style.border=(col==='#ffffff'&&!GRAINY[id])?'3px solid #d8d8d8':'none';
+  st.style.width=(id==='honey'?12:GRAINY[id]?20:16)+'px';
+  st.style.left=(bt.cx+28)+'px'; st.style.top=(bt.cy-150)+'px'; st.style.height='150px'; st.style.display='block';
+  st.classList.remove('on');
+  flyHTML(ingHTML(id),from,{cx:bt.cx+95,cy:bt.cy-170}).then(()=>{ if(pouring&&pouring.id===id) cup.style.opacity=1; });
+  cup.style.opacity=0;
+  $('#pourBox').classList.add('show'); stage.classList.add('pouringNow');
+  sfx.pop();
+}
+function pourDown(e){
+  if(!pouring||pouring.holding)return; e&&e.preventDefault();
+  pouring.holding=true; pouring.last=performance.now();
+  $('#pourBtn').classList.add('on'); $('#pourCup').classList.add('tilt');
+  setTimeout(()=>{if(pouring&&pouring.holding)$('#pourStream').classList.add('on');},180);
+  pouring.stop=pourLoop(pouring.id);
+  const step=now=>{
+    if(!pouring||!pouring.holding)return;
+    pouring.t+= (now-pouring.last)/1000; pouring.last=now;
+    const p=pouring, f=$('#pourFill');
+    f.style.width=Math.min(100,p.t/p.max*100)+'%';
+    f.classList.toggle('over',p.t>p.hi);
+    $('#pourSecs').textContent=p.t.toFixed(1)+' seconds';
+    if(p.t>=p.max){pourUp();return;}
+    p.raf=requestAnimationFrame(step);
+  };
+  pouring.raf=requestAnimationFrame(step);
+}
+function pourUp(){
+  const p=pouring; if(!p||!p.holding)return;
+  p.holding=false; cancelAnimationFrame(p.raf); p.stop&&p.stop();
+  $('#pourBtn').classList.remove('on'); $('#pourStream').classList.remove('on'); $('#pourCup').classList.remove('tilt');
+  if(p.t<p.lo){ say(p.t<.15?'Hold the button down to pour!':'A little more! Keep pouring!'); return; }
+  const perfect=p.t<=p.hi;
+  finishPour(perfect);
+}
+function finishPour(perfect){
+  const p=pouring; if(!p)return;
+  pouring=null; $('#pourBox').classList.remove('show'); stage.classList.remove('pouringNow');
+  $('#pourCup').style.display='none'; $('#pourStream').style.display='none';
+  if(perfect){ sfx.sparkle(); }
+  else { noise(.35,'lowpass',900,.3); splash(); }
+  p.done();
+  setTimeout(()=>say(perfect?'Perfect pour! ✨':'Whoa, splash! 💦 Too much, but it\'s in!'),60);
+}
+function splash(){
+  const bt=bowlTarget();
+  for(let i=0;i<7;i++){const a=-Math.PI*(.15+.7*Math.random());const d=70+Math.random()*60;
+    flyHTML('<span style="font-size:34px">💦</span>',{cx:bt.cx,cy:bt.cy},{cx:bt.cx+Math.cos(a)*d*(i%2?1:-1),cy:bt.cy+Math.sin(a)*d},{dur:450,lift:50,endScale:1}).catch(()=>{});}
+}
+function cancelPour(silent){
+  const p=pouring; if(!p)return;
+  if(p.holding){p.holding=false;cancelAnimationFrame(p.raf);p.stop&&p.stop();}
+  pouring=null; $('#pourBox').classList.remove('show'); stage.classList.remove('pouringNow');
+  $('#pourCup').style.display='none'; $('#pourStream').style.display='none';
+  $('#pourBtn').classList.remove('on');
+  if(!silent){ sfx.boing(); const bt=bowlTarget(); flyHTML(ingHTML(p.id),{cx:bt.cx+95,cy:bt.cy-170},p.from,{}).catch(()=>{}); }
+}
+(function(){
+  const b=$('#pourBtn');
+  b.addEventListener('pointerdown',e=>{try{b.setPointerCapture(e.pointerId);}catch(_){}pourDown(e);});
+  ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,pourUp));
+  b.addEventListener('contextmenu',e=>e.preventDefault());
+  $('#pourX').addEventListener('pointerup',e=>{e.stopPropagation();cancelPour();});
+  $('#pourBox').addEventListener('pointerdown',e=>e.stopPropagation());
+})();
+(function(){const st=document.getElementById('stage');if(st)st.addEventListener('scroll',()=>{if(st.scrollLeft||st.scrollTop){st.scrollLeft=0;st.scrollTop=0;}});})();
+window.__ck={get pouring(){return pouring},get bowl(){return bowlItems.slice()},stockOf:i=>stockOf(i),finishPour:f=>finishPour(f)};
 function putInBowl(id){
   const s=document.createElement('div'); s.className='bitem'; s.innerHTML=ingHTML(id);
   const n=bstuff.querySelectorAll('.bitem').length;
@@ -1795,6 +1922,7 @@ function putInBowl(id){
   bowl.classList.add('has');
 }
 function resetBowl(){
+  cancelPour(true);
   bowlItems=[]; mixed=false; stirs=0;
   bstuff.innerHTML=''; bowl.classList.remove('has','mixed','glow');
   $('#bowlIn').setAttribute('fill','#ffe3ef');
@@ -2324,6 +2452,7 @@ $('#dTable').onclick=()=>{
 /* ---------- rooms ---------- */
 let room='kitchen';
 function goRoom(r,quiet,force){
+  if(pouring)cancelPour();
   if(r===room)return;
   if(phase==='cooking'||(spaceBusy&&!force))return;
   if(r==='moon'&&space().at!=='moon'&&!force){say('Put people in the rocket and BLAST OFF to get to the moon! 🚀');return;}
