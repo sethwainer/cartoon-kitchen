@@ -2151,25 +2151,25 @@ book.addEventListener('click',e=>{
 
 /* ---------- challenges: make the dish before time runs out to win a prize recipe ---------- */
 const CHALLENGES=[
-  {id:'party',title:'Party Time!',story:"You're running late for your friend's birthday party! 🎉 Bake a Chocolate Cake before the party starts!",time:180,
+  {id:'party',title:'Party Time!',story:"You're running late for your friend's birthday party! 🎉 Bake a Chocolate Cake before the party starts!",time:60,
    recipe:{name:'Chocolate Cake',dish:'@chococake',ings:['flour','sugar','eggs','chocolate','butter'],tool:'oven',color:'#7b4a2a'}},
-  {id:'breakfast',title:'Breakfast Rush!',story:'Grandma is coming over for breakfast any minute! 🌅 Make her Rainbow Pancakes!',time:150,
+  {id:'breakfast',title:'Breakfast Rush!',story:'Grandma is coming over for breakfast any minute! 🌅 Make her Rainbow Pancakes!',time:45,
    recipe:{name:'Rainbow Pancakes',dish:'🥞',ings:['flour','eggs','milk','sprinkles'],tool:'stove',vessel:'pan',color:'#ffd6e7'}},
-  {id:'picnic',title:'Picnic Time!',story:'The picnic leaves soon! 🧺 Make Picnic Sandwiches to bring along!',time:120,
+  {id:'picnic',title:'Picnic Time!',story:'The picnic leaves soon! 🧺 Make Picnic Sandwiches to bring along!',time:30,
    recipe:{name:'Picnic Sandwiches',dish:'🥪',ings:['bread','cheese','lettuce','tomato'],tool:'none',color:'#c5e1a5'}},
-  {id:'launch',title:'Rocket Launch!',story:'The rocket blasts off soon! 🚀 Make Space Pizza for the astronauts!',time:200,
+  {id:'launch',title:'Rocket Launch!',story:'The rocket blasts off soon! 🚀 Make Space Pizza for the astronauts!',time:60,
    recipe:{name:'Space Pizza',dish:'🍕',ings:['flour','sauce','cheese','olives'],tool:'oven',color:'#ffb74d',knead:true}},
-  {id:'hotday',title:'Super Hot Day!',story:"It's SO hot outside! ☀️ Make a Strawberry Milkshake before everyone melts!",time:120,
+  {id:'hotday',title:'Super Hot Day!',story:"It's SO hot outside! ☀️ Make a Strawberry Milkshake before everyone melts!",time:30,
    recipe:{name:'Strawberry Milkshake',dish:'🥤',ings:['icecream','strawberry','milk'],tool:'blender',color:'#ff8fb1'}},
-  {id:'movie',title:'Movie Night!',story:'The movie is about to start! 🎬 Make Caramel Popcorn fast!',time:120,
+  {id:'movie',title:'Movie Night!',story:'The movie is about to start! 🎬 Make Caramel Popcorn fast!',time:30,
    recipe:{name:'Caramel Popcorn',dish:'🍿',ings:['popcorn','butter','sugar'],tool:'microwave',color:'#ffcc80'}},
-  {id:'snow',title:'Snow Day!',story:"It's a snow day and everyone is cold! ❄️ Make Hot Chocolate with marshmallows!",time:120,
+  {id:'snow',title:'Snow Day!',story:"It's a snow day and everyone is cold! ❄️ Make Hot Chocolate with marshmallows!",time:35,
    recipe:{name:'Hot Chocolate',dish:'☕',ings:['milk','chocolate','marshmallow'],tool:'stove',vessel:'pot',color:'#8d5524'}},
-  {id:'sleepover',title:'Sleepover!',story:"Lily's friends are coming for a sleepover! 🌙 Bake Sprinkle Cookies!",time:150,
+  {id:'sleepover',title:'Sleepover!',story:"Lily's friends are coming for a sleepover! 🌙 Bake Sprinkle Cookies!",time:45,
    recipe:{name:'Sprinkle Cookies',dish:'🍪',ings:['flour','sugar','butter','sprinkles'],tool:'oven',color:'#fff0b3'}},
-  {id:'taco',title:'Taco Tuesday!',story:"It's Taco Tuesday and Sam is SO hungry! 🌮 Make Tacos before dinner!",time:150,
+  {id:'taco',title:'Taco Tuesday!',story:"It's Taco Tuesday and Sam is SO hungry! 🌮 Make Tacos before dinner!",time:45,
    recipe:{name:'Chicken Tacos',dish:'🌮',ings:['tortilla','chicken','cheese','lettuce'],tool:'stove',vessel:'pan',color:'#ffcc80'}},
-  {id:'grandpa',title:"Grandpa's Birthday!",story:"It's Grandpa's birthday! 🎂 Make his favorite Dumpling Soup before the party!",time:210,
+  {id:'grandpa',title:"Grandpa's Birthday!",story:"It's Grandpa's birthday! 🎂 Make his favorite Dumpling Soup before the party!",time:60,
    recipe:{name:'Dumpling Soup',dish:'🥟',ings:['flour','eggs','chicken','carrot'],tool:'stove',vessel:'pot',color:'#f3dfb5',knead:true}}
 ];
 function prizesWon(){if(!chef)return [];chef.prizes=chef.prizes||[];return chef.prizes;}
